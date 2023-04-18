@@ -56,7 +56,6 @@ namespace FaceDetectionAttendance
                     {
                         MessageBox.Show(ex.Message);
                     }
-                    this.NavigationService.Navigate(new MenuStaff());
                 }
             }
             catch(Exception ex)
