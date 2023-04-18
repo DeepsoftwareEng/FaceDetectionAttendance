@@ -16,7 +16,7 @@
         <PasswordBox x:Name="Password" Height="27" Width="219" Margin="160,380,1221,493"/>
         <Button x:Name="LoginBtn" Height="32" Width="80" FontSize="13" FontWeight="Bold"  Content="Login" Margin="160,450,1360,418" Click="LoginBtn_Click"/>
         <Button x:Name="ForgotPassBtn" Height="32" Width="80" FontSize="13" FontWeight="Bold"  Content="Cant login" Margin="299,450,1221,418" Click="ForgotPassBtn_Click"/>
-        <Image Height="900" Width="1169" Source="/Resource/Img/Background.jpg" Stretch="Fill" Margin="431,0,0,0" />
+        <Image Height="900" Width="1169" Source="/Resource/Img/Background.png" Stretch="Fill" Margin="431,0,0,0" />
         <Image x:Name="logo"  Width="145" Height="145" Margin="143,72,1312,683" Source="/Resource/Img/solidcolor.png" Stretch="Fill" 
                />
         
