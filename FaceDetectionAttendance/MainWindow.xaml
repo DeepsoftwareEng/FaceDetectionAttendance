@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FaceDetectionAttendance"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        ResizeMode="NoResize"
+        Title="MainWindow" Height="900" Width="1600">
     <Grid>
-
+        <Frame Height="900" Width="1600" x:Name="Start" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

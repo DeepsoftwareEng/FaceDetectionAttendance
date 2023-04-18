@@ -16,14 +16,23 @@ using System.Windows.Shapes;
 namespace FaceDetectionAttendance
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Page1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Page1 : Page
     {
-        public MainWindow()
+        public Page1()
         {
             InitializeComponent();
-            Start.NavigationService.Navigate(new Page1());
+        }
+
+        private void LoginBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new MenuStaff());
+        }
+
+        private void ForgotPassBtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new RecoveryUI());
         }
     }
 }

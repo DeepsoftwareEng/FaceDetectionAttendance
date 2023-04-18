@@ -8,9 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="solidcolor.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Emgu.CV" Version="4.6.0.5131" />
     <PackageReference Include="OpenCV" Version="2.4.11" />
     <PackageReference Include="OpenCvSharp4" Version="4.7.0.20230115" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\Img\solidcolor.png" />
   </ItemGroup>
 
 </Project>

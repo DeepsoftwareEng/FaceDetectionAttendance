@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace FaceDetectionAttendance
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ReportUI.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ReportUI : Page
     {
-        public MainWindow()
+        public ReportUI()
         {
             InitializeComponent();
-            Start.NavigationService.Navigate(new Page1());
         }
     }
 }
