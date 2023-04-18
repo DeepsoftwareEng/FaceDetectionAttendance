@@ -11,11 +11,13 @@
     <None Remove="Resource\Img\Background.png" />
     <None Remove="Resource\Img\Background2.png" />
     <None Remove="Resource\Img\Background3.png" />
+    <None Remove="Resource\Img\logo.png" />
     <None Remove="solidcolor.png" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Emgu.CV" Version="4.6.0.5131" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
     <PackageReference Include="OpenCV" Version="2.4.11" />
     <PackageReference Include="OpenCvSharp4" Version="4.7.0.20230115" />
   </ItemGroup>
@@ -26,6 +28,7 @@
     </Resource>
     <Resource Include="Resource\Img\Background2.png" />
     <Resource Include="Resource\Img\Background3.png" />
+    <Resource Include="Resource\Img\logo.png" />
     <Resource Include="Resource\Img\solidcolor.png" />
   </ItemGroup>
 
