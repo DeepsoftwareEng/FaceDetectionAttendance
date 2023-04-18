@@ -8,8 +8,67 @@
       d:DesignHeight="900" d:DesignWidth="1600"
       Background="White"
       Title="RecoveryUI">
-
+    <Page.Resources>
+        <Style x:Key="CustomCheckBoxStyle" TargetType="{x:Type CheckBox}">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border x:Name="Border"
+                            Grid.Column="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="3"
+                            Margin="0,15,5,10">
+                                <Grid Width="20" Height="20">
+                                    <Image x:Name="CheckMark"
+                                   Source="PathToLargeCheckmarkImage"
+                                   Width="20" Height="20"
+                                   Visibility="Hidden"/>
+                                </Grid>
+                            </Border>
+                            <ContentPresenter x:Name="Content"
+                                      Grid.Column="1"
+                                      Margin="{TemplateBinding Padding}"
+                                      VerticalAlignment="Center"
+                                      RecognizesAccessKey="True"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="CheckMark" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
     <Grid>
-        
+        <Line X1="0" Y1="0"
+              X2="0" Y2="223"
+              StrokeThickness="10"
+              Width="10"
+              Height="223"
+              Stroke="Black" Margin="679,106,911,572"/>
+        <Image Width="198" Height="198" Source="/Resource/Img/logo.png" Margin="410,118,992,584"/>
+        <TextBlock Text="RECOVERY PASSWORD" FontSize="40" FontWeight="Bold" Height="60" Width="500" Margin="761,188,339,652"/>
+        <TextBlock Text="Username:" FontSize="28" FontWeight="Bold" Height="50" Width="150" Margin="410,450,1040,400"/>
+        <TextBlock Text="Your faculty:" FontSize="28" FontWeight="Bold" Height="50" Width="200" Margin="410,505,990,345"/>
+        <TextBlock Text="Email:" FontSize="28" FontWeight="Bold" Height="50" Width="150" Margin="410,560,1040,290"/>
+        <TextBox x:Name="UsernameBox" Height="40" Width="400" Margin="611,455,589,405"/>
+        <TextBox x:Name="FalcultyBox" Height="40" Width="400" Margin="611,510,589,350" />
+        <TextBox x:Name="EmailBox" Height="40" Width="400" Margin="611,560,589,300" />
+        <CheckBox Content="Confirm" Style="{StaticResource CustomCheckBoxStyle}" Width="150" Height="50" Margin="611,635,839,215">
+        </CheckBox>
+        <Button x:Name="RecovBtn" Height="36" Width="144" Content="Recovery" FontSize="28" FontWeight="Bold" Padding="0,-5,0,5" Margin="1280,783,176,81" Click="RecovBtn_Click"/>
+        <Button x:Name="Back" Height="36" Width="144" Content="Back" FontSize="28" FontWeight="Bold" Margin="174,783,1282,81" Padding="0,-5,0,2" Click="Back_Click"/>
     </Grid>
 </Page>
+ 
