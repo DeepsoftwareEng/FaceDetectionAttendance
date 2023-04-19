@@ -12,7 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Mail;
 using Microsoft.Data.SqlClient;
+using System.Net;
 
 namespace FaceDetectionAttendance
 {
@@ -29,7 +31,7 @@ namespace FaceDetectionAttendance
 
         private void RecovBtn_Click(object sender, RoutedEventArgs e)
         {
-            string querry = "Select count(1) from Account where name_faculty = @faculty and email=@email and username=@username";
+            string querry = "Select count(1) from Account inner join Faculty on Account.fid = Faculty.id_faculty where id_faculty = @faculty and gmail=@email and username=@username";
             try
             {
                 if(dc.State == System.Data.ConnectionState.Closed)
@@ -41,7 +43,36 @@ namespace FaceDetectionAttendance
                 int check = Convert.ToInt32(cmd.ExecuteScalar());
                 if (check == 1)
                 {
-
+                    string querry2 = "select passwords from Account where username =@username";
+                    cmd = new SqlCommand(querry2, dc);
+                    cmd.Parameters.AddWithValue("@username", UsernameBox.Text);
+                    MessageBox.Show(Convert.ToString(cmd.ExecuteScalar()));
+                    //string to = EmailBox.Text;
+                    //string from = "imhunggg02@gmail.com";
+                    //string subject = "Recovery password";
+                    //string body = @"Your password is: "+ Convert.ToString(cmd.ExecuteScalar());
+                    //string password = "Beyond2souls";
+                    //MailMessage message = new MailMessage();
+                    //message.To.Add(to);
+                    //message.From = new MailAddress(from);
+                    //message.IsBodyHtml = true;
+                    //message.Body= body;
+                    //message.Subject = subject;
+                    //SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+                    //smtp.EnableSsl = true;
+                    //smtp.Port = 587;
+                    //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    //smtp.UseDefaultCredentials = false;
+                    //smtp.Credentials = new NetworkCredential(from, "");
+                    //try
+                    //{
+                    //    smtp.Send(message);
+                    //    MessageBox.Show("Email sent");
+                    //}
+                    //catch (Exception ex)
+                    //{
+                    //    MessageBox.Show(ex.Message);    
+                    //}
                 }
                 else
                     MessageBox.Show("Incorrect information, please fill in again");
