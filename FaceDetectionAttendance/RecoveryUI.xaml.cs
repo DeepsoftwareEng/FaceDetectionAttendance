@@ -46,33 +46,33 @@ namespace FaceDetectionAttendance
                     string querry2 = "select passwords from Account where username =@username";
                     cmd = new SqlCommand(querry2, dc);
                     cmd.Parameters.AddWithValue("@username", UsernameBox.Text);
-                    MessageBox.Show(Convert.ToString(cmd.ExecuteScalar()));
-                    //string to = EmailBox.Text;
-                    //string from = "imhunggg02@gmail.com";
-                    //string subject = "Recovery password";
-                    //string body = @"Your password is: "+ Convert.ToString(cmd.ExecuteScalar());
-                    //string password = "Beyond2souls";
-                    //MailMessage message = new MailMessage();
-                    //message.To.Add(to);
-                    //message.From = new MailAddress(from);
-                    //message.IsBodyHtml = true;
-                    //message.Body= body;
-                    //message.Subject = subject;
-                    //SmtpClient smtp = new SmtpClient("smtp.gmail.com");
-                    //smtp.EnableSsl = true;
-                    //smtp.Port = 587;
-                    //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    //smtp.UseDefaultCredentials = false;
-                    //smtp.Credentials = new NetworkCredential(from, "");
-                    //try
-                    //{
-                    //    smtp.Send(message);
-                    //    MessageBox.Show("Email sent");
-                    //}
-                    //catch (Exception ex)
-                    //{
-                    //    MessageBox.Show(ex.Message);    
-                    //}
+                    //MessageBox.Show(Convert.ToString(cmd.ExecuteScalar()));
+                    string to = EmailBox.Text;
+                    string from = "imhunggg02@gmail.com";
+                    string subject = "Recovery password";
+                    string body = @"Your password is: " + Convert.ToString(cmd.ExecuteScalar());
+                    string password = "stfhexhuhwbogtjc";
+                    MailMessage message = new MailMessage();
+                    message.To.Add(to);
+                    message.From = new MailAddress(from);
+                    message.IsBodyHtml = true;
+                    message.Body = body;
+                    message.Subject = subject;
+                    SmtpClient smtp = new SmtpClient("smtp.gmail.com");
+                    smtp.EnableSsl = true;
+                    smtp.Port = 587;
+                    smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    smtp.UseDefaultCredentials = false;
+                    smtp.Credentials = new NetworkCredential(from, password);
+                    try
+                    {
+                        smtp.Send(message);
+                        MessageBox.Show("Email sent");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
                 else
                     MessageBox.Show("Incorrect information, please fill in again");
