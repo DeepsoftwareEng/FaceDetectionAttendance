@@ -51,9 +51,7 @@ namespace FaceDetectionAttendance
                         dataconnecttion.GetConnection().Close();
                         if (roles == 1)
                         {
-                            AdninMenu adninMenu = new AdninMenu();
-
-                            this.NavigationService.Navigate(adninMenu );   
+                            this.NavigationService.Navigate(new AdninMenu(UsernameBox.Text.ToString()));   
                         }
                         else
                         {
