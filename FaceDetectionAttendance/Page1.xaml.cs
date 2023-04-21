@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
+using FaceDetectionAttendance.Model;
 
 namespace FaceDetectionAttendance
 {
@@ -21,7 +22,8 @@ namespace FaceDetectionAttendance
     /// </summary>
     public partial class Page1 : Page
     {
-        private SqlConnection dc = new SqlConnection("Data Source = (localdb)\\MSSqlLocalDB; Initial catalog = CCPTPM; Integrated Security=true; TrustServerCertificate=True");
+        private Dataconnecttion dataconnecttion = new Dataconnecttion();
+        private LoginInfor _infor ;
         public Page1()
         {
             InitializeComponent();
@@ -32,10 +34,10 @@ namespace FaceDetectionAttendance
             string querry = "Select Count(1) from Account where username =@username and passwords=@password";
             try
             {
-                if(dc.State == System.Data.ConnectionState.Closed)
-                    dc.Open();
+                if(dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+                    dataconnecttion.GetConnection().Open();
 
-                SqlCommand cmd = new SqlCommand(querry,dc);
+                SqlCommand cmd = new SqlCommand(querry, dataconnecttion.GetConnection());
                 cmd.Parameters.AddWithValue("@username", UsernameBox.Text);
                 cmd.Parameters.AddWithValue("@password", Password.Password);
                 int check = Convert.ToInt32(cmd.ExecuteScalar());
@@ -44,14 +46,23 @@ namespace FaceDetectionAttendance
                     string querry2 = "Select Roles from Account where username=@username";
                     try
                     {
-                        SqlCommand cmd2 = new SqlCommand(querry2, dc);
+                        SqlCommand cmd2 = new SqlCommand(querry2, dataconnecttion.GetConnection());
                         cmd2.Parameters.AddWithValue("@username", UsernameBox.Text);
                         int roles = Convert.ToInt32(cmd2.ExecuteScalar());
-                        dc.Close();
+                        dataconnecttion.GetConnection().Close();
                         if (roles == 1)
-                            this.NavigationService.Navigate(new AdninMenu());
+                        {
+                            AdninMenu adninMenu = new AdninMenu();
+
+                            this.NavigationService.Navigate(adninMenu );   
+                        }
                         else
-                            this.NavigationService.Navigate(new MenuStaff());
+                        {
+                            _infor = new LoginInfor();
+                            DataContext = _infor;
+                            MenuStaff menu = new MenuStaff(_infor);
+                            this.NavigationService.Navigate(menu);
+                        }         
                     }catch(Exception ex)
                     {
                         MessageBox.Show(ex.Message);

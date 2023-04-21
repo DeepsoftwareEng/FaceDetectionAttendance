@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Net.Mail;
 using Microsoft.Data.SqlClient;
 using System.Net;
+using FaceDetectionAttendance.Model;
 
 namespace FaceDetectionAttendance
 {
@@ -23,7 +24,7 @@ namespace FaceDetectionAttendance
     /// </summary>
     public partial class RecoveryUI : Page
     {
-        private SqlConnection dc = new SqlConnection("Data Source = (localdb)\\MSSqlLocalDB; Initial catalog = CCPTPM; Integrated Security=true; TrustServerCertificate=True");
+        private Dataconnecttion dataconnecttion = new Dataconnecttion();
         public RecoveryUI()
         {
             InitializeComponent();
@@ -34,9 +35,9 @@ namespace FaceDetectionAttendance
             string querry = "Select count(1) from Account inner join Faculty on Account.fid = Faculty.id_faculty where id_faculty = @faculty and gmail=@email and username=@username";
             try
             {
-                if(dc.State == System.Data.ConnectionState.Closed)
-                    dc.Open();
-                SqlCommand cmd = new SqlCommand(querry, dc);
+                if(dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+                    dataconnecttion.GetConnection().Open();
+                SqlCommand cmd = new SqlCommand(querry, dataconnecttion.GetConnection());
                 cmd.Parameters.AddWithValue("@username", UsernameBox.Text);
                 cmd.Parameters.AddWithValue("@faculty",FalcultyBox.Text);
                 cmd.Parameters.AddWithValue("@email",EmailBox.Text);
@@ -44,7 +45,7 @@ namespace FaceDetectionAttendance
                 if (check == 1)
                 {
                     string querry2 = "select passwords from Account where username =@username";
-                    cmd = new SqlCommand(querry2, dc);
+                    cmd = new SqlCommand(querry2, dataconnecttion.GetConnection());
                     cmd.Parameters.AddWithValue("@username", UsernameBox.Text);
                     //MessageBox.Show(Convert.ToString(cmd.ExecuteScalar()));
                     string to = EmailBox.Text;

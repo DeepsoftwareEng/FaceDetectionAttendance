@@ -11,8 +11,11 @@
 
     <Grid>
         <Frame  Height="900" Width="1330" x:Name="Content" Margin="270,0,0,0" Background="Aqua"/>
-        <Button x:Name= "WorkerManageBtn" Height="49" Width="234" Margin="10,344,1356,507" Content="Worker Manage" FontSize="18" FontWeight="Bold" Click="WorkerManageBtn_Click"/>
+        <Button x:Name= "WorkerManageBtn" Height="49" Width="234" Margin="10,418,1356,433" Content="Worker Manage" FontSize="18" FontWeight="Bold" Click="WorkerManageBtn_Click"/>
         <Button x:Name= "AttendanceBtn" Height="49" Width="234" Margin="10,497,1356,354" Content="Attendance" FontSize="18" FontWeight="Bold" Click="AttendanceBtn_Click"/>
         <Button x:Name="ReportBtn" Height="49" Width="234" Margin="10,602,1356,249" Content="Report" FontSize="18" FontWeight="Bold" Click="ReportBtn_Click"/>
+        <Button x:Name="AccountantBtn" Height="49" Width="234" Content="Accountant" FontSize="18" FontWeight="Bold" Margin="10,695,1356,156" IsEnabled="True" Click="AccountantBtn_Click"/>
+        <Image x:Name="avt" Height="145" Width="145" Margin="54,48,1400,707" Source="/Resource/Img/solidcolor.png" Stretch="Fill"/>
+        <TextBlock x:Name="StaffName" Height="26" Width="145" FontSize="18" FontWeight="Bold" Margin="54,226,1400,648"/>
     </Grid>
 </Page>
