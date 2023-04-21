@@ -23,15 +23,11 @@ namespace FaceDetectionAttendance
     public partial class MenuStaff : Page
     {
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
-        private LoginInfor infor;
-        public string username { get; set; }
-        public MenuStaff()
+        public MenuStaff(string dataReceive)
         {
             InitializeComponent();
-        }
-        public MenuStaff(LoginInfor viewModel) : this()
-        {
-            infor = viewModel;
+
+            setInfor(dataReceive);
         }
         private void WorkerManageBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -52,12 +48,8 @@ namespace FaceDetectionAttendance
         {
             Content.NavigationService.Navigate(new AccountantUI());
         }
-        void setInfor()
+        void setInfor(string username)
         {
-            infor = DataContext as LoginInfor;
-            if (infor != null)
-            {
-                string username = infor.MyData;
                 string querry = "Select images from Account where username = @username";
                 if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                     Dataconnecttion.GetConnection().Open();
@@ -65,15 +57,10 @@ namespace FaceDetectionAttendance
                 cmd.Parameters.AddWithValue("@username", username);
                 BitmapImage source = new BitmapImage();
                 source.BeginInit();
-                source.UriSource = new Uri("/Resource/Avatar/" + Convert.ToString(cmd.ExecuteScalar()) + ".png");
+                source.UriSource = new Uri(@"/Resource/Avatar/" + Convert.ToString(cmd.ExecuteScalar()) + ".png", UriKind.RelativeOrAbsolute);
                 source.EndInit();
                 avt.Source = source;
-                StaffName.Text = username;
-            }
-            else
-            {
-
-            }    
+                StaffName.Text = username; 
         }
     }
 }

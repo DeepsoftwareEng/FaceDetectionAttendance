@@ -23,7 +23,6 @@ namespace FaceDetectionAttendance
     public partial class Page1 : Page
     {
         private Dataconnecttion dataconnecttion = new Dataconnecttion();
-        private LoginInfor _infor ;
         public Page1()
         {
             InitializeComponent();
@@ -58,10 +57,7 @@ namespace FaceDetectionAttendance
                         }
                         else
                         {
-                            _infor = new LoginInfor();
-                            DataContext = _infor;
-                            MenuStaff menu = new MenuStaff(_infor);
-                            this.NavigationService.Navigate(menu);
+                            this.NavigationService.Navigate(new MenuStaff(UsernameBox.Text.ToString()));
                         }         
                     }catch(Exception ex)
                     {

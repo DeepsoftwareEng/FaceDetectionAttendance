@@ -8,11 +8,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resource\Avatar\admin1.png" />
+    <None Remove="Resource\Avatar\staff1.png" />
     <None Remove="Resource\Img\Background.png" />
     <None Remove="Resource\Img\Background2.png" />
     <None Remove="Resource\Img\Background3.png" />
     <None Remove="Resource\Img\logo.png" />
     <None Remove="solidcolor.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resource\Avatar\staff1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resource\Avatar\admin1.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resource\Img\Background.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
