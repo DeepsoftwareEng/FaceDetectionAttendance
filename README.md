@@ -14,6 +14,11 @@ __How to install: __<br>
     1. Download this app from github.<br>
     2. Unzip it and search for "FaceRecognizeForTimeKeeping.exe" in the folder, then you can use it.<br>
     3. You can view source code in Visual Studio.<br>
+__System Requirements:__<br>
+    1. Install SqlServer.<br>
+    2. Install localdb.<br>
+    3. Excute the CCPTPM.sql .<br>
+    4. 2Gb of RAM, 2Ghz CPU.<br>
 __Any problem: __<br>
     Email: deepit2507@gmail.com<br>
     Peace!
