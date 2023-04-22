@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using FaceDetectionAttendance.Model;
 using Microsoft.Data.SqlClient;
 
-namespace FaceDetectionAttendance
+namespace FaceDetectionAttendance.MVVM.View
 {
     /// <summary>
     /// Interaction logic for MenuStaff.xaml

@@ -15,7 +15,8 @@ using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
 using FaceDetectionAttendance.Model;
 
-namespace FaceDetectionAttendance
+namespace FaceDetectionAttendance.MVVM.View
+
 {
     /// <summary>
     /// Interaction logic for Page1.xaml

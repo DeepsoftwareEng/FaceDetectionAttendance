@@ -17,7 +17,7 @@ using Microsoft.Data.SqlClient;
 using System.Net;
 using FaceDetectionAttendance.Model;
 
-namespace FaceDetectionAttendance
+namespace FaceDetectionAttendance.MVVM.View
 {
     /// <summary>
     /// Interaction logic for RecoveryUI.xaml

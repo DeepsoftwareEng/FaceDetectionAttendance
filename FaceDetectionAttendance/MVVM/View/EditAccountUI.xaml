@@ -1,4 +1,4 @@
-﻿<Page x:Class="FaceDetectionAttendance.ReportUI"
+﻿<Page x:Class="FaceDetectionAttendance.MVVM.View.EditAccountUI"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
-      Title="ReportUI">
+      Title="EditAccountUI">
 
     <Grid>
         

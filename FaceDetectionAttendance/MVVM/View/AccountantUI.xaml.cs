@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FaceDetectionAttendance
+namespace FaceDetectionAttendance.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for EditWorkerUI.xaml
+    /// Interaction logic for AccountantUI.xaml
     /// </summary>
-    public partial class EditWorkerUI : Page
+    public partial class AccountantUI : Page
     {
-        public EditWorkerUI()
+        public AccountantUI()
         {
             InitializeComponent();
         }

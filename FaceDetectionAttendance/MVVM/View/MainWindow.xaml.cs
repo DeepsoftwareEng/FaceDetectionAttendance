@@ -13,16 +13,17 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FaceDetectionAttendance
+namespace FaceDetectionAttendance.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for ReportUI.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class ReportUI : Page
+    public partial class MainWindow : Window
     {
-        public ReportUI()
+        public MainWindow()
         {
             InitializeComponent();
+            Start.NavigationService.Navigate(new Page1());
         }
     }
 }
