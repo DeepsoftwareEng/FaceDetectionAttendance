@@ -1,17 +1,17 @@
-﻿using FaceDetectionAttendance.MVC.Model;
+﻿using FaceDetectionAttendance.MVVM.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FaceDetectionAttendance.MVC.Controller
+namespace FaceDetectionAttendance.MVVM.Controller
 {
-    public class LoginController
+    public class LoginViewModel
     {
         private readonly AccountModel accountModel;
 
-        public LoginController(AccountModel accountModel)
+        public LoginViewModel(AccountModel accountModel)
         {
             this.accountModel = accountModel;
         }
