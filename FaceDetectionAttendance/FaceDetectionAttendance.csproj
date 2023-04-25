@@ -43,8 +43,4 @@
     <Resource Include="Resource\Img\solidcolor.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MVVM\ViewModel\" />
-  </ItemGroup>
-
 </Project>
