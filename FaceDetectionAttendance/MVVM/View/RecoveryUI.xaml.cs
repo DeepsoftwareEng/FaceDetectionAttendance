@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using System.Net.Mail;
 using Microsoft.Data.SqlClient;
 using System.Net;
-using FaceDetectionAttendance.Model;
+using FaceDetectionAttendance.MVVM.Model;
 
 namespace FaceDetectionAttendance.MVVM.View
 {

@@ -1,4 +1,4 @@
-﻿using FaceDetectionAttendance.Model;
+﻿using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;

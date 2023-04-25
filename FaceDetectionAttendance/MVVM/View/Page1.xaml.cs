@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
-using FaceDetectionAttendance.Model;
+using FaceDetectionAttendance.MVVM.Model;
 
 namespace FaceDetectionAttendance.MVVM.View
 
