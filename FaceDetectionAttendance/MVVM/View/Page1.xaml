@@ -18,9 +18,11 @@
         </ResourceDictionary>
     </Page.Resources>
     <Page.DataContext>
-        <vm:LoginViewModel />
+        <vm:LoginViewModel>
+        </vm:LoginViewModel>
     </Page.DataContext>
     <Grid>
+        <Frame x:Name="Login" Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden"/>
         <TextBlock Text="Username: " 
                    FontWeight="Bold" 
                    FontSize="18" 
@@ -49,7 +51,7 @@
                 FontWeight="Bold"  
                 Content="Login" 
                 Margin="160,450,1360,418" 
-                Command="{Binding LoginCommand}"/>
+                Command="{Binding Path=NavToAdmin}"/>
         <Button x:Name="ForgotPassBtn" 
                 Height="32" 
                 Width="80" 

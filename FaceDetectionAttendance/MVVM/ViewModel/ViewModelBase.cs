@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
+
 namespace FaceDetectionAttendance.MVVM.ViewModel
 {
-    public abstract class ViewModelBase: ObserverObject
+    public class ViewModelBase 
     {
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -29,5 +29,6 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
 
             return true;
         }
+        
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Controls;
 using Unity;
 
+
 namespace FaceDetectionAttendance.MVVM.ViewModel
 {
     public class LoginViewModel: ViewModelBase
@@ -22,6 +23,16 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         private AccountModel acc = new AccountModel();
+        private object _currentPage { get; set; }
+        public object CurrentPage
+        {
+            get { return _currentPage; }
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged(nameof(CurrentPage));
+            }
+        }
         public string UserName
         {
             get =>acc.username;
@@ -41,9 +52,11 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
             }
         }
         public ICommand LoginCommand { get; set; }
-        
+
+
         public LoginViewModel()
         {
+
             LoginCommand = new RelayCommand(Login, CanLogin);
         }
         private bool CanLogin(object parameter)
@@ -72,13 +85,15 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
                         cmd2.Parameters.AddWithValue("@username", acc.username);
                         int roles = Convert.ToInt32(cmd2.ExecuteScalar());
                         Dataconnecttion.GetConnection().Close();
-                        if (roles == 1)
+                        if (roles==1)
                         {
-
+                            object next = "AdninMenu";
+                            CurrentPage = next;
                         }
                         else
                         {
-
+                            object next = "MenuStaff";
+                            CurrentPage = next;
                         }
                     }
                     catch (Exception ex)

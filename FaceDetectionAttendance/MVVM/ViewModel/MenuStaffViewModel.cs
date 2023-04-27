@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace FaceDetectionAttendance.MVVM.ViewModel
 {
-    internal class MenuStaffViewModel
+    public class MenuStaffViewModel: ViewModelBase
     {
+
     }
 }

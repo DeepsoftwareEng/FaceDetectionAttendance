@@ -18,21 +18,11 @@ namespace FaceDetectionAttendance
     {
         private readonly ServiceProvider _serviceProvider;
         public App()
-        {
-            IServiceCollection services= new ServiceCollection();
-            services.AddSingleton<MainWindow>();
-            services.AddSingleton<LoginViewModel>();
-            services.AddSingleton<AdninMenuViewModel>();
-            services.AddSingleton<MenuStaffViewModel>();
-            services.AddSingleton<RecoveryViewModel>();
-            _serviceProvider = services.BuildServiceProvider();
+        { 
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            mainWindow.Show();
-            base.OnStartup(e);
         }
     }
 }

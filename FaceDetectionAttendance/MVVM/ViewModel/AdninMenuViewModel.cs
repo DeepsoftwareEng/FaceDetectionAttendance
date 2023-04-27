@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FaceDetectionAttendance.MVVM.ViewModel
 {
-    internal class AdninMenuViewModel
+    public class AdninMenuViewModel: ViewModelBase
     {
     }
 }
