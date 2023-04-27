@@ -3,7 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:FaceDetectionAttendance"
+      xmlns:local="clr-namespace:FaceDetectionAttendance.MVVM.View"
+      xmlns:vm="clr-namespace:FaceDetectionAttendance.MVVM.ViewModel" 
+      xmlns:comp="clr-namespace:FaceDetectionAttendance.MVVM.Components"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1600"
       Background="White"
@@ -15,13 +17,47 @@
             <BitmapImage x:Key="Image3" UriSource="/Resource/Img/Background3.png"/>
         </ResourceDictionary>
     </Page.Resources>
+    <Page.DataContext>
+        <vm:LoginViewModel />
+    </Page.DataContext>
     <Grid>
-        <TextBlock Text="Username: " FontWeight="Bold" FontSize="18" Height="30" Width="100" Margin="55,306,1445,564"  />
-        <TextBlock Text="Password: " FontWeight="Bold"  FontSize="18" Height="30" Width="100" Margin="55,380,1445,490"  />
-        <TextBox x:Name="UsernameBox" Height="27" Width="219" Margin="160,309,1221,564"/>
-        <PasswordBox x:Name="Password" Height="27" Width="219" Margin="160,380,1221,493"/>
-        <Button x:Name="LoginBtn" Height="32" Width="80" FontSize="13" FontWeight="Bold"  Content="Login" Margin="160,450,1360,418" Click="LoginBtn_Click"/>
-        <Button x:Name="ForgotPassBtn" Height="32" Width="80" FontSize="13" FontWeight="Bold"  Content="Cant login" Margin="299,450,1221,418" Click="ForgotPassBtn_Click"/>
+        <TextBlock Text="Username: " 
+                   FontWeight="Bold" 
+                   FontSize="18" 
+                   Height="30" 
+                   Width="100" 
+                   Margin="55,306,1445,564"  />
+        <TextBlock Text="Password: " 
+                   FontWeight="Bold"  
+                   FontSize="18" 
+                   Height="30" 
+                   Width="100" 
+                   Margin="55,380,1445,490"  />
+        <TextBox x:Name="UsernameBox" 
+                 Text ="{Binding UserName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                 Height="27" 
+                 Width="219" 
+                 Margin="160,309,1221,564"/>
+        <comp:BindablePasswordBox Password="{Binding Password, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                  Height="27" 
+                                  Width="219"
+                                  Margin="160,380,1221,493"/>
+        <Button x:Name="LoginBtn" 
+                Height="32" 
+                Width="80" 
+                FontSize="13" 
+                FontWeight="Bold"  
+                Content="Login" 
+                Margin="160,450,1360,418" 
+                Command="{Binding LoginCommand}"/>
+        <Button x:Name="ForgotPassBtn" 
+                Height="32" 
+                Width="80" 
+                FontSize="13" 
+                FontWeight="Bold"  
+                Content="Cant login" 
+                Margin="299,450,1221,418" 
+                Click="ForgotPassBtn_Click"/>
         <Image Height="900" Width="1169" Source="{StaticResource Image1}" Stretch="Fill" Margin="431,0,0,0" >
             <Image.Triggers>
                 <EventTrigger RoutedEvent="Loaded">

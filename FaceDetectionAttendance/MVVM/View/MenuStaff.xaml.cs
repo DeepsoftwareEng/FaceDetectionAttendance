@@ -23,11 +23,9 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class MenuStaff : Page
     {
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
-        public MenuStaff(string dataReceive)
+        public MenuStaff()
         {
             InitializeComponent();
-
-            setInfor(dataReceive);
         }
         private void WorkerManageBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -48,19 +46,19 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             Content.NavigationService.Navigate(new AccountantUI());
         }
-        void setInfor(string username)
-        {
-                string querry = "Select images from Account where username = @username";
-                if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
-                    Dataconnecttion.GetConnection().Open();
-                SqlCommand cmd = new SqlCommand(querry, Dataconnecttion.GetConnection());
-                cmd.Parameters.AddWithValue("@username", username);
-                BitmapImage source = new BitmapImage();
-                source.BeginInit();
-                source.UriSource = new Uri(@"/Resource/Avatar/" + Convert.ToString(cmd.ExecuteScalar()) + ".png", UriKind.RelativeOrAbsolute);
-                source.EndInit();
-                avt.Source = source;
-                StaffName.Text = username; 
-        }
+        //void setInfor(string username)
+        //{
+        //        string querry = "Select images from Account where username = @username";
+        //        if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+        //            Dataconnecttion.GetConnection().Open();
+        //        SqlCommand cmd = new SqlCommand(querry, Dataconnecttion.GetConnection());
+        //        cmd.Parameters.AddWithValue("@username", username);
+        //        BitmapImage source = new BitmapImage();
+        //        source.BeginInit();
+        //        source.UriSource = new Uri(@"/Resource/Avatar/" + Convert.ToString(cmd.ExecuteScalar()) + ".png", UriKind.RelativeOrAbsolute);
+        //        source.EndInit();
+        //        avt.Source = source;
+        //        StaffName.Text = username; 
+        //}
     }
 }
