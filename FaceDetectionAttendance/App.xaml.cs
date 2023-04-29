@@ -24,6 +24,7 @@ namespace FaceDetectionAttendance
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             MainWindow mw = new MainWindow();
+            mw.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             mw.Show();
         }
     }

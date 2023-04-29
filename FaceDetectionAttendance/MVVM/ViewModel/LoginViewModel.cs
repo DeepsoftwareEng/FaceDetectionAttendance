@@ -88,6 +88,7 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
                         int roles = Convert.ToInt32(cmd2.ExecuteScalar());
                         Dataconnecttion.GetConnection().Close();
                         MessageBoxChange ms = new MessageBoxChange(roles, acc.username);
+                        ms.WindowStartupLocation = WindowStartupLocation.CenterScreen;
                         ms.Show();
                     }
                     catch (Exception ex)

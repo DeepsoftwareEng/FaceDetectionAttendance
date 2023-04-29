@@ -28,21 +28,8 @@ namespace FaceDetectionAttendance.MVVM.Components
             InitializeComponent();
             stt=s;
             this.username = username;
+            NavToUI.NavigationService.Navigate(new MessageBoxChangeUI(username,stt));
         }
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (stt == 1)
-            {
-                MainWindow window1 = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                window1.Start.NavigationService.Navigate(new AdninMenu(username));
-                this.Close();
-            }
-            else
-            {
-                MainWindow window1 = Application.Current.Windows.OfType<MainWindow>().FirstOrDefault();
-                window1.Start.NavigationService.Navigate(new MenuStaff(username));
-                this.Close();
-            }    
-        }
+       
     }
 }
