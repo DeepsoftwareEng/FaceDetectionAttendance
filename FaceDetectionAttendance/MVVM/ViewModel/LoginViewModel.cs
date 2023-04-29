@@ -13,6 +13,8 @@ using System.Windows;
 using System.Windows.Navigation;
 using System.Windows.Controls;
 using Unity;
+using OpenCvSharp;
+using FaceDetectionAttendance.MVVM.Components;
 
 
 namespace FaceDetectionAttendance.MVVM.ViewModel
@@ -77,7 +79,7 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
                 int check = Convert.ToInt32(cmd.ExecuteScalar());
                 if (check == 1)
                 {
-                    MessageBox.Show("Login Sucess!");
+                    
                     string querry2 = "Select Roles from Account where username=@username";
                     try
                     {
@@ -85,16 +87,8 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
                         cmd2.Parameters.AddWithValue("@username", acc.username);
                         int roles = Convert.ToInt32(cmd2.ExecuteScalar());
                         Dataconnecttion.GetConnection().Close();
-                        if (roles==1)
-                        {
-                            object next = "AdninMenu";
-                            CurrentPage = next;
-                        }
-                        else
-                        {
-                            object next = "MenuStaff";
-                            CurrentPage = next;
-                        }
+                        MessageBoxChange ms = new MessageBoxChange(roles, acc.username);
+                        ms.Show();
                     }
                     catch (Exception ex)
                     {

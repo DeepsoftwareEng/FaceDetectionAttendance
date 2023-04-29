@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:FaceDetectionAttendance"
              xmlns:view ="clr-namespace:FaceDetectionAttendance.MVVM.View"
              xmlns:viewmodel="clr-namespace:FaceDetectionAttendance.MVVM.ViewModel"
+             Startup="Application_Startup"
              >
     <Application.Resources>
         <DataTemplate DataType="{x:Type TypeName=viewmodel:LoginViewModel}">

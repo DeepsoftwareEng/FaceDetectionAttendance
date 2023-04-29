@@ -30,6 +30,7 @@
     <PackageReference Include="OpenCV" Version="2.4.11" />
     <PackageReference Include="OpenCvSharp4" Version="4.7.0.20230115" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     <PackageReference Include="Unity" Version="5.11.10" />
   </ItemGroup>
 

@@ -8,6 +8,6 @@
         ResizeMode="NoResize"
         Title="MainWindow" Height="900" Width="1600">
     <Grid>
-        <Frame Height="900" Width="1600" x:Name="Start" NavigationUIVisibility="Hidden"/>
+        <Frame Height="900" Width="1600" x:Name="Start" NavigationUIVisibility="Hidden" x:FieldModifier="public"/>
     </Grid>
 </Window>

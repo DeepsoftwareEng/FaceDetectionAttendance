@@ -51,7 +51,7 @@
                 FontWeight="Bold"  
                 Content="Login" 
                 Margin="160,450,1360,418" 
-                Command="{Binding Path=NavToAdmin}"/>
+                Command="{Binding LoginCommand}"/>
         <Button x:Name="ForgotPassBtn" 
                 Height="32" 
                 Width="80" 
