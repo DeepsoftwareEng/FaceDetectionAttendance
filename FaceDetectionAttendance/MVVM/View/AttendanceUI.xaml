@@ -3,13 +3,33 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:FaceDetectionAttendance"
+      xmlns:local="clr-namespace:FaceDetectionAttendance" 
+      xmlns:vm="clr-namespace:FaceDetectionAttendance.MVVM.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
       Title="AttendanceUI">
-
+    <Page.DataContext>
+        <vm:AttendanceViewModel/>
+    </Page.DataContext>
     <Grid>
+        <Canvas>
+            <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
+            <TextBlock Text="Attendance" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+            <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
+            
+        </Canvas>
+        <TextBlock Text="Ca 1" FontWeight="Bold" FontSize="18" Height="20" Width="50" Margin="43,149,1237,731"/>
+        <Button Height="27" Width="78" Content="Switch" FontWeight="Bold" FontSize="18" Margin="98,147,1154,726"/>
         
+        <DataGrid x:Name="Attendance" ItemsSource="{Binding AttendList}" Height="263" Width="434" Margin="810,187,86,450"/>
+        <DataGrid x:Name="Absentee" ItemsSource="{Binding AbsenList}" Height="263" Width="434" Margin="810,518,86,119"/>
+        <Button x:Name="StartBtn" Height="28" Width="71" Content="Start" FontWeight="Bold" FontSize="18" Margin="630,318,630,554"/>
+        <Button x:Name="EndBtn" Height="28" Width="71" Content="End" FontWeight="Bold" FontSize="18"/>
+        <TextBlock Text="Number of attendance workers: " Height="28" Width="267" FontSize="18" FontWeight="Bold" Margin="43,732,1020,140"/>
+        <TextBlock Text="Number of absentee workers:" Height="28" Width="267" FontSize="18" FontWeight="Bold" Margin="43,765,1020,107"/>
+        <TextBlock x:Name="AttendanceTxt" Text="{Binding NumAttend}" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,732,965,140"/>
+        <TextBlock x:Name="AbsenteeTxt_Copy" Text="{Binding NumAbsen}" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,765,965,107"/>
     </Grid>
 </Page>

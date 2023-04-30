@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:FaceDetectionAttendance"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Title="FDA" Height="900" Width="1600">
+        Title="FaceDetectionAttendance" Height="900" Width="1600">
     <Grid>
         <Frame Height="900" Width="1600" x:Name="Start" NavigationUIVisibility="Hidden" x:FieldModifier="public"/>
     </Grid>
