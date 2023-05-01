@@ -23,10 +23,12 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class MenuStaff : Page
     {
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
+        private string _username;
         public MenuStaff(string username)
         {
             InitializeComponent();
             setInfor(username);
+            _username = username;
         }
         private void WorkerManageBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -35,7 +37,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void AttendanceBtn_Click(object sender, RoutedEventArgs e)
         {
-            Content.NavigationService.Navigate(new AttendanceUI());
+            Content.NavigationService.Navigate(new AttendanceUI(_username));
         }
 
         private void ReportBtn_Click(object sender, RoutedEventArgs e)
