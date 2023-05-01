@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance" 
       xmlns:vm="clr-namespace:FaceDetectionAttendance.MVVM.ViewModel"
+      xmlns:emgu="http://www.emgu.com/winforms"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
@@ -22,7 +23,7 @@
         </Canvas>
         <TextBlock Text="Ca 1" FontWeight="Bold" FontSize="18" Height="20" Width="50" Margin="43,149,1237,731"/>
         <Button Height="27" Width="78" Content="Switch" FontWeight="Bold" FontSize="18" Margin="98,147,1154,726"/>
-        
+        <Image x:Name="VideoDisplay" Height="500" Width="500" Margin="60,214,770,186"/>
         <DataGrid x:Name="Attendance" ItemsSource="{Binding AttendList}" Height="263" Width="434" Margin="810,187,86,450"/>
         <DataGrid x:Name="Absentee" ItemsSource="{Binding AbsenList}" Height="263" Width="434" Margin="810,518,86,119"/>
         <Button x:Name="StartBtn" Height="28" Width="71" Content="Start" FontWeight="Bold" FontSize="18" Margin="630,318,630,554"/>
@@ -31,5 +32,7 @@
         <TextBlock Text="Number of absentee workers:" Height="28" Width="267" FontSize="18" FontWeight="Bold" Margin="43,765,1020,107"/>
         <TextBlock x:Name="AttendanceTxt" Text="{Binding NumAttend}" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,732,965,140"/>
         <TextBlock x:Name="AbsenteeTxt_Copy" Text="{Binding NumAbsen}" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,765,965,107"/>
+        <Button Content="StartCam" Height="20" Width="50" Click="StartCam_Click" Margin="476,778,804,102"/>
+        <Button Content="EndCam" Height="20" Width="50" Click="StopCam_Click" Margin="630,779,650,101"/>
     </Grid>
 </Page>
