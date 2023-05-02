@@ -75,7 +75,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private bool checkData()
         {
-            string HaarFilePath = @"D:\wpf\FDA\FaceDetectionAttendance\HaarCascade\haarcascade_frontalface_default.xml";
+            string HaarFilePath = @"C:\Users\MRSTHAO\source\repos\DeepsoftwareEng\FaceDetectionAttendance\FaceDetectionAttendance\HaarCascade\haarcascade_frontalface_default.xml";
             _faceClassifier = new CascadeClassifier(HaarFilePath);
             if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                 Dataconnecttion.GetConnection().Open();
