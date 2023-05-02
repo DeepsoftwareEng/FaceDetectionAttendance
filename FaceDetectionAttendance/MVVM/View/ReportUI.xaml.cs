@@ -24,5 +24,6 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             InitializeComponent();
         }
+
     }
 }
