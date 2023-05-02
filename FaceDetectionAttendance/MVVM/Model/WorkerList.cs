@@ -15,7 +15,7 @@ public partial class WorkerList
 
     public string? Fid { get; set; }
 
-    public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
+   //public virtual ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
 
-    public virtual Faculty? FidNavigation { get; set; }
+   //public virtual Faculty? FidNavigation { get; set; }
 }

@@ -17,5 +17,5 @@ public partial class Account
 
     public string? Fid { get; set; }
 
-    public virtual Faculty? FidNavigation { get; set; }
+    //public virtual Faculty? FidNavigation { get; set; }
 }

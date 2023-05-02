@@ -15,7 +15,7 @@ public partial class Attendance
 
     public int? ShiftWorked { get; set; }
 
-    public virtual Faculty? IdFacultyNavigation { get; set; }
+    //public virtual Faculty? IdFacultyNavigation { get; set; }
 
-    public virtual WorkerList IdWorkerNavigation { get; set; } = null!;
+    //public virtual WorkerList IdWorkerNavigation { get; set; } = null!;
 }
