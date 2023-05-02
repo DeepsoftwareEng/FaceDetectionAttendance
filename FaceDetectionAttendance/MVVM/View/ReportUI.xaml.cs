@@ -25,5 +25,9 @@ namespace FaceDetectionAttendance.MVVM.View
             InitializeComponent();
         }
 
+        private void ComboBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
