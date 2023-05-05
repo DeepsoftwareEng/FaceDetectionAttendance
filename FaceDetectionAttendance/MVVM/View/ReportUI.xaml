@@ -1,9 +1,10 @@
-﻿<Page x:Class="FaceDetectionAttendance.MVVM.View.ReportUI"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance"
+      xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components" x:Class="FaceDetectionAttendance.MVVM.View.ReportUI"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
@@ -16,44 +17,50 @@
             <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
 
+            <Components:BindablePasswordBox Canvas.Left="182" Canvas.Top="339"/>
+
         </Canvas>
-        <Button Name="ReportDay_Button"
+        <Button x:Name="ReportDay_Button"
                 Content="Day"
                 FontSize="13"
                 Width="47"
                 Height="27" Margin="88,138,1195,735" RenderTransformOrigin="1.368,0.238"
                 />
-        <Button Name="ReportMonth_Button"
+        <Button x:Name="ReportMonth_Button"
                 Content="Month"
                 FontSize="13"
                 Width="47"
                 Height="27" Margin="166,138,1117,735"
                 />
         <Label Content="Insert date for getting the list" 
-               Margin="88,204,1017,666"
+               Margin="97,187,1008,683"
                FontSize="16"
                Width="225"
                Height="30"/>
-        <TextBox Name="Day_TextBox"
+        <TextBox x:Name="Day_TextBox"
                  Width="79"
                  Height="27"
                  BorderThickness="5"
-                 Margin="88,239,1163,634"/>
-        <TextBox Name="Month_TextBox"
+                 Margin="97,222,1154,651"
+                 PreviewTextInput="TextBlock_OnlyNumber_PreviewTextInput"/>
+        <TextBox x:Name="Month_TextBox"
                  Width="79"
                  Height="27"
                  BorderThickness="5"
-                 Margin="190,239,1062,634"/>
-        <TextBox Name="Year_TextBox"
+                 Margin="199,222,1052,651" 
+                 PreviewTextInput="TextBlock_OnlyNumber_PreviewTextInput"/>
+        <TextBox x:Name="Year_TextBox"
                  Width="79"
                  Height="27"
-                 BorderThickness="5" Margin="290,239,961,634"/>
+                 BorderThickness="5" 
+                 Margin="299,222,952,651"
+                 PreviewTextInput="TextBlock_OnlyNumber_PreviewTextInput"/>
         <Button Content="Search"
-                Name="Search_Button"
+                x:Name="Search_Button"
                 Width="81"
                 Height="27"
                 FontSize="18"
-                Margin="399,239,850,634"/>
+                Margin="408,222,841,651"/>
         <Label Content="-"
             Width="15"
             Height="25" 
@@ -71,27 +78,95 @@
                    TextAlignment="Center"
                    VerticalAlignment="Top"
                    Width="50" 
-                   Margin="102,271,1178,0" />
+                   Margin="111,254,1169,0" 
+                   />
         <TextBlock Text="Month"
                    FontSize="18"
                    TextAlignment="Center"
                    VerticalAlignment="Top"
                    Width="50" 
-                   Margin="203,271,1077,0" />
+                   Margin="212,254,1068,0" />
         <TextBlock Text="Year"
                    FontSize="18"
                    TextAlignment="Center"
                    VerticalAlignment="Top"
                    Width="50" 
-                   Margin="304,271,976,0" />
+                   Margin="313,254,967,0" />
         <ComboBox Width="67"
                   Height="30" 
                   Margin="1194,239,69,631"
                   RenderTransformOrigin="0.537,3.967"
                   FontSize="18">
-            <ComboBoxItem Content="Ca 1" IsSelected="True"></ComboBoxItem>
-            <ComboBoxItem Content="Ca 2"></ComboBoxItem>
+            <ComboBoxItem Content="Ca 1" IsSelected="True"/>
+            <ComboBoxItem Content="Ca 2"/>
         </ComboBox>
+
+        <DataGrid 
+                  x:Name="AttandanceWorkers_DataGrid_1"
+                  Width="500"
+                  Height="200" Margin="88,350,742,350">
+            <DataGrid.Columns>
+                <DataGridTextColumn/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <DataGrid 
+            x:Name="AbsenteeWorkers_DataGrid_1"
+            Width="500"
+            Height="200" Margin="727,350,102,350">
+            <DataGrid.Columns>
+                <DataGridTextColumn/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Label Content="Attendance workers list" 
+            Margin="88,315,1017,555"
+            FontSize="16"
+            Width="225"
+            Height="30"/>
+        <Label Content="Absentee workers list" 
+            Margin="728,315,378,555"
+            FontSize="16"
+            Width="225"
+            Height="30"/>
+
+        <DataGrid 
+            x:Name="AttandanceWorkers_DataGrid_2"
+            Width="500"
+            Height="200" Margin="88,598,742,102">
+            <DataGrid.Columns>
+                <DataGridTextColumn/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid 
+            x:Name="AbsenteeWorkers_DataGrid_2"
+            Width="500"
+            Height="200" Margin="728,598,102,102">
+            <DataGrid.Columns>
+                <DataGridTextColumn/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Content="Export"
+                x:Name="Export_Button"
+                Width="81"
+                Height="27"
+                FontSize="18"
+                Margin="1022,829,227,44"/>
+        <Button Content="Send"
+            x:Name="Send_Button"
+            Width="81"
+            Height="27"
+            FontSize="18"
+            Margin="1147,829,102,44"/>
         
+        <Label Name="Message_Label"
+            Content="Only Number"
+            Visibility="Hidden"   
+            Margin="88,280,1017,590"
+            FontSize="16"
+            Width="225"
+            Height="30"/>
+
     </Grid>
 </Page>
