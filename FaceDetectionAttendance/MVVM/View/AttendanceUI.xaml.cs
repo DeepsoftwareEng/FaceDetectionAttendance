@@ -4,15 +4,14 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using Emgu.CV.Structure;
 using Emgu.CV;
-using Emgu.CV.UI;
-using Emgu.CV.CvEnum;
-using System.Diagnostics;
+using Emgu.CV.Util;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
-using Emgu.CV.Face;
-using static Azure.Core.HttpHeader;
-using System.Data;
 using System.Windows.Media;
+using Emgu.CV.CvEnum;
+using System.Windows.Media.Imaging;
+using System.Threading.Tasks;
+
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -22,13 +21,14 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class AttendanceUI : Page
     {
         private VideoCapture _videoSource;
+        private Task _processingTask;
         private CascadeClassifier _faceClassifier;
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
         private SqlCommand command;
-        private Image<Bgr, byte> currentFrame;
-        private List<Image<Bgr, byte>> WorkerList = new List<Image<Bgr, byte>>();
-        private List<AttendanceWorker> AttendList = new List<AttendanceWorker>(); 
-        private List<WorkerLabel> workerLabels= new List<WorkerLabel>();
+        private readonly SolidColorBrush _highlightBrush = new SolidColorBrush(Colors.LimeGreen);
+        private List<Image<Gray, byte>> WorkerList = new List<Image<Gray, byte>>();// Worker's Image
+        private List<AttendanceWorker> AttendList = new List<AttendanceWorker>(); //Attend datagrid
+        private List<WorkerLabel> workerLabels= new List<WorkerLabel>();// Worker's infor
         private List<int> IdListIn = new List<int>();
         private string _username;
         private string _faculty;
@@ -37,6 +37,7 @@ namespace FaceDetectionAttendance.MVVM.View
         public AttendanceUI(string username)
         {
             InitializeComponent();
+            _faceClassifier= new CascadeClassifier("haarcascade_frontalface_default.xml");
             _username = username;
             setData();
         }
@@ -59,12 +60,13 @@ namespace FaceDetectionAttendance.MVVM.View
             try
             {
                 command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                command.Parameters.AddWithValue("@fid", _faculty);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         string imageName = reader.ToString() + ".png";
-                        Image<Bgr, byte> temp = new Image<Bgr, byte>("/Resource/WorkerImage/"+_faculty+"/"+imageName);
+                        Image<Gray, byte> temp = new Image<Gray, byte>("/Resource/WorkerImage/"+_faculty+"/"+imageName);
                         WorkerList.Add(temp);
                     }
                 }
@@ -77,6 +79,7 @@ namespace FaceDetectionAttendance.MVVM.View
             try
             {
                 command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                command.Parameters.AddWithValue("@fid", _faculty);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
@@ -96,18 +99,12 @@ namespace FaceDetectionAttendance.MVVM.View
         private void StartCam_Click(object sender, EventArgs e)
         {
             _videoSource = new VideoCapture();
-            _videoSource.QueryFrame();
-            Application.Current.Dispatcher.BeginInvoke(new Action(() => {
-                CompositionTarget.Rendering += FrameGrabber;
-            }));
+            //_processingTask = Task.Run(() => ProcessFramesAsync());
         }
         private void StopCam_Click(object sender, EventArgs e)
         {
             _videoSource.Stop();
         }
-        void FrameGrabber(object sender, EventArgs e)
-        {
-            
-        }
+       
     }
 }
