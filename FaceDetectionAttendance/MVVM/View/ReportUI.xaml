@@ -17,8 +17,6 @@
             <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
 
-            <Components:BindablePasswordBox Canvas.Left="182" Canvas.Top="339"/>
-
         </Canvas>
         <Button x:Name="ReportDay_Button"
                 Content="Day"
@@ -60,7 +58,7 @@
                 Width="81"
                 Height="27"
                 FontSize="18"
-                Margin="408,222,841,651"/>
+                Margin="408,222,841,651" Click="Search_Button_Click"/>
         <Label Content="-"
             Width="15"
             Height="25" 
@@ -92,19 +90,23 @@
                    VerticalAlignment="Top"
                    Width="50" 
                    Margin="313,254,967,0" />
-        <ComboBox Width="67"
+        <ComboBox Name="Shift_ComboBox"
+                  Width="67"
                   Height="30" 
                   Margin="1194,239,69,631"
                   RenderTransformOrigin="0.537,3.967"
-                  FontSize="18">
-            <ComboBoxItem Content="Ca 1" IsSelected="True"/>
-            <ComboBoxItem Content="Ca 2"/>
+                  FontSize="18"
+                  SelectionChanged="Shift_ComboBox_SelectionChanged"
+                  SelectedValuePath="Content">
+            <ComboBoxItem Content="Ca 1" IsSelected="True"></ComboBoxItem>
+            <ComboBoxItem Content="Ca 2" ></ComboBoxItem>
         </ComboBox>
 
         <DataGrid 
                   x:Name="AttandanceWorkers_DataGrid_1"
                   Width="500"
-                  Height="200" Margin="88,350,742,350">
+                  Height="200" Margin="88,350,742,350"
+                  Visibility="Visible">
             <DataGrid.Columns>
                 <DataGridTextColumn/>
             </DataGrid.Columns>
@@ -113,7 +115,8 @@
         <DataGrid 
             x:Name="AbsenteeWorkers_DataGrid_1"
             Width="500"
-            Height="200" Margin="727,350,102,350">
+            Height="200" Margin="727,350,102,350"
+            Visibility="Visible">
             <DataGrid.Columns>
                 <DataGridTextColumn/>
             </DataGrid.Columns>
@@ -133,7 +136,8 @@
         <DataGrid 
             x:Name="AttandanceWorkers_DataGrid_2"
             Width="500"
-            Height="200" Margin="88,598,742,102">
+            Height="200" Margin="88,598,742,102"
+            Visibility="Visible">
             <DataGrid.Columns>
                 <DataGridTextColumn/>
             </DataGrid.Columns>
@@ -141,7 +145,8 @@
         <DataGrid 
             x:Name="AbsenteeWorkers_DataGrid_2"
             Width="500"
-            Height="200" Margin="728,598,102,102">
+            Height="200" Margin="728,598,102,102"
+            Visibility="Visible">
             <DataGrid.Columns>
                 <DataGridTextColumn/>
             </DataGrid.Columns>
@@ -161,9 +166,10 @@
             Margin="1147,829,102,44"/>
         
         <Label Name="Message_Label"
-            Content="Only Number"
-            Visibility="Hidden"   
-            Margin="88,280,1017,590"
+            Content="Only number"
+            Visibility="Collapsed"
+            Foreground="Red"
+            Margin="313,187,792,683"
             FontSize="16"
             Width="225"
             Height="30"/>
