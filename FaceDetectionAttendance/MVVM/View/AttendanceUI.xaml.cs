@@ -1,27 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
+using System.Collections.Generic;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Threading;
 using Emgu.CV.Structure;
 using Emgu.CV;
 using Emgu.CV.UI;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.Pkcs;
-using System.Text.RegularExpressions;
-using System.Drawing;
 using Emgu.CV.CvEnum;
 using System.Diagnostics;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
+using Emgu.CV.Face;
+using static Azure.Core.HttpHeader;
+using System.Data;
+using System.Windows.Media;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -31,14 +22,14 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class AttendanceUI : Page
     {
         private VideoCapture _videoSource;
-        private bool _isCapturing = false;
         private CascadeClassifier _faceClassifier;
-        private DispatcherTimer timer;
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
         private SqlCommand command;
-        private int count;
+        private Image<Bgr, byte> currentFrame;
         private List<Image<Bgr, byte>> WorkerList = new List<Image<Bgr, byte>>();
-        private List<string> WorkerId = new List<string>();
+        private List<AttendanceWorker> AttendList = new List<AttendanceWorker>(); 
+        private List<WorkerLabel> workerLabels= new List<WorkerLabel>();
+        private List<int> IdListIn = new List<int>();
         private string _username;
         private string _faculty;
         private string querry;
@@ -47,118 +38,76 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             InitializeComponent();
             _username = username;
-            if (!checkData())
-                MessageBox.Show("No worker data");
-            AddData();
+            setData();
         }
-        private void AddData()
+        private void setData()
         {
+            querry = "Select fid where username = @username";
             if(Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                 Dataconnecttion.GetConnection().Open();
-             querry = "Select images from WorkerList where fid = @fid";
             try
             {
-                command = new SqlCommand(querry, Dataconnecttion.GetConnection());
-                WorkerId = (List<string>)command.ExecuteScalar();
-            }catch (Exception ex) { 
-                MessageBox.Show(ex.Message);
-            }
-            foreach(var worker in WorkerId)
-            {
-                querry = "select fid where username = @username";
                 command = new SqlCommand(querry, Dataconnecttion.GetConnection());
                 command.Parameters.AddWithValue("@username", _username);
                 _faculty = Convert.ToString(command.ExecuteScalar());
-                string source = @"/Resource/" + _faculty + "/WorkerImage/"+worker.ToString()+".png";
-                WorkerList.Add(new Image<Bgr, byte>(source));
             }
-        }
-        private bool checkData()
-        {
-            string HaarFilePath = @"C:\Users\MRSTHAO\source\repos\DeepsoftwareEng\FaceDetectionAttendance\FaceDetectionAttendance\HaarCascade\haarcascade_frontalface_default.xml";
-            _faceClassifier = new CascadeClassifier(HaarFilePath);
-            if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
-                Dataconnecttion.GetConnection().Open();
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            querry = "Select images where fid = @fid";
             try
             {
-                string querry = "Select Count from WorkerList Where Id_Faculty = @Faculty";
                 command = new SqlCommand(querry, Dataconnecttion.GetConnection());
-                count = Convert.ToInt32(command.ExecuteScalar());
-                if (count == 0)
-                    return false;
-                else
-                    return true;
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string imageName = reader.ToString() + ".png";
+                        Image<Bgr, byte> temp = new Image<Bgr, byte>("/Resource/WorkerImage/"+_faculty+"/"+imageName);
+                        WorkerList.Add(temp);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
-                return false;
             }
-        }
-        private void StartCam_Click(object sender, RoutedEventArgs e)
-        {
-            if (!_isCapturing)
+            querry = "Select fullname, id where fid = @fid";
+            try
             {
-                _videoSource = new VideoCapture();
-                _videoSource.Start();
-                _isCapturing = true;
-
-                CompositionTarget.Rendering += CompositionTarget_Rendering;
+                command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        WorkerLabel wl = new WorkerLabel();
+                        wl.Name = reader.GetString(0);
+                        wl.Id= reader.GetInt32(1);
+                        workerLabels.Add(wl);
+                    }
+                }
             }
-        }
-        private void CompositionTarget_Rendering(object sender, EventArgs e)
-        {
-            // Capture a frame from the video source
-            var frame = _videoSource.QueryFrame();
-
-            // Convert the captured frame to a grayscale image
-            var grayImage = new Image<Bgr, byte>(frame.Size);
-            CvInvoke.CvtColor(frame, grayImage, ColorConversion.Bgr2Gray);
-
-            // Detect faces in the current frame using the HaarCascade face detector
-            var detectedFaces = _faceClassifier.DetectMultiScale(grayImage, 1.2, 5, System.Drawing.Size.Empty);
-
-            // Draw rectangles around the detected faces
-            foreach (var face in detectedFaces)
+            catch(Exception ex)
             {
-                var rect = new Rectangle(face.X, face.Y, face.Width, face.Height);
-                CvInvoke.Rectangle(frame, rect, new Bgr(System.Drawing.Color.Red).MCvScalar, 2);
-            }
-
-            // Update the video display with the current frame
-            Bitmap image = grayImage.ToBitmap();
-            VideoDisplay.Source = BitmapToImageSource(image);
-        }
-        private BitmapImage BitmapToImageSource(Bitmap bitmap)
-        {
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = new System.IO.MemoryStream(ImageToByte(bitmap));
-            bitmapImage.EndInit();
-            return bitmapImage;
-        }
-        private byte[] ImageToByte(System.Drawing.Image img)
-        {
-            var converter = new System.Drawing.ImageConverter();
-            return (byte[])converter.ConvertTo(img, typeof(byte[]));
-        }
-        private void StopCam_Click(object sender, RoutedEventArgs e)
-        {
-            if (_isCapturing)
-            {
-                _videoSource.Stop();
-                _isCapturing = false;
-                // Stop the frame capture timer
-                CompositionTarget.Rendering -= CompositionTarget_Rendering;
+                MessageBox.Show(ex.Message);    
             }
         }
-        //protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
-        //{
-        //    if (_isCapturing)
-        //    {
-        //        _videoSource.Stop();
-        //    }
-        //    base.OnClosing(e);
-        //}
+        private void StartCam_Click(object sender, EventArgs e)
+        {
+            _videoSource = new VideoCapture();
+            _videoSource.QueryFrame();
+            Application.Current.Dispatcher.BeginInvoke(new Action(() => {
+                CompositionTarget.Rendering += FrameGrabber;
+            }));
+        }
+        private void StopCam_Click(object sender, EventArgs e)
+        {
+            _videoSource.Stop();
+        }
+        void FrameGrabber(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
