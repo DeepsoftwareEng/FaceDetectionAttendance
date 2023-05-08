@@ -5,16 +5,19 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance"
       xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components" x:Class="FaceDetectionAttendance.MVVM.View.ReportUI"
+      xmlns:ViewModel ="clr-namespace:FaceDetectionAttendance.MVVM.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
       Title="ReportUI">
-
+    <Page.DataContext>
+        <ViewModel:ReportDayViewModel></ViewModel:ReportDayViewModel>
+    </Page.DataContext>
     <Grid>
         <Canvas>
             <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
             <TextBlock Text="Attendance" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
-            <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock Name="NameFaculty_TextBlock" FontSize="18" FontWeight="Bold" Height="26" Width="auto" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
 
         </Canvas>
@@ -22,7 +25,9 @@
                 Content="Day"
                 FontSize="13"
                 Width="47"
-                Height="27" Margin="88,138,1195,735" RenderTransformOrigin="1.368,0.238"
+                Height="27" 
+                Margin="88,138,1195,735" 
+                RenderTransformOrigin="1.368,0.238"
                 />
         <Button x:Name="ReportMonth_Button"
                 Content="Month"

@@ -1,4 +1,5 @@
 ﻿using FaceDetectionAttendance.MVVM.Model;
+using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,9 +25,24 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class ReportUI : Page
     {
-        public ReportUI()
+        private Dataconnecttion dtc = new Dataconnecttion();
+        private string fid;
+        private void Get_NameFaculty(string fid)
+        {
+            string querry = "SELECT name_faculty FROM Faculty WHERE id_faculty = @id_faculty";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+            {
+                dtc.GetConnection().Open();
+            }
+            SqlCommand cmd = new SqlCommand(querry, dtc.GetConnection());
+            cmd.Parameters.AddWithValue("@id_faculty", fid);
+            NameFaculty_TextBlock.Text = "Faculty name : " + cmd.ExecuteScalar().ToString();
+        }
+        public ReportUI(string fid)
         {
             InitializeComponent();
+            this.fid = fid;
+            Get_NameFaculty(fid);
         }
         private void Shift_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
