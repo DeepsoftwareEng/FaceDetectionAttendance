@@ -39,7 +39,6 @@ namespace FaceDetectionAttendance.MVVM.View
         private string _username;
         private string _faculty;
         private string querry;
-        private object _workers;
 
         public AttendanceUI(string username)
         {
@@ -50,7 +49,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void setData()
         {
-            querry = "Select fid where username = @username";
+            querry = "Select fid From Account where username = @username";
             if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                 Dataconnecttion.GetConnection().Open();
             try
@@ -63,7 +62,7 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 MessageBox.Show(ex.Message);
             }
-            querry = "Select images where fid = @fid";
+            querry = "Select images From WorkerList where fid = @fid";
             try
             {
                 command = new SqlCommand(querry, Dataconnecttion.GetConnection());
@@ -82,7 +81,7 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 MessageBox.Show(ex.Message);
             }
-            querry = "Select fullname, id where fid = @fid";
+            querry = "Select fullname, id from WorkerList where fid = @fid";
             try
             {
                 command = new SqlCommand(querry, Dataconnecttion.GetConnection());
@@ -146,22 +145,29 @@ namespace FaceDetectionAttendance.MVVM.View
                 var result = _recognizer.Predict(faceImage);
 
                 // Display result
-                var label = result.Label;
+                var label = result.Label.ToString();
                 var distance = result.Distance;
 
                 if (WorkerList.Any() && distance < 3000)
                 {
                     // Display worker name if recognized
-                    var worker = workerLabels.FirstOrDefault(w => w.Id == label);
+                    var worker = workerLabels.FirstOrDefault(w => w.Name == label);
                     if (worker != null)
                     {
                         Dispatcher.Invoke(() =>
                         {
                             //KHi nhan dien ra cong nhan
+                            string querry = "insert into Attendane values (@id, @date)";
+                            if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+                                Dataconnecttion.GetConnection().Open();
+                            command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                            command.Parameters.AddWithValue("@id", worker.Id);
+                            command.Parameters.AddWithValue("@date", DateTime.Now);
+                            command.ExecuteNonQuery();
+                            Dataconnecttion.GetConnection().Close();    
                         });
                     }
                 }
-
                 // Draw a rectangle around the face
                 frame.Draw(faceRect, new Bgr(0, 0, 255), 2);
             }
