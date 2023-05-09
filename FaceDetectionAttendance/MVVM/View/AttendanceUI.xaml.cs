@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Threading.Tasks;
 using System.Drawing;
 using Emgu.CV.Face;
+using CascadeClassifier = Emgu.CV.CascadeClassifier;
+using System.Windows.Interop;
+using System.Linq;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -21,31 +24,34 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class AttendanceUI : Page
     {
-        private VideoCapture _videoSource;
+        private Emgu.CV.VideoCapture _videoSource;
         private Task _processingTask;
         private CascadeClassifier _faceClassifier;
+        private readonly EigenFaceRecognizer _recognizer = new EigenFaceRecognizer();
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
         private SqlCommand command;
         private readonly SolidColorBrush _highlightBrush = new SolidColorBrush(Colors.LimeGreen);
         private List<Image<Gray, byte>> WorkerList = new List<Image<Gray, byte>>();// Worker's Image
         private List<AttendanceWorker> AttendList = new List<AttendanceWorker>(); //Attend datagrid
-        private List<WorkerLabel> workerLabels= new List<WorkerLabel>();// Worker's infor
+        private List<WorkerLabel> workerLabels = new List<WorkerLabel>();// Worker's infor
         private List<int> IdListIn = new List<int>();
+        private bool _isCapturing;
         private string _username;
         private string _faculty;
         private string querry;
+        private object _workers;
 
         public AttendanceUI(string username)
         {
             InitializeComponent();
-            _faceClassifier= new CascadeClassifier("haarcascade_frontalface_default.xml");
+            _faceClassifier = new CascadeClassifier("haarcascade_frontalface_default.xml");
             _username = username;
             setData();
         }
         private void setData()
         {
             querry = "Select fid where username = @username";
-            if(Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+            if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                 Dataconnecttion.GetConnection().Open();
             try
             {
@@ -53,7 +59,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 command.Parameters.AddWithValue("@username", _username);
                 _faculty = Convert.ToString(command.ExecuteScalar());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
@@ -67,7 +73,7 @@ namespace FaceDetectionAttendance.MVVM.View
                     while (reader.Read())
                     {
                         string imageName = reader.ToString() + ".png";
-                        Image<Gray, byte> temp = new Image<Gray, byte>("/Resource/WorkerImage/"+_faculty+"/"+imageName);
+                        Image<Gray, byte> temp = new Image<Gray, byte>("/Resource/WorkerImage/" + _faculty + "/" + imageName);
                         WorkerList.Add(temp);
                     }
                 }
@@ -87,106 +93,85 @@ namespace FaceDetectionAttendance.MVVM.View
                     {
                         WorkerLabel wl = new WorkerLabel();
                         wl.Name = reader.GetString(0);
-                        wl.Id= reader.GetInt32(1);
+                        wl.Id = reader.GetInt32(1);
                         workerLabels.Add(wl);
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);    
+                MessageBox.Show(ex.Message);
             }
         }
         private void StartCam_Click(object sender, EventArgs e)
         {
-            _videoSource = new VideoCapture();
-            _processingTask = Task.Run(() => ProcessFramesAsync());
+            if (_isCapturing)
+            {
+                return;
+            }
+
+            _videoSource.Start();
+            _isCapturing = true;
+
+            // Start capturing video frames
+            var timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += new EventHandler(ProcessFrame);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 30);
+            timer.Start();
         }
         private void StopCam_Click(object sender, EventArgs e)
         {
-            _videoSource.Stop();
-        }
-       private async Task ProcessFramesAsync()
-       {
-           while(_videoSource.IsOpened)
+            if (!_isCapturing)
             {
-                var frame = _videoSource.QueryFrame().ToImage<Bgr, byte>();
-                if(frame == null)
+                return;
+            }
+            _videoSource.Stop();
+            _isCapturing = false;
+        }
+        private void ProcessFrame(object sender, EventArgs e)
+        {
+            var frame = _videoSource.QueryFrame().ToImage<Bgr, byte>().Resize(640, 480, Inter.Cubic);
+            var grayFrame = frame.Convert<Gray, byte>();
+
+            // Detect faces in current frame
+            var faces = _faceClassifier.DetectMultiScale(grayFrame, 1.2, 5);
+
+            foreach (var face in faces)
+            {
+                // Extract face region of interest
+                var faceRect = new Rectangle(face.X, face.Y, face.Width, face.Height);
+                var faceImage = grayFrame.Copy(faceRect).Resize(320, 240, Inter.Cubic);
+
+                // Recognize face
+                var result = _recognizer.Predict(faceImage);
+
+                // Display result
+                var label = result.Label;
+                var distance = result.Distance;
+
+                if (WorkerList.Any() && distance < 3000)
                 {
-                    break;
-                }
-                var faces = DetectFaces(frame);
-                foreach( var face in faces)
-                {
-                    var roi = frame.Copy(face);
-                    var grayRoi = roi.Convert<Gray, byte>().Resize(100, 100, Inter.Cubic);
-                    var result = RecognizeWorker(grayRoi);
-                    if (result.Label != -1 && result.Distance < 3000)
+                    // Display worker name if recognized
+                    var worker = workerLabels.FirstOrDefault(w => w.Id == label);
+                    if (worker != null)
                     {
-                        await Dispatcher.InvokeAsync(() =>
+                        Dispatcher.Invoke(() =>
                         {
-                            // display the recognized worker name on the UI thread
-                           
+                            //KHi nhan dien ra cong nhan
                         });
                     }
+                }
 
-                    var rect = new Rectangle(face.X, face.Y, face.Width, face.Height);
-                    var highlightRect = new Rectangle((int)(rect.X * VideoDisplay.ActualWidth / frame.Width),
-                                                       (int)(rect.Y * VideoDisplay.ActualHeight / frame.Height),
-                                                       (int)(rect.Width * VideoDisplay.ActualWidth / frame.Width),
-                                                       (int)(rect.Height * VideoDisplay.ActualHeight / frame.Height));
+                // Draw a rectangle around the face
+                frame.Draw(faceRect, new Bgr(0, 0, 255), 2);
+            }
 
-                // display the frame on the UI thread
-                var imageSource = BitmapSourceConvert.ToBitmapSource(frame);
-                await Dispatcher.InvokeAsync(() =>
-                {
-                    //CameraGrid.Background = new ImageBrush(imageSource);
-                });
-            }
-            }
-       }
-        private Rectangle[] DetectFaces(Image<Bgr, byte> image)
-        {
-            using var gray = image.Convert<Gray, byte>();
-            var faces = _faceClassifier.DetectMultiScale(gray,1.1,3,new System.Drawing.Size(500,500));
-            return faces;
+            // Display the processed frame in the image control
+            var bitmap = frame.ToBitmap();
+            var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(
+                bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+            VideoDisplay.Source = bitmapSource;
         }
 
-        private (int Label, double Distance) RecognizeWorker(Image<Gray, byte> image)
-        {
-            var recognizer = new EigenFaceRecognizer(WorkerList.Count, double.PositiveInfinity);
-            var labels = new List<int>();
-            for (var i = 0; i < WorkerList.Count; i++)
-            {
-                labels.Add(i);
-            }
-            recognizer.Train(WorkerList.ToArray(), labels.ToArray());
-
-            var result = recognizer.Predict(image);
-            return (result.Label, result.Distance);
-        }
     }
-    public static class BitmapSourceConvert
-        {
-            [System.Runtime.InteropServices.DllImport("gdi32.dll")]
-            private static extern bool DeleteObject(System.IntPtr hObject);
-
-            public static BitmapSource ToBitmapSource<T>(this Image<T, byte> image) where T : struct, IColor
-            {
-                using var bitmap = image.ToBitmap();
-                var hBitmap = bitmap.GetHbitmap();
-                try
-                {
-                    return System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                        hBitmap,
-                        System.IntPtr.Zero,
-                        Int32Rect.Empty,
-                        BitmapSizeOptions.FromEmptyOptions());
-                }
-                finally
-                {
-                    DeleteObject(hBitmap);
-                }
-            }
-        }
 }
