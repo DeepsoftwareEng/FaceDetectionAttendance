@@ -1,7 +1,9 @@
-﻿using FaceDetectionAttendance.MVVM.Model;
+﻿using Emgu.CV.CvEnum;
+using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
@@ -144,11 +146,41 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             if (Check_DMY())
             {
-                Dataconnecttion cnt = new Dataconnecttion();
-                
-                MessageBox.Show("Okay");
-                
+                int day = int.Parse(Day_TextBox.Text.ToString());
+                int month = int.Parse(Month_TextBox.Text.ToString());
+                int year = int.Parse(Year_TextBox.Text.ToString());
+                try
+                {
+                    string query = "SELECT id_worker,fullname,d_m " +
+                                   "FROM Attendance " +
+                                   "INNER JOIN WorkerList " +
+                                   "ON Attendance.id_worker = WorkerList.id " +
+                                   "WHERE id_faculty = '@fid' AND CONVERT(date,d_m) = '@year-@month-@day'";
+                    if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                    {
+                        dtc.GetConnection().Open();
+                    }
+                    SqlCommand cmd = new SqlCommand(query, dtc.GetConnection());
+                    cmd.Parameters.AddWithValue("@fid", this.fid);
+                    cmd.Parameters.AddWithValue("@year", year);
+                    cmd.Parameters.AddWithValue("@month", month);
+                    cmd.Parameters.AddWithValue("@day", day);
+
+                    SqlDataReader read = cmd.ExecuteReader();
+                    while (read.Read())
+                    {
+                        int id = read.GetInt32(0);
+                        string name = read.GetString(1);
+                        DateTime dt = read.GetDateTime(2);
+                        AttandanceWorkers_DataGrid_1.Items.Add(new { ID = id, Name = name, DateTime = dt });
+                    }
+                    read.Close();
             }
+                    catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error");
+            }
+        }
         }
     }
 }

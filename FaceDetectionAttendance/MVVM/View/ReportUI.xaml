@@ -16,7 +16,7 @@
     <Grid>
         <Canvas>
             <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
-            <TextBlock Text="Attendance" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+            <TextBlock Text="Report" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock Name="NameFaculty_TextBlock" FontSize="18" FontWeight="Bold" Height="26" Width="auto" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
 
@@ -111,10 +111,19 @@
                   x:Name="AttandanceWorkers_DataGrid_1"
                   Width="500"
                   Height="200" Margin="88,350,742,350"
+                  AutoGenerateColumns="False"
                   Visibility="Visible">
             <DataGrid.Columns>
-                <DataGridTextColumn/>
+                <DataGridTextColumn Width="Auto" Header="Id" Binding="{Binding ID}"/>
+                <DataGridTextColumn Width="*" Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Width="*" Header="Date_Time" Binding="{Binding DateTime}"/>
             </DataGrid.Columns>
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
         </DataGrid>
 
         <DataGrid 
