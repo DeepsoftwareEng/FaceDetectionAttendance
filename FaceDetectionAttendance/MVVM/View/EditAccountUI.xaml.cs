@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Data.SqlClient;
+using FaceDetectionAttendance.MVVM.Model;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -20,9 +22,38 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class EditAccountUI : Page
     {
+        private Dataconnecttion dtc = new Dataconnecttion();
+        private SqlCommand command;
         public EditAccountUI()
         {
             InitializeComponent();
+            setComboBoxData();
+        }
+        private void setComboBoxData()
+        {
+            string querry = "Select* from Faculty";//cau lenh sql
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();//ket noi den database
+            command = new SqlCommand(querry, dtc.GetConnection());
+            SqlDataReader reader = command.ExecuteReader();//doc du lieu tu database
+            while (reader.Read())
+            {
+                Faculty a = new Faculty();
+                a.IdFaculty = reader.GetString(0);
+                a.NameFaculty = reader.GetString(1);
+                facultycbb.Items.Add(a.IdFaculty);
+            }
+            Rolecbb.Items.Add("Admin");
+            Rolecbb.Items.Add("Staff");
+            //set tiep Faculty- sua trong while va querry
+            //lay du lieu trong sql ra
+            //tao ra 1 bien kieu Faculty(trong while)
+
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.GoBack();
         }
     }
 }
