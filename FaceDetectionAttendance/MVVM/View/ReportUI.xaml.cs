@@ -49,23 +49,29 @@ namespace FaceDetectionAttendance.MVVM.View
         private void Shift_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selectedValue = Shift_ComboBox.SelectedValue.ToString();
-            /*
-            if ("Ca 1".Equals(selectedValue))
+            if (AttandanceWorkers_DataGrid_1 != null &&
+                AbsenteeWorkers_DataGrid_1 != null &&
+                AttandanceWorkers_DataGrid_2 != null &&
+                AbsenteeWorkers_DataGrid_2 != null)
             {
-                AttandanceWorkers_DataGrid_2.Visibility = Visibility.Collapsed;
-                AbsenteeWorkers_DataGrid_2.Visibility   = Visibility.Collapsed;
+                if ("Ca 1".Equals(selectedValue))
+                {
+                    AttandanceWorkers_DataGrid_2.Visibility = Visibility.Collapsed;
+                    AbsenteeWorkers_DataGrid_2.Visibility = Visibility.Collapsed;
 
-                AttandanceWorkers_DataGrid_1.Visibility = Visibility.Visible;
-                AbsenteeWorkers_DataGrid_1.Visibility   = Visibility.Visible;
+                    AttandanceWorkers_DataGrid_1.Visibility = Visibility.Visible;
+                    AbsenteeWorkers_DataGrid_1.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    AttandanceWorkers_DataGrid_1.Visibility = Visibility.Collapsed;
+                    AbsenteeWorkers_DataGrid_1.Visibility = Visibility.Collapsed;
+
+                    AttandanceWorkers_DataGrid_2.Visibility = Visibility.Visible;
+                    AbsenteeWorkers_DataGrid_2.Visibility = Visibility.Visible;
+                }
+
             }
-            else
-            {
-                AttandanceWorkers_DataGrid_1.Visibility = Visibility.Collapsed;
-                AbsenteeWorkers_DataGrid_1.Visibility   = Visibility.Collapsed;
-
-                AttandanceWorkers_DataGrid_2.Visibility = Visibility.Visible;
-                AbsenteeWorkers_DataGrid_2.Visibility   = Visibility.Visible;
-            }*/
         }
 
         private void TextBlock_OnlyNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
@@ -152,33 +158,90 @@ namespace FaceDetectionAttendance.MVVM.View
                 int year = int.Parse(Year_TextBox.Text.ToString());
                 try
                 {
-                    string query = "SELECT id_worker,fullname,d_m " +
-                                   "FROM Attendance " +
-                                   "INNER JOIN WorkerList " +
-                                   "ON Attendance.id_worker = WorkerList.id " +
-                                   "WHERE id_faculty = @fid " +
-                                   "AND DAY(d_m) = @day " +
-                                   "AND MONTH(d_m) = @month " +
-                                   "AND YEAR(d_m) = @year ";
-                    if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                    for (int i = 1; i <=2; i++) // 2 ca
                     {
-                        dtc.GetConnection().Open();
+                        string query1 = "SELECT id_worker,fullname,d_m " +
+                                       "FROM Attendance " +
+                                       "INNER JOIN WorkerList " +
+                                       "ON Attendance.id_worker = WorkerList.id " +
+                                       "WHERE id_faculty = @fid " +
+                                       "AND shift_worked = @i " +
+                                       "AND DAY(d_m) = @day " +
+                                       "AND MONTH(d_m) = @month " +
+                                       "AND YEAR(d_m) = @year ";
+
+                        string query2 = "SELECT id, fullname " +
+                                        "FROM WorkerList " +
+                                        "WHERE id NOT IN (" +
+                                            "SELECT id_worker " +
+                                            "FROM Attendance " +
+                                            "WHERE id_faculty = @fid " +
+                                            "AND shift_worked = @i " +
+                                            "AND DAY(d_m) = @day " +
+                                            "AND MONTH(d_m) = @month " +
+                                            "AND YEAR(d_m) = @year " +
+                                        ")";
+                        if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                        {
+                            dtc.GetConnection().Open();
+                        }
+                        //SqlDataAdapter Adapter_Attendance_1 = new SqlDataAdapter(query1,dtc.GetConnection()); 
+                        //SqlDataAdapter Adapter_Absentee_1  = new SqlDataAdapter(query2,dtc.GetConnection());
+                        //DataSet DataSet_Attendance_1 = new DataSet();
+                        //DataSet DataSet_Absentee_1  = new DataSet();
+                        //Adapter_Attendance_1.Fill(DataSet_Attendance_1,"AttendanceWorker1");
+                        //Adapter_Absentee_1.Fill(DataSet_Absentee_1,"AbsenteeWorker1");
+                        //AttandanceWorkers_DataGrid_1.DataContext = DataSet_Attendance_1;
+                        //AbsenteeWorkers_DataGrid_1.DataContext= DataSet_Absentee_1;
+
+
+                        SqlCommand cmd = new SqlCommand(query1, dtc.GetConnection());
+                        cmd.Parameters.AddWithValue("@fid", this.fid);
+                        cmd.Parameters.AddWithValue("@i", i);
+                        cmd.Parameters.AddWithValue("@year", year);
+                        cmd.Parameters.AddWithValue("@month", month);
+                        cmd.Parameters.AddWithValue("@day", day);
+                        SqlDataReader read1 = cmd.ExecuteReader();
+                        while (read1.Read())
+                        {
+                            int id = read1.GetInt32(0);
+                            string name = read1.GetString(1);
+                            DateTime dt = read1.GetDateTime(2);
+                            if (i == 1)
+                            {
+                                AttandanceWorkers_DataGrid_1.Items.Add(new { id = id, name = name, dt = dt });
+                            }
+                            else 
+                            {
+                                AttandanceWorkers_DataGrid_2.Items.Add(new { id = id, name = name, dt = dt });
+                            }
+                        }
+                        read1.Close();
+
+                        SqlCommand cmd2 = new SqlCommand(query2, dtc.GetConnection());
+                        cmd2.Parameters.AddWithValue("@fid", this.fid);
+                        cmd2.Parameters.AddWithValue("@i", i);
+                        cmd2.Parameters.AddWithValue("@year", year);
+                        cmd2.Parameters.AddWithValue("@month", month);
+                        cmd2.Parameters.AddWithValue("@day", day);
+                        SqlDataReader read2 = cmd2.ExecuteReader();
+                        while (read2.Read())
+                        {
+                            int id = read2.GetInt32(0);
+                            string name = read2.GetString(1);
+                            if (i == 1)
+                            {
+                                AbsenteeWorkers_DataGrid_1.Items.Add(new { id = id, name = name});
+                            }
+                            else
+                            {
+                                AbsenteeWorkers_DataGrid_2.Items.Add(new { id = id, name = name});
+                            }
+                        }
+                        read2.Close();
                     }
-                    SqlCommand cmd = new SqlCommand(query, dtc.GetConnection());
-                    cmd.Parameters.AddWithValue("@fid", this.fid);
-                    cmd.Parameters.AddWithValue("@year", year);
-                    cmd.Parameters.AddWithValue("@month", month);
-                    cmd.Parameters.AddWithValue("@day", day);
-                    SqlDataReader read = cmd.ExecuteReader();
-                    while (read.Read())
-                    {
-                        int id = read.GetInt32(0);
-                        string name = read.GetString(1);
-                        DateTime dt = read.GetDateTime(2);
-                        AttandanceWorkers_DataGrid_1.Items.Add(new { id = id, name = name, dt = dt });
-                    }
-                    read.Close();
-                 }
+
+                }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString(), "error");

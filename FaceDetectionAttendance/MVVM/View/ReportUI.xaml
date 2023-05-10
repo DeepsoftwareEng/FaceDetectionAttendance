@@ -146,8 +146,8 @@
             FontSize="16"
             Width="225"
             Height="30"/>
-        <Canvas Name="Team_Ca2" >
-            <DataGrid 
+        
+         <DataGrid 
                 x:Name="AttandanceWorkers_DataGrid_2"
                 Width="500"
                 Height="200" Margin="88,598,742,102"
@@ -160,21 +160,20 @@
                     <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
                     <DataGridTextColumn Width="4.5*" Header="Date_Time" Binding="{Binding dt}"/>
                 </DataGrid.Columns>
-            </DataGrid>
-            <DataGrid 
-                    x:Name="AbsenteeWorkers_DataGrid_2"
-                    Width="500"
-                    Height="200" Margin="728,598,102,102"
-                    AutoGenerateColumns="False"
-                    CanUserResizeColumns="False"
-                    IsReadOnly="True"
-                    Visibility="Visible">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="2*" Header="ID" Binding="{Binding id}"/>
-                    <DataGridTextColumn Width="8*" Header="Name" Binding="{Binding name}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Canvas>
+        </DataGrid>
+        <DataGrid 
+            x:Name="AbsenteeWorkers_DataGrid_2"
+            Width="500"
+            Height="200" Margin="728,598,102,102"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Visible">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="2*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="8*" Header="Name" Binding="{Binding name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
         <Button Content="Export"
                 x:Name="Export_Button"
