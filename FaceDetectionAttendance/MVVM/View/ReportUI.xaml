@@ -106,15 +106,15 @@
             <ComboBoxItem Content="Ca 1" IsSelected="True"></ComboBoxItem>
             <ComboBoxItem Content="Ca 2" ></ComboBoxItem>
         </ComboBox>
-        
+
         <DataGrid 
-                  x:Name="AttandanceWorkers_DataGrid_1"
-                  Width="500"
-                  Height="200" Margin="88,350,742,350"
-                  AutoGenerateColumns="False"
-                  CanUserResizeColumns="False"
-                  IsReadOnly="True"
-                  Visibility="Visible">
+            x:Name="AttandanceWorkers_DataGrid_1"
+            Width="500" Height="350"
+            Margin="88,380,740,180"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Visible">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
                 <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
@@ -124,8 +124,8 @@
 
         <DataGrid 
             x:Name="AbsenteeWorkers_DataGrid_1"
-            Width="500"
-            Height="200" Margin="727,350,102,350"
+            Width="500" Height="350"
+            Margin="728,380,102,180"
             AutoGenerateColumns="False"
             CanUserResizeColumns="False"
             IsReadOnly="True"
@@ -137,34 +137,34 @@
         </DataGrid>
 
         <Label Content="Attendance workers list" 
-            Margin="88,315,1017,555"
+            Margin="88,320,1017,555"
             FontSize="16"
             Width="225"
-            Height="30"/>
+            Height="30" RenderTransformOrigin="0.597,1.823"/>
         <Label Content="Absentee workers list" 
-            Margin="728,315,378,555"
+            Margin="728,320,378,555"
             FontSize="16"
             Width="225"
             Height="30"/>
-        
-         <DataGrid 
-                x:Name="AttandanceWorkers_DataGrid_2"
-                Width="500"
-                Height="200" Margin="88,598,742,102"
-                AutoGenerateColumns="False"
-                CanUserResizeColumns="False"
-                IsReadOnly="True"
-                Visibility="Visible">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
-                    <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
-                    <DataGridTextColumn Width="4.5*" Header="Date_Time" Binding="{Binding dt}"/>
-                </DataGrid.Columns>
+
+        <DataGrid 
+            x:Name="AttandanceWorkers_DataGrid_2"
+            Width="500" Height="350" 
+            Margin="88,380,740,180"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Visible">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
+                <DataGridTextColumn Width="4.5*" Header="Date_Time" Binding="{Binding dt}"/>
+            </DataGrid.Columns>
         </DataGrid>
         <DataGrid 
             x:Name="AbsenteeWorkers_DataGrid_2"
-            Width="500"
-            Height="200" Margin="728,598,102,102"
+            Width="500" Height="350"
+            Margin="728,380,102,180"
             AutoGenerateColumns="False"
             CanUserResizeColumns="False"
             IsReadOnly="True"
@@ -187,7 +187,7 @@
             Height="27"
             FontSize="18"
             Margin="1147,829,102,44"/>
-        
+
         <Label Name="Message_Label"
             Content="Only number"
             Visibility="Collapsed"
