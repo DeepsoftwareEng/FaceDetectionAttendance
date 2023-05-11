@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -248,5 +249,24 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
             }
         }
+
+        private void ReportMonth_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindown = Window.GetWindow(this) as MainWindow;
+            if(mainWindown != null)
+            {
+                NavigationService.Navigate(new ReportMonthUI(fid));
+            }
+        }
+
+        private void ReportDay_Button_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindown = Window.GetWindow(this) as MainWindow;
+            if (mainWindown != null)
+            {
+                NavigationService.Navigate(new ReportUI(fid));
+            }
+        }
+
     }
 }

@@ -27,13 +27,13 @@
                 Width="47"
                 Height="27" 
                 Margin="88,138,1195,735" 
-                RenderTransformOrigin="1.368,0.238"
+                RenderTransformOrigin="1.368,0.238" Click="ReportDay_Button_Click"
                 />
         <Button x:Name="ReportMonth_Button"
                 Content="Month"
                 FontSize="13"
                 Width="47"
-                Height="27" Margin="166,138,1117,735"
+                Height="27" Margin="166,138,1117,735" Click="ReportMonth_Button_Click"
                 />
         <Label Content="Insert date for getting the list" 
                Margin="97,187,1008,683"
