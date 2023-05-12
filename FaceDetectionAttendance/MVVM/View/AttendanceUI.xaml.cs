@@ -126,6 +126,12 @@ namespace FaceDetectionAttendance.MVVM.View
             }
             _videoSource.Stop();
             _isCapturing = false;
+            var absentWorkers = from workerLabel in workerLabels
+                                join workerAttend in AttendList on workerLabel.Id equals workerAttend.id into workerGroup
+                                from worker in workerGroup.DefaultIfEmpty()
+                                where worker == null 
+                                select workerLabel;
+            Absentee.ItemsSource= absentWorkers;
         }
         private void ProcessFrame(object sender, EventArgs e)
         {
