@@ -164,7 +164,12 @@ namespace FaceDetectionAttendance.MVVM.View
                             command.Parameters.AddWithValue("@id", worker.Id);
                             command.Parameters.AddWithValue("@date", DateTime.Now);
                             command.ExecuteNonQuery();
-                            Dataconnecttion.GetConnection().Close();    
+                            Dataconnecttion.GetConnection().Close();
+                            AttendanceWorker temp = new AttendanceWorker();
+                            temp.name = label;
+                            temp.id = worker.Id;
+                            temp.date= DateTime.Now;
+                            AttendList.Add(temp);
                         });
                     }
                 }
