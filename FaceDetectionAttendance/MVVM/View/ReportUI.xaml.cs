@@ -1,7 +1,6 @@
 ﻿using Emgu.CV.CvEnum;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
-using Excel = Microsoft.Office.Interop.Excel; //Alias : công cụ giúp đặt tên khác cho 1 kiểu dư liệu
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,6 +20,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -271,29 +271,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
-            // create an instance of Excel application
-            Excel.Application excelApp = new Excel.Application();
 
-            // make Excel application visible (optional)
-            excelApp.Visible = true;
-
-            // create a new Workbook
-            Excel.Workbook newWorkbook = excelApp.Workbooks.Add();
-
-            // create a new Worksheet
-            Excel.Worksheet newWorksheet = newWorkbook.Sheets.Add();
-
-            // enter data into Worksheet cells
-            newWorksheet.Cells[1, 1] = "Header 1";
-            newWorksheet.Cells[2, 1] = "Data 1";
-            newWorksheet.Cells[3, 1] = "Data 2";
-
-            // save Workbook 
-            newWorkbook.SaveAs(@"D:\test.xlsx");
-
-            // close Workbook and Excel application
-            newWorkbook.Close();
-            excelApp.Quit();
         }
     }
 }
