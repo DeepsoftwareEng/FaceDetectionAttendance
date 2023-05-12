@@ -1,6 +1,7 @@
 ﻿using Emgu.CV.CvEnum;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
+using Excel = Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,6 +21,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 
 
 namespace FaceDetectionAttendance.MVVM.View
@@ -271,7 +273,64 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
+            //Excel.Application excelApp = new Excel.Application();
+            //Excel.Workbook excelWorkbook = excelApp.Workbooks.Add();
+            //Excel.Worksheet sheet1 = (Excel.Worksheet)excelWorkbook.Worksheets[1];
 
+            //sheet1.Name = "Attendance Workers List shift 1 ";
+
+            //for (int i = 0; i < AttandanceWorkers_DataGrid_1.Items.Count; i++)
+            //{
+            //    DataGridRow row = (DataGridRow)AttandanceWorkers_DataGrid_1.ItemContainerGenerator.ContainerFromIndex(i);
+            //    for (int j = 0; j < AttandanceWorkers_DataGrid_1.Columns.Count; j++)
+            //    {
+            //        string ct = AttandanceWorkers_DataGrid_1.Items[i].ToString();
+            //        if (ct != null)
+            //        {
+            //            sheet1.Cells[i + 1, j + 1] = ct;
+            //        }
+            //    }
+            //}
+            Excel.Application excelApp = new Excel.Application();
+            Excel.Workbook excelWorkbook = excelApp.Workbooks.Add();
+
+            // Add a new worksheet.
+            Excel.Worksheet excelWorksheet = (Excel.Worksheet)excelWorkbook.Sheets.Add();
+            excelWorksheet.Name = "Data";
+
+            // Write the data from the DataGrid to the worksheet.
+            for (int i = 0; i < AttandanceWorkers_DataGrid_1.Columns.Count; i++)
+            {
+                excelWorksheet.Cells[1, i + 1] = AttandanceWorkers_DataGrid_1.Columns[i].Header.ToString();
+            }
+            for (int i = 0; i < AttandanceWorkers_DataGrid_1.Items.Count; i++)
+            {
+                DataGridRow row = (DataGridRow)AttandanceWorkers_DataGrid_1.ItemContainerGenerator.ContainerFromIndex(i);
+                if (row == null)
+                {
+                    AttandanceWorkers_DataGrid_1.UpdateLayout();
+                    AttandanceWorkers_DataGrid_1.ScrollIntoView(AttandanceWorkers_DataGrid_1.Items[i]);
+                    row = (DataGridRow)AttandanceWorkers_DataGrid_1.ItemContainerGenerator.ContainerFromIndex(i);
+                }
+                if (row != null)
+                {
+                    for (int j = 0; j < AttandanceWorkers_DataGrid_1.Columns.Count; j++)
+                    {
+                        TextBlock cellContent = AttandanceWorkers_DataGrid_1.Columns[j].GetCellContent(row) as TextBlock;
+                        if (cellContent != null)
+                        {
+                            string cellValue = cellContent.Text;
+                            excelWorksheet.Cells[i + 2, j + 1] = cellValue;
+                        }
+                    }
+                }
+            }
+
+            // Save the workbook to the specified file path and close Excel.
+            excelWorkbook.SaveAs("D:\test.xlsx");
+            excelWorkbook.Close();
+            excelApp.Quit();
+            
         }
     }
 }
