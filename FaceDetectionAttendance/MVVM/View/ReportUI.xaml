@@ -154,7 +154,7 @@
             AutoGenerateColumns="False"
             CanUserResizeColumns="False"
             IsReadOnly="True"
-            Visibility="Visible">
+            Visibility="Collapsed">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
                 <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
@@ -168,7 +168,7 @@
             AutoGenerateColumns="False"
             CanUserResizeColumns="False"
             IsReadOnly="True"
-            Visibility="Visible">
+            Visibility="Collapsed">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="2*" Header="ID" Binding="{Binding id}"/>
                 <DataGridTextColumn Width="8*" Header="Name" Binding="{Binding name}"/>
@@ -186,7 +186,7 @@
             Width="81"
             Height="27"
             FontSize="18"
-            Margin="1147,829,102,44"/>
+            Margin="1147,829,102,44" Click="Send_Button_Click"/>
 
         <Label Name="Message_Label"
             Content="Only number"

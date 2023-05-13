@@ -156,10 +156,15 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             if (Check_DMY())
             {
-                
                 int day = int.Parse(Day_TextBox.Text.ToString());
                 int month = int.Parse(Month_TextBox.Text.ToString());
                 int year = int.Parse(Year_TextBox.Text.ToString());
+
+                AttandanceWorkers_DataGrid_1.Items.Clear();
+                AttandanceWorkers_DataGrid_2.Items.Clear();
+                AbsenteeWorkers_DataGrid_1.Items.Clear();
+                AbsenteeWorkers_DataGrid_2.Items.Clear();
+
                 try
                 {
                     for (int i = 1; i <=2; i++) // 2 ca
@@ -312,7 +317,7 @@ namespace FaceDetectionAttendance.MVVM.View
                     AttandanceWorkers_DataGrid_1.ScrollIntoView(AttandanceWorkers_DataGrid_1.Items[i]);
                     row = (DataGridRow)AttandanceWorkers_DataGrid_1.ItemContainerGenerator.ContainerFromIndex(i);
                 }
-                if (row != null)
+                if (row != null)    
                 {
                     for (int j = 0; j < AttandanceWorkers_DataGrid_1.Columns.Count; j++)
                     {
@@ -332,5 +337,12 @@ namespace FaceDetectionAttendance.MVVM.View
             excelApp.Quit();
             
         }
+
+        private void Send_Button_Click(object sender, RoutedEventArgs e)
+        {
+            
+
+        }
+
     }
 }
