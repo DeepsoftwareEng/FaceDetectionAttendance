@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Emgu.CV;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
 
@@ -24,7 +26,7 @@ namespace FaceDetectionAttendance.MVVM.View
     {
         private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand command;
-
+        private AccountManagement selectitem = new AccountManagement();
         //Lay du lieu tu sql
         private void Loaddata()
         {
@@ -44,14 +46,14 @@ namespace FaceDetectionAttendance.MVVM.View
                 else
                 {
                     role = "Staff";
-                }  
-                AccountManagement t = new AccountManagement();
-                t.username = reader.GetString(0);
-                t.password = reader.GetString(1);
-                t.fid = reader.GetString(2);
-                t.gmail = reader.GetString(3);
-                t.roles = role;
-                Accountdtg.Items.Add(t);
+                }
+
+                string Username = reader.GetString(0);
+                string Passwords = reader.GetString(1);
+                string Fid = reader.GetString(2);
+                string Gmail = reader.GetString(3);
+                string Roles = role;
+                Accountdtg.Items.Add(new {username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles});
             }
         }
         public ManageAccountUI()
@@ -72,12 +74,37 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Editbtn_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new EditAccountUI());
+           AccountManagement selec = Accountdtg.SelectedItem as AccountManagement;
+            if (selec != null)
+            {
+                
+                this.NavigationService.Navigate(new EditAccountUI(selectitem));
+            }
         }
 
         private void Delbtn_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        private void Accountdtg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //// Lấy DataGrid được chọn
+            //DataGrid dataGrid = sender as DataGrid;
+
+            //// Lấy chỉ số dòng được chọn
+            //int selectedIndex = dataGrid.SelectedIndex;
+            if (Accountdtg.SelectedItem != null)
+            {
+                AccountManagement t = (AccountManagement)Accountdtg.SelectedItem;
+                selectitem.username = t.username;
+                selectitem.password = t.password;
+                selectitem.fid = t.fid;
+                selectitem.gmail = t.gmail;
+                selectitem.roles = t.roles;
+            }
+
+        }
     }
 }
+

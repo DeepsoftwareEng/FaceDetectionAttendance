@@ -20,7 +20,7 @@
             <Button Content="Add" Canvas.Left="894" Canvas.Top="261" HorizontalAlignment="Left" VerticalAlignment="Center" Width="54" Name="Addbtn" FontSize="20" Click="Addbtn_Click"/>
             <Button Content="Edit" Canvas.Left="990" Canvas.Top="261" HorizontalAlignment="Left" VerticalAlignment="Center" Width="46" Name="Editbtn" FontSize="20" Click="Editbtn_Click"/>
             <Button Content="Del" Canvas.Left="1075" Canvas.Top="261" HorizontalAlignment="Left" VerticalAlignment="Center" Width="48" Name="Delbtn" FontSize="20" Click="Delbtn_Click"/>
-            <DataGrid IsReadOnly="true" CanUserResizeColumns="False" Height="553" Width="1079" Name="Accountdtg" Canvas.Left="120" Canvas.Top="316" HorizontalAlignment="Left" VerticalAlignment="Center">
+            <DataGrid IsReadOnly="true" CanUserResizeColumns="False" Height="553" Width="1079" Name="Accountdtg" Canvas.Left="120" Canvas.Top="316" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="Accountdtg_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="2*"   Header="Username" Binding="{Binding username}"/>
                     <DataGridTextColumn Width="3*"   Header="Password" Binding="{Binding password}"/>

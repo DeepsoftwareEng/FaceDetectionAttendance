@@ -31,7 +31,7 @@
         <TextBox x:Name="Usernametxb" FontSize="18" Width="299" Height="32" Margin="148,334,882,534"/>
         <ComboBox  x:Name="Rolecbb" Width="112" Height="32" Margin="440,576,778,292" RenderTransformOrigin="0.5,0.5">
         </ComboBox>
-        <ComboBox x:Name="facultycbb" Width="112" Height="32" Margin="224,574,994,294" />
+        <ComboBox x:Name="facultycbb" Width="112" Height="32" Margin="224,574,994,294"/>
         <Border BorderThickness="1" BorderBrush="Black" Width="200" Height="200" Margin="883,321,247,379">
             <Image Width="200" Height="200" Margin="883,321,247,379"/>
         </Border>

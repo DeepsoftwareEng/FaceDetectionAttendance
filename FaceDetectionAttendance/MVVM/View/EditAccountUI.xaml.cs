@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
 using FaceDetectionAttendance.MVVM.Model;
+using Unity.Policy;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -24,11 +25,29 @@ namespace FaceDetectionAttendance.MVVM.View
     {
         private Dataconnecttion dtc = new Dataconnecttion();
         private SqlCommand command;
+        private DataGridRow selectedRow;
+        private AccountManagement temp = new AccountManagement();
         public EditAccountUI()
         {
             InitializeComponent();
             setComboBoxData();
         }
+
+        public EditAccountUI(AccountManagement selec)
+        {
+            InitializeComponent();
+            this.selectedRow = selectedRow;
+            temp = selec;
+        }
+        private void Currentinfor(AccountManagement selec)
+        {
+            Usernametxb.Text = selec.username;
+            Passwordtxb.Text = selec.password;
+            facultycbb.SelectedItem = selec.fid;
+            Gmailtxb.Text = selec.gmail;
+            Rolecbb.SelectedItem = selec.roles;
+        }
+
         private void setComboBoxData()
         {
             string querry = "Select* from Faculty";//cau lenh sql
@@ -54,6 +73,11 @@ namespace FaceDetectionAttendance.MVVM.View
         private void Back_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();
+        }
+
+        internal void ShowDialog()
+        {
+            throw new NotImplementedException();
         }
     }
 }
