@@ -29,7 +29,6 @@
                     <DataGridTextColumn Width="1.5*" Header="Role"   Binding="{Binding roles}"/>
                 </DataGrid.Columns>
             </DataGrid>
-
         </Canvas>
     </Grid>
 </Page>

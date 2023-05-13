@@ -26,7 +26,6 @@ namespace FaceDetectionAttendance.MVVM.View
     {
         private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand command;
-        private AccountManagement selectitem = new AccountManagement();
         //Lay du lieu tu sql
         private void Loaddata()
         {
@@ -74,11 +73,17 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Editbtn_Click(object sender, RoutedEventArgs e)
         {
-           AccountManagement selec = Accountdtg.SelectedItem as AccountManagement;
-            if (selec != null)
+           AccountManagement selec = new AccountManagement();
+            var temp = Accountdtg.SelectedItem;
+            if (temp != null)
             {
-                
-                this.NavigationService.Navigate(new EditAccountUI(selectitem));
+                dynamic selectedobject = temp;
+                selec.username = selectedobject.username;
+                selec.password = selectedobject.password;
+                selec.fid = selectedobject.fid;
+                selec.roles = selectedobject.roles;
+                selec.gmail = selectedobject.gmail;
+                this.NavigationService.Navigate(new EditAccountUI(selec));
             }
         }
 
@@ -89,22 +94,9 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Accountdtg_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //// Lấy DataGrid được chọn
-            //DataGrid dataGrid = sender as DataGrid;
-
-            //// Lấy chỉ số dòng được chọn
-            //int selectedIndex = dataGrid.SelectedIndex;
-            if (Accountdtg.SelectedItem != null)
-            {
-                AccountManagement t = (AccountManagement)Accountdtg.SelectedItem;
-                selectitem.username = t.username;
-                selectitem.password = t.password;
-                selectitem.fid = t.fid;
-                selectitem.gmail = t.gmail;
-                selectitem.roles = t.roles;
-            }
 
         }
+
     }
 }
 

@@ -26,7 +26,6 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         private SqlCommand command;
         private DataGridRow selectedRow;
-        private AccountManagement temp = new AccountManagement();
         public EditAccountUI()
         {
             InitializeComponent();
@@ -37,7 +36,8 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             InitializeComponent();
             this.selectedRow = selectedRow;
-            temp = selec;
+            setComboBoxData();
+            Currentinfor(selec);
         }
         private void Currentinfor(AccountManagement selec)
         {
