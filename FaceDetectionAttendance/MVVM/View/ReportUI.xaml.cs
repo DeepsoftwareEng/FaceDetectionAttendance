@@ -21,8 +21,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-
+using System.Runtime.InteropServices;
+using Microsoft.Win32;
+using System.IO;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -278,64 +279,29 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
-            //Excel.Application excelApp = new Excel.Application();
-            //Excel.Workbook excelWorkbook = excelApp.Workbooks.Add();
-            //Excel.Worksheet sheet1 = (Excel.Worksheet)excelWorkbook.Worksheets[1];
-
-            //sheet1.Name = "Attendance Workers List shift 1 ";
-
-            //for (int i = 0; i < AttandanceWorkers_DataGrid_1.Items.Count; i++)
-            //{
-            //    DataGridRow row = (DataGridRow)AttandanceWorkers_DataGrid_1.ItemContainerGenerator.ContainerFromIndex(i);
-            //    for (int j = 0; j < AttandanceWorkers_DataGrid_1.Columns.Count; j++)
-            //    {
-            //        string ct = AttandanceWorkers_DataGrid_1.Items[i].ToString();
-            //        if (ct != null)
-            //        {
-            //            sheet1.Cells[i + 1, j + 1] = ct;
-            //        }
-            //    }
-            //}
-            Excel.Application excelApp = new Excel.Application();
-            Excel.Workbook excelWorkbook = excelApp.Workbooks.Add();
-
-            // Add a new worksheet.
-            Excel.Worksheet excelWorksheet = (Excel.Worksheet)excelWorkbook.Sheets.Add();
-            excelWorksheet.Name = "Data";
-
-            // Write the data from the DataGrid to the worksheet.
-            for (int i = 0; i < AttandanceWorkers_DataGrid_1.Columns.Count; i++)
+            SaveFileDialog savefile = new SaveFileDialog();
+            savefile.DefaultExt = ".xls";
+            savefile.Filter = "Excel Files|*xls;*xlsx;*xlsm";
+            if (savefile.ShowDialog() == true)
             {
-                excelWorksheet.Cells[1, i + 1] = AttandanceWorkers_DataGrid_1.Columns[i].Header.ToString();
-            }
-            for (int i = 0; i < AttandanceWorkers_DataGrid_1.Items.Count; i++)
-            {
-                DataGridRow row = (DataGridRow)AttandanceWorkers_DataGrid_1.ItemContainerGenerator.ContainerFromIndex(i);
-                if (row == null)
+                try
                 {
-                    AttandanceWorkers_DataGrid_1.UpdateLayout();
-                    AttandanceWorkers_DataGrid_1.ScrollIntoView(AttandanceWorkers_DataGrid_1.Items[i]);
-                    row = (DataGridRow)AttandanceWorkers_DataGrid_1.ItemContainerGenerator.ContainerFromIndex(i);
+                    AttandanceWorkers_DataGrid_1.SelectAllCells();
+                    AttandanceWorkers_DataGrid_1.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
+                    ApplicationCommands.Copy.Execute(null, AttandanceWorkers_DataGrid_1);
+                    string resultat = (string)Clipboard.GetData(DataFormats.CommaSeparatedValue);
+                    string result = (string)Clipboard.GetData(DataFormats.Text);
+                    AttandanceWorkers_DataGrid_1.UnselectAllCells();
+
+                    StreamWriter file = new StreamWriter(savefile.FileName);
+                    file.WriteLine(result.Replace(',', ' '));
+                    file.Close();
                 }
-                if (row != null)    
+                catch (Exception ex)
                 {
-                    for (int j = 0; j < AttandanceWorkers_DataGrid_1.Columns.Count; j++)
-                    {
-                        TextBlock cellContent = AttandanceWorkers_DataGrid_1.Columns[j].GetCellContent(row) as TextBlock;
-                        if (cellContent != null)
-                        {
-                            string cellValue = cellContent.Text;
-                            excelWorksheet.Cells[i + 2, j + 1] = cellValue;
-                        }
-                    }
+                    MessageBox.Show(ex.Message);
                 }
             }
-
-            // Save the workbook to the specified file path and close Excel.
-            excelWorkbook.SaveAs("D:\test.xlsx");
-            excelWorkbook.Close();
-            excelApp.Quit();
-            
         }
 
         private void Send_Button_Click(object sender, RoutedEventArgs e)
