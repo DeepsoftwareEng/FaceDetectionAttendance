@@ -1,7 +1,7 @@
 ﻿using Emgu.CV.CvEnum;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
-using Excel = Microsoft.Office.Interop.Excel;
+using ClosedXML;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -24,6 +24,8 @@ using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
 using System.IO;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2013.Excel;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -280,22 +282,97 @@ namespace FaceDetectionAttendance.MVVM.View
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
             SaveFileDialog savefile = new SaveFileDialog();
-            savefile.DefaultExt = ".xls";
-            savefile.Filter = "Excel Files|*xls;*xlsx;*xlsm";
+            savefile.DefaultExt = ".xlsx";
+            savefile.Filter = "Excel Files|*xlsx;*xls;*xlsm";
+            savefile.FileName = "ReportDay.xlsx";
             if (savefile.ShowDialog() == true)
             {
                 try
                 {
-                    AttandanceWorkers_DataGrid_1.SelectAllCells();
-                    AttandanceWorkers_DataGrid_1.ClipboardCopyMode = DataGridClipboardCopyMode.IncludeHeader;
-                    ApplicationCommands.Copy.Execute(null, AttandanceWorkers_DataGrid_1);
-                    string resultat = (string)Clipboard.GetData(DataFormats.CommaSeparatedValue);
-                    string result = (string)Clipboard.GetData(DataFormats.Text);
-                    AttandanceWorkers_DataGrid_1.UnselectAllCells();
+                    var workbook = new XLWorkbook();
 
-                    StreamWriter file = new StreamWriter(savefile.FileName);
-                    file.WriteLine(result.Replace(',', ' '));
-                    file.Close();
+                    var sheet1 = workbook.Worksheets.Add("Shift 1");
+                    int rowWrite = 1;
+                    sheet1.Cell(rowWrite, 1).Value = "Attandance workers list";
+                    rowWrite++;
+
+                    DataTable dtAttendance1 = ((DataView)AttandanceWorkers_DataGrid_1.ItemsSource).ToTable();
+                    for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
+                    {
+                        sheet1.Cell(rowWrite, col).Value = AttandanceWorkers_DataGrid_1.Columns[col].Header.ToString();
+                    }
+                    rowWrite++;
+                    for (int row = 0; row < dtAttendance1.Rows.Count; row++)
+                    {
+                        for (int col = 0; col < dtAttendance1.Columns.Count; col++)
+                        {
+                            sheet1.Cell(rowWrite, col + 1).Value = dtAttendance1.Rows[row][col].ToString();
+                        }
+                        rowWrite++;
+                    }
+                    rowWrite++;
+
+                    sheet1.Cell(rowWrite, 1).Value = "Absentee workers list";
+                    rowWrite++;
+                    DataTable dtAbsentee1 = ((DataView)AbsenteeWorkers_DataGrid_1.ItemsSource).Table;
+                    for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
+                    {
+                        sheet1.Cell(rowWrite, col).Value = AbsenteeWorkers_DataGrid_1.Columns[col].Header.ToString();
+                    }
+                    rowWrite++;
+                    for (int row = 0; row < dtAbsentee1.Rows.Count; row++)
+                    {
+                        for (int col = 0; col < dtAbsentee1.Columns.Count; col++)
+                        {
+                            sheet1.Cell(rowWrite, col + 1).Value = dtAbsentee1.Rows[row][col].ToString();
+                        }
+                        rowWrite++;
+                    }
+                    rowWrite++;
+
+
+                    //////// SHEET2 ///////////////////////////////////////////////////////////
+                    var sheet2 = workbook.Worksheets.Add("Shift 2");
+                    rowWrite = 1;
+                    sheet2.Cell(rowWrite, 1).Value = "Attandance workers list";
+                    rowWrite++;
+                    DataTable dtAttendance2 = ((DataView)AttandanceWorkers_DataGrid_2.ItemsSource).Table;
+                    for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
+                    {
+                        sheet2.Cell(rowWrite, col).Value = AttandanceWorkers_DataGrid_2.Columns[col].Header.ToString();
+                    }
+                    rowWrite++;
+                    for (int row = 0; row < dtAttendance2.Rows.Count; row++)
+                    {
+                        for (int col = 0; col < dtAttendance2.Columns.Count; col++)
+                        {
+                            sheet2.Cell(rowWrite, col + 1).Value = dtAttendance2.Rows[row][col].ToString();
+                        }
+                        rowWrite++;
+                    }
+                    rowWrite++;
+
+                    sheet2.Cell(rowWrite, 1).Value = "Absentee workers list";
+                    rowWrite++;
+                    DataTable dtAbsentee2 = ((DataView)AbsenteeWorkers_DataGrid_2.ItemsSource).Table;
+                    for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
+                    {
+                        sheet2.Cell(rowWrite, col).Value = AbsenteeWorkers_DataGrid_2.Columns[col].Header.ToString();
+                    }
+                    rowWrite++;
+                    for (int row = 0; row < dtAbsentee2.Rows.Count; row++)
+                    {
+                        for (int col = 0; col < dtAbsentee2.Columns.Count; col++)
+                        {
+                            sheet2.Cell(rowWrite, col + 1).Value = dtAbsentee2.Rows[row][col].ToString();
+                        }
+                        rowWrite++;
+                    }
+                    rowWrite++;
+
+                    workbook.SaveAs(savefile.FileName);
+                    MessageBox.Show("Done", "Message",MessageBoxButton.OK);
+                    workbook.Dispose();
                 }
                 catch (Exception ex)
                 {
