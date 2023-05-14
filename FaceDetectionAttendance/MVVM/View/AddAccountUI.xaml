@@ -30,11 +30,13 @@
         <TextBox x:Name="Confirmtxb" FontSize="18" Width="299" Height="32" Margin="148,475,882,393"/>
         <TextBox x:Name="Passwordtxb" FontSize="18" Width="299" Height="32" Margin="148,405,882,463" TextChanged="TextBox_TextChanged"/>
         <TextBox x:Name="Usernametxb" FontSize="18" Width="299" Height="32" Margin="148,334,882,534"/>
-        <ComboBox Width="112" Height="123" Margin="576,588,642,189"/>
-        <ComboBox Width="112" Height="123" Margin="242,588,976,189"/>
-        <Image Width="200" Height="200" Margin="883,321,247,379" />
-        <Button Name="Addimagebtn" Content="Add Image" Width="109" Height="37" Margin="928,570,292,294" FontSize="18"/>
+        <ComboBox x:Name="Rolecbb" Width="112" Height="37" Margin="540,631,678,232"/>
+        <ComboBox x:Name="facultycbb" Width="112" Height="37" Margin="242,588,976,189"/>
+        <Border BorderThickness="1" BorderBrush="Black" Width="200" Height="200" Margin="883,321,247,379">
+            <Image Width="200" Height="200" Margin="883,321,247,379"/>
+        </Border>
+        <Button Name="Addimagebtn" Content="Add Image" Width="109" Margin="928,570,292,279" FontSize="18"/>
         <Button Name="Savebtn" Content="Save" FontSize="18" Width="78" Height="32" Margin="712,762,540,106"/>
-        <Button x:Name="Back" Content="Back" FontSize="18" Width="78" Height="32" Margin="474,762,778,106"/>
+        <Button x:Name="Back" Content="Back" FontSize="18" Width="78" Height="32" Margin="474,762,778,106" Click="Back_Click"/>
     </Grid>
 </Page>
