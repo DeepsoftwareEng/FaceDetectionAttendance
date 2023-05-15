@@ -282,7 +282,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (AttandanceWorkers_DataGrid_1.Items.Count == 0) {
+            if (AttandanceWorkers_DataGrid_1.Items.Count > 0) {
                 SaveFileDialog savefile = new SaveFileDialog();
                 savefile.DefaultExt = ".xlsx";
                 savefile.Filter = "Excel Files|*xlsx;*xls;*xlsm";
