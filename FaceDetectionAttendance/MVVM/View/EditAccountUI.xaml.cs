@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using Microsoft.Data.SqlClient;
 using FaceDetectionAttendance.MVVM.Model;
 using Unity.Policy;
+using Microsoft.Win32;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -78,6 +79,15 @@ namespace FaceDetectionAttendance.MVVM.View
         internal void ShowDialog()
         {
             throw new NotImplementedException();
+        }
+
+        private void Addimagebtn_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                Imagebd.Background = new ImageBrush(new BitmapImage(new Uri(openFileDialog.FileName)));
+            }
         }
     }
 }

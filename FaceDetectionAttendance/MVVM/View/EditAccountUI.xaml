@@ -32,10 +32,9 @@
         <ComboBox  x:Name="Rolecbb" Width="112" Height="32" Margin="440,576,778,292" RenderTransformOrigin="0.5,0.5">
         </ComboBox>
         <ComboBox x:Name="facultycbb" Width="112" Height="32" Margin="224,574,994,294"/>
-        <Border BorderThickness="1" BorderBrush="Black" Width="200" Height="200" Margin="883,321,247,379">
-            <Image Width="200" Height="200" Margin="883,321,247,379"/>
+        <Border x:Name="Imagebd" BorderThickness="1" BorderBrush="Black" Width="200" Height="200" Margin="883,321,247,379">
         </Border>
-        <Button Name="Addimagebtn" Content="Add Image" Width="109" Height="37" Margin="928,570,292,294" FontSize="18"/>
+        <Button Name="Addimagebtn" Content="Add Image" Width="109" Height="37" Margin="928,570,292,294" FontSize="18" Click="Addimagebtn_Click"/>
         <Button Name="Savebtn" Content="Save" FontSize="18" Width="78" Height="32" Margin="712,762,540,106"/>
         <Button x:Name="Back" Content="Back" FontSize="18" Width="78" Height="32" Margin="474,762,778,106" Click="Back_Click"/>
     </Grid>
