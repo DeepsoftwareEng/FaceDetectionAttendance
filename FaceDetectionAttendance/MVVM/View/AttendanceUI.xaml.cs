@@ -16,6 +16,8 @@ using Emgu.CV.Face;
 using CascadeClassifier = Emgu.CV.CascadeClassifier;
 using System.Windows.Interop;
 using System.Linq;
+using System.Net;
+using OpenCvSharp.Internal.Vectors;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -24,7 +26,7 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class AttendanceUI : Page
     {
-        private Emgu.CV.VideoCapture _videoSource;
+        private Emgu.CV.VideoCapture _videoSource = new VideoCapture();
         private Task _processingTask;
         private CascadeClassifier _faceClassifier;
         private readonly EigenFaceRecognizer _recognizer = new EigenFaceRecognizer();
@@ -49,6 +51,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void setData()
         {
+            List<int> WorkerID = new List<int>();
             querry = "Select fid From Account where username = @username";
             if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                 Dataconnecttion.GetConnection().Open();
@@ -76,6 +79,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         WorkerList.Add(temp);
                     }
                 }
+                
             }
             catch (Exception ex)
             {
@@ -94,6 +98,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         wl.Name = reader.GetString(0);
                         wl.Id = reader.GetInt32(1);
                         workerLabels.Add(wl);
+                        WorkerID.Add(wl.Id);
                     }
                 }
             }
@@ -101,6 +106,13 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 MessageBox.Show(ex.Message);
             }
+            List<Mat> workerImage = new List<Mat>();
+            foreach(var image in WorkerList)
+            {
+                Mat mat = image.Mat;
+                workerImage.Add(mat);
+            }
+            _recognizer.Train(new Emgu.CV.Util.VectorOfMat(workerImage.ToArray()), new VectorOfInt(WorkerID.ToArray()));
         }
         private void StartCam_Click(object sender, EventArgs e)
         {
