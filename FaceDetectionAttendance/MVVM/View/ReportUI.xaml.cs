@@ -26,6 +26,7 @@ using Microsoft.Win32;
 using System.IO;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2013.Excel;
+using System.Reflection;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -293,78 +294,88 @@ namespace FaceDetectionAttendance.MVVM.View
 
                     var sheet1 = workbook.Worksheets.Add("Shift 1");
                     int rowWrite = 1;
+
+                    Type t;
+                    PropertyInfo[] p;
+
                     sheet1.Cell(rowWrite, 1).Value = "Attandance workers list";
                     rowWrite++;
-
-                    DataTable dtAttendance1 = ((DataView)AttandanceWorkers_DataGrid_1.ItemsSource).ToTable();
                     for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
                     {
-                        sheet1.Cell(rowWrite, col).Value = AttandanceWorkers_DataGrid_1.Columns[col].Header.ToString();
+                        sheet1.Cell(rowWrite, col+1).Value = AttandanceWorkers_DataGrid_1.Columns[col].Header.ToString();
                     }
                     rowWrite++;
-                    for (int row = 0; row < dtAttendance1.Rows.Count; row++)
+
+                    for (int row = 0; row < AttandanceWorkers_DataGrid_1.Items.Count; row++)
                     {
-                        for (int col = 0; col < dtAttendance1.Columns.Count; col++)
+                        t = AttandanceWorkers_DataGrid_1.Items[row].GetType();
+                        p = t.GetProperties();
+                        for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = dtAttendance1.Rows[row][col].ToString();
+                            sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
                         }
                         rowWrite++;
                     }
                     rowWrite++;
 
+                    //
                     sheet1.Cell(rowWrite, 1).Value = "Absentee workers list";
                     rowWrite++;
-                    DataTable dtAbsentee1 = ((DataView)AbsenteeWorkers_DataGrid_1.ItemsSource).Table;
                     for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
                     {
                         sheet1.Cell(rowWrite, col).Value = AbsenteeWorkers_DataGrid_1.Columns[col].Header.ToString();
                     }
                     rowWrite++;
-                    for (int row = 0; row < dtAbsentee1.Rows.Count; row++)
+                    for (int row = 0; row < AbsenteeWorkers_DataGrid_1.Items.Count; row++)
                     {
-                        for (int col = 0; col < dtAbsentee1.Columns.Count; col++)
+                        t = AbsenteeWorkers_DataGrid_1.Items[row].GetType();
+                        p = t.GetProperties();
+                        for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = dtAbsentee1.Rows[row][col].ToString();
+                            sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
                         }
                         rowWrite++;
                     }
                     rowWrite++;
 
 
-                    //////// SHEET2 ///////////////////////////////////////////////////////////
+                    ////////// SHEET2 ///////////////////////////////////////////////////////////
                     var sheet2 = workbook.Worksheets.Add("Shift 2");
-                    rowWrite = 1;
                     sheet2.Cell(rowWrite, 1).Value = "Attandance workers list";
                     rowWrite++;
-                    DataTable dtAttendance2 = ((DataView)AttandanceWorkers_DataGrid_2.ItemsSource).Table;
                     for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
                     {
-                        sheet2.Cell(rowWrite, col).Value = AttandanceWorkers_DataGrid_2.Columns[col].Header.ToString();
+                        sheet2.Cell(rowWrite, col + 1).Value = AttandanceWorkers_DataGrid_2.Columns[col].Header.ToString();
                     }
                     rowWrite++;
-                    for (int row = 0; row < dtAttendance2.Rows.Count; row++)
+
+                    for (int row = 0; row < AttandanceWorkers_DataGrid_2.Items.Count; row++)
                     {
-                        for (int col = 0; col < dtAttendance2.Columns.Count; col++)
+                        t = AttandanceWorkers_DataGrid_2.Items[row].GetType();
+                        p = t.GetProperties();
+                        for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
                         {
-                            sheet2.Cell(rowWrite, col + 1).Value = dtAttendance2.Rows[row][col].ToString();
+                            sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
                         }
                         rowWrite++;
                     }
                     rowWrite++;
 
-                    sheet2.Cell(rowWrite, 1).Value = "Absentee workers list";
+                    //
+                    sheet2.Cell(rowWrite, 2).Value = "Absentee workers list";
                     rowWrite++;
-                    DataTable dtAbsentee2 = ((DataView)AbsenteeWorkers_DataGrid_2.ItemsSource).Table;
                     for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
                     {
                         sheet2.Cell(rowWrite, col).Value = AbsenteeWorkers_DataGrid_2.Columns[col].Header.ToString();
                     }
                     rowWrite++;
-                    for (int row = 0; row < dtAbsentee2.Rows.Count; row++)
+                    for (int row = 0; row < AbsenteeWorkers_DataGrid_2.Items.Count; row++)
                     {
-                        for (int col = 0; col < dtAbsentee2.Columns.Count; col++)
+                        t = AbsenteeWorkers_DataGrid_2.Items[row].GetType();
+                        p = t.GetProperties();
+                        for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
                         {
-                            sheet2.Cell(rowWrite, col + 1).Value = dtAbsentee2.Rows[row][col].ToString();
+                            sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
                         }
                         rowWrite++;
                     }
