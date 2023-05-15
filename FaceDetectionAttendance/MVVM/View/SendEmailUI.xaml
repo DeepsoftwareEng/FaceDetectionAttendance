@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:FaceDetectionAttendance.MVVM.View"
         mc:Ignorable="d"
         Title="SendEmailUI" Height="365" Width="700"
-        WindowState="Normal" ResizeMode="NoResize">
+        WindowState="Normal" ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <DataGrid
             Name ="EmailList_DataGrid" 

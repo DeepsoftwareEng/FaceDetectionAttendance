@@ -27,6 +27,7 @@ using System.IO;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2013.Excel;
 using System.Reflection;
+using FaceDetectionAttendance.MVVM.ViewModel;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -396,5 +397,10 @@ namespace FaceDetectionAttendance.MVVM.View
 
         }
 
+        private void test_Click(object sender, RoutedEventArgs e)
+        {
+            ExportExcel ex = new ExportExcel();
+            ex.ExportExcel_DataGrid(AttandanceWorkers_DataGrid_1);
+        }
     }
 }
