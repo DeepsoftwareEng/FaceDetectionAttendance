@@ -198,15 +198,6 @@ namespace FaceDetectionAttendance.MVVM.View
                         {
                             dtc.GetConnection().Open();
                         }
-                        //SqlDataAdapter Adapter_Attendance_1 = new SqlDataAdapter(query1,dtc.GetConnection()); 
-                        //SqlDataAdapter Adapter_Absentee_1  = new SqlDataAdapter(query2,dtc.GetConnection());
-                        //DataSet DataSet_Attendance_1 = new DataSet();
-                        //DataSet DataSet_Absentee_1  = new DataSet();
-                        //Adapter_Attendance_1.Fill(DataSet_Attendance_1,"AttendanceWorker1");
-                        //Adapter_Absentee_1.Fill(DataSet_Absentee_1,"AbsenteeWorker1");
-                        //AttandanceWorkers_DataGrid_1.DataContext = DataSet_Attendance_1;
-                        //AbsenteeWorkers_DataGrid_1.DataContext= DataSet_Absentee_1;
-
 
                         SqlCommand cmd = new SqlCommand(query1, dtc.GetConnection());
                         cmd.Parameters.AddWithValue("@fid", this.fid);
@@ -400,7 +391,8 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Send_Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            SendEmailUI win = new SendEmailUI();
+            win.Show();
 
         }
 
