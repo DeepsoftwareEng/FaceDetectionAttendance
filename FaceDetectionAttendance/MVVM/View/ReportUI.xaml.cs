@@ -282,113 +282,119 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog savefile = new SaveFileDialog();
-            savefile.DefaultExt = ".xlsx";
-            savefile.Filter = "Excel Files|*xlsx;*xls;*xlsm";
-            savefile.FileName = "ReportDay.xlsx";
-            if (savefile.ShowDialog() == true)
-            {
-                try
+            if (AttandanceWorkers_DataGrid_1.Items.Count == 0) {
+                SaveFileDialog savefile = new SaveFileDialog();
+                savefile.DefaultExt = ".xlsx";
+                savefile.Filter = "Excel Files|*xlsx;*xls;*xlsm";
+                savefile.FileName = "ReportDay.xlsx";
+                if (savefile.ShowDialog() == true)
                 {
-                    var workbook = new XLWorkbook();
-
-                    var sheet1 = workbook.Worksheets.Add("Shift 1");
-                    int rowWrite = 1;
-
-                    Type t;
-                    PropertyInfo[] p;
-
-                    sheet1.Cell(rowWrite, 1).Value = "Attandance workers list";
-                    rowWrite++;
-                    for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
+                    try
                     {
-                        sheet1.Cell(rowWrite, col+1).Value = AttandanceWorkers_DataGrid_1.Columns[col].Header.ToString();
-                    }
-                    rowWrite++;
+                        var workbook = new XLWorkbook();
 
-                    for (int row = 0; row < AttandanceWorkers_DataGrid_1.Items.Count; row++)
-                    {
-                        t = AttandanceWorkers_DataGrid_1.Items[row].GetType();
-                        p = t.GetProperties();
+                        var sheet1 = workbook.Worksheets.Add("Shift 1");
+                        int rowWrite = 1;
+
+                        Type t;
+                        PropertyInfo[] p;
+
+                        sheet1.Cell(rowWrite, 1).Value = "Attandance workers list";
+                        rowWrite++;
                         for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
+                            sheet1.Cell(rowWrite, col + 1).Value = AttandanceWorkers_DataGrid_1.Columns[col].Header.ToString();
                         }
                         rowWrite++;
-                    }
-                    rowWrite++;
 
-                    //
-                    sheet1.Cell(rowWrite, 1).Value = "Absentee workers list";
-                    rowWrite++;
-                    for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
-                    {
-                        sheet1.Cell(rowWrite, col).Value = AbsenteeWorkers_DataGrid_1.Columns[col].Header.ToString();
-                    }
-                    rowWrite++;
-                    for (int row = 0; row < AbsenteeWorkers_DataGrid_1.Items.Count; row++)
-                    {
-                        t = AbsenteeWorkers_DataGrid_1.Items[row].GetType();
-                        p = t.GetProperties();
-                        for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
+                        for (int row = 0; row < AttandanceWorkers_DataGrid_1.Items.Count; row++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
+                            t = AttandanceWorkers_DataGrid_1.Items[row].GetType();
+                            p = t.GetProperties();
+                            for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
+                            {
+                                sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
+                            }
+                            rowWrite++;
                         }
                         rowWrite++;
-                    }
-                    rowWrite++;
+
+                        //
+                        sheet1.Cell(rowWrite, 1).Value = "Absentee workers list";
+                        rowWrite++;
+                        for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
+                        {
+                            sheet1.Cell(rowWrite, col + 1).Value = AbsenteeWorkers_DataGrid_1.Columns[col].Header.ToString();
+                        }
+                        rowWrite++;
+                        for (int row = 0; row < AbsenteeWorkers_DataGrid_1.Items.Count; row++)
+                        {
+                            t = AbsenteeWorkers_DataGrid_1.Items[row].GetType();
+                            p = t.GetProperties();
+                            for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
+                            {
+                                sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AbsenteeWorkers_DataGrid_1.Items[row]).ToString();
+                            }
+                            rowWrite++;
+                        }
+                        rowWrite++;
 
 
-                    ////////// SHEET2 ///////////////////////////////////////////////////////////
-                    var sheet2 = workbook.Worksheets.Add("Shift 2");
-                    sheet2.Cell(rowWrite, 1).Value = "Attandance workers list";
-                    rowWrite++;
-                    for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
-                    {
-                        sheet2.Cell(rowWrite, col + 1).Value = AttandanceWorkers_DataGrid_2.Columns[col].Header.ToString();
-                    }
-                    rowWrite++;
-
-                    for (int row = 0; row < AttandanceWorkers_DataGrid_2.Items.Count; row++)
-                    {
-                        t = AttandanceWorkers_DataGrid_2.Items[row].GetType();
-                        p = t.GetProperties();
+                        ////////// sheet2 ///////////////////////////////////////////////////////////
+                        rowWrite = 1;
+                        var sheet2 = workbook.Worksheets.Add("shift 2");
+                        sheet2.Cell(rowWrite, 1).Value = "Attandance workers list";
+                        rowWrite++;
                         for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
+                            sheet2.Cell(rowWrite, col + 1).Value = AttandanceWorkers_DataGrid_2.Columns[col].Header.ToString();
                         }
                         rowWrite++;
-                    }
-                    rowWrite++;
 
-                    //
-                    sheet2.Cell(rowWrite, 2).Value = "Absentee workers list";
-                    rowWrite++;
-                    for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
-                    {
-                        sheet2.Cell(rowWrite, col).Value = AbsenteeWorkers_DataGrid_2.Columns[col].Header.ToString();
-                    }
-                    rowWrite++;
-                    for (int row = 0; row < AbsenteeWorkers_DataGrid_2.Items.Count; row++)
-                    {
-                        t = AbsenteeWorkers_DataGrid_2.Items[row].GetType();
-                        p = t.GetProperties();
-                        for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
+                        for (int row = 0; row < AttandanceWorkers_DataGrid_2.Items.Count; row++)
                         {
-                            sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
+                            t = AttandanceWorkers_DataGrid_2.Items[row].GetType();
+                            p = t.GetProperties();
+                            for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
+                            {
+                                sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
+                            }
+                            rowWrite++;
                         }
                         rowWrite++;
-                    }
-                    rowWrite++;
 
-                    workbook.SaveAs(savefile.FileName);
-                    MessageBox.Show("Done", "Message",MessageBoxButton.OK);
-                    workbook.Dispose();
+                        //
+                        sheet2.Cell(rowWrite, 1).Value = "Absentee workers list";
+                        rowWrite++;
+                        for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
+                        {
+                            sheet2.Cell(rowWrite, col + 1).Value = AbsenteeWorkers_DataGrid_2.Columns[col].Header.ToString();
+                        }
+                        rowWrite++;
+                        for (int row = 0; row < AbsenteeWorkers_DataGrid_2.Items.Count; row++)
+                        {
+                            t = AbsenteeWorkers_DataGrid_2.Items[row].GetType();
+                            p = t.GetProperties();
+                            for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
+                            {
+                                sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(AbsenteeWorkers_DataGrid_2.Items[row]).ToString();
+                            }
+                            rowWrite++;
+                        }
+                        rowWrite++;
+
+                        workbook.SaveAs(savefile.FileName);
+                        MessageBox.Show("Done", "Message", MessageBoxButton.OK);
+                        workbook.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+            }
+            else{
+                MessageBox.Show("Data in the table is empty", "Error",MessageBoxButton.OK);
             }
         }
 
