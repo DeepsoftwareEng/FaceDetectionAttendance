@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Emgu.CV;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
+using Unity.Policy;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -27,10 +28,15 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand command;
         //Lay du lieu tu sql
+        public ManageAccountUI()
+        {
+            InitializeComponent();
+            Loaddata();
+        }
         private void Loaddata()
         {
             string querry = "Select username,passwords,fid, gmail,roles From Account";
-            if(dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
             command = new SqlCommand(querry, dtc.GetConnection());
             SqlDataReader reader = command.ExecuteReader();
@@ -52,15 +58,9 @@ namespace FaceDetectionAttendance.MVVM.View
                 string Fid = reader.GetString(2);
                 string Gmail = reader.GetString(3);
                 string Roles = role;
-                Accountdtg.Items.Add(new {username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles});
+                Accountdtg.Items.Add(new { username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles });
             }
         }
-        public ManageAccountUI()
-        {
-            InitializeComponent();
-            Loaddata();
-        }
-
         private void Searchbtn_Click(object sender, RoutedEventArgs e)
         {
 
@@ -88,8 +88,34 @@ namespace FaceDetectionAttendance.MVVM.View
         }
 
         private void Delbtn_Click(object sender, RoutedEventArgs e)
-        {
-
+        {           
+            if (MessageBox.Show("Agree to delete?", "Alert", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    string selectedusername = "";
+                    var temp = Accountdtg.SelectedItem;
+                    if (temp != null)
+                    {
+                        dynamic selectedobject = temp;
+                        selectedusername = selectedobject.username;
+                        string querry = "Delete from Account Where username = @username";
+                        if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                            dtc.GetConnection().Open();
+                        command = new SqlCommand(querry, dtc.GetConnection());
+                        command.Parameters.AddWithValue("username", selectedusername);
+                        command.ExecuteNonQuery();
+                        Accountdtg.Items.Remove(temp);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Select on Account");
+                    }
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
         private void Accountdtg_SelectionChanged(object sender, SelectionChangedEventArgs e)
