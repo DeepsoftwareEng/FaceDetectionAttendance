@@ -86,13 +86,13 @@
                 Width="81"
                 Height="27"
                 FontSize="18"
-                Margin="1022,829,227,44"/>
+                Margin="1022,829,227,44" Click="Export_Button_Click"/>
         <Button Content="Send"
                 x:Name="Send_Button"
                 Width="81"
                 Height="27"
                 FontSize="18"
-                Margin="1147,829,102,44"/>
+                Margin="1147,829,102,44" Click="Send_Button_Click"/>
 
     </Grid>
 </Page>

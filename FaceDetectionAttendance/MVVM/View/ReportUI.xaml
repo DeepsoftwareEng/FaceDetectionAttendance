@@ -19,7 +19,6 @@
             <TextBlock Text="Report" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock Name="NameFaculty_TextBlock" FontSize="18" FontWeight="Bold" Height="26" Width="auto" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
-            <Button Name="test"  Content="TEST" Canvas.Left="890" Canvas.Top="833" Click="test_Click"/>
 
         </Canvas>
         <Button x:Name="ReportDay_Button"

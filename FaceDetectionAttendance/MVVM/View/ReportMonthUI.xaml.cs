@@ -1,4 +1,5 @@
 ﻿using FaceDetectionAttendance.MVVM.Model;
+using FaceDetectionAttendance.MVVM.ViewModel;
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
@@ -131,6 +132,18 @@ namespace FaceDetectionAttendance.MVVM.View
                     MessageBox.Show(ex.ToString(), "Error");
                 }
             }
+        }
+
+        private void Export_Button_Click(object sender, RoutedEventArgs e)
+        {
+            ExportExcel ex = new ExportExcel();
+            ex.ExportExcel_DataGrid(MonthCount_DataGrid);
+        }
+
+        private void Send_Button_Click(object sender, RoutedEventArgs e)
+        {
+            SendEmailUI win = new SendEmailUI();
+            win.Show();
         }
     }
 }

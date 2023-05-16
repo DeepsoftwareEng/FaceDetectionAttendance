@@ -396,11 +396,5 @@ namespace FaceDetectionAttendance.MVVM.View
             win.Show();
 
         }
-
-        private void test_Click(object sender, RoutedEventArgs e)
-        {
-            ExportExcel ex = new ExportExcel();
-            ex.ExportExcel_DataGrid(AttandanceWorkers_DataGrid_1);
-        }
     }
 }
