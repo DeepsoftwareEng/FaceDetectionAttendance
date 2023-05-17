@@ -22,13 +22,15 @@
             <Label Content="FullName" Canvas.Left="211" Canvas.Top="273"/>
             <Label Content="Data of Bi" Canvas.Left="211" Canvas.Top="380" HorizontalAlignment="Center" VerticalAlignment="Center"/>
             <Label Content="Label" Canvas.Left="211" Canvas.Top="450" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Border BorderThickness="2" BorderBrush="Black" Height="100" Canvas.Left="192" Canvas.Top="586" Width="100"></Border>
-            <Image Height="100" Canvas.Left="192" Canvas.Top="586" Width="100" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Border BorderThickness="2" BorderBrush="Black" Height="300" Canvas.Left="192" Canvas.Top="586" Width="420"></Border>
+            <Image Name="Worker_Image" Height="300" Canvas.Left="192" Canvas.Top="581" Width="420" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <Components:BindablePasswordBox Canvas.Left="294" Canvas.Top="697"/>
-            <Button Content="Start" Canvas.Left="917" Canvas.Top="682" Click="Button_Click"/>
-            <Border BorderThickness="2" BorderBrush="Black" Height="293" Canvas.Left="716" Canvas.Top="282" Width="502"></Border>
-            <Image  Name="Stream_image" Height="293" Canvas.Left="716" Canvas.Top="282" Width="502"/>
-            <Button Name="Stop_Button"  Content="Stop" Canvas.Left="967" Canvas.Top="686" Click="Stop_Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button Content="Start" Canvas.Left="898" Canvas.Top="682" Click="Button_Click" Height="24" Width="47"/>
+            <Border BorderThickness="2" BorderBrush="Black" Height="300" Canvas.Left="716" Canvas.Top="282" Width="420"></Border>
+            <Image  Name="Stream_image" Height="300" Canvas.Left="716" Canvas.Top="282" Width="420"/>
+            <Button Name="Stop_Button"  Content="Stop" Canvas.Left="979" Canvas.Top="680" Click="Stop_Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Height="28" Width="47"/>
+            <Button Name="AddWorker_Button" Content="Add" Canvas.Left="618" Canvas.Top="790" Height="54" Width="94" Click="AddWorker_Button_Click"/>
+            <Button Name="Capture_Button" Content="Capture" Canvas.Left="821" Canvas.Top="686" Click="Capture_Button_Click"/>
         </Canvas>
 
         <Label Content="Add Worker" HorizontalAlignment="Left" Margin="627,175,0,0" VerticalAlignment="Top"/>
