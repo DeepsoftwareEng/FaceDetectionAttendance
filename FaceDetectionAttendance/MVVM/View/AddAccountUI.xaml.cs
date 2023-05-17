@@ -18,6 +18,7 @@ using Unity.Policy;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Microsoft.Win32;
 using System.IO;
+using System.Data;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -29,6 +30,8 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         private SqlCommand SQLcommand;
         private FileInfo imgSource;
+        private OpenFileDialog openFileDialog = new OpenFileDialog();
+        private string authpath;
         public AddAccountUI()
         {
             InitializeComponent();
@@ -72,13 +75,23 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Addimagebtn_Click_1(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            //lọc ảnh
+            openFileDialog.Filter = "Image files (*.png;*.jpeg;*.jpg)|*.png;*.jpeg;*.jpg";
             if (openFileDialog.ShowDialog() == true)
-            {
-                Imagebd.Background = new ImageBrush(new BitmapImage(new Uri(openFileDialog.FileName)));
-                imgSource = new FileInfo(openFileDialog.FileName);
-            }
-            
+                {
+                    if (File.Exists("C:\\FDA temp\\temp.png"))
+                    {
+                        File.Delete("C:\\FDA temp\\temp.png");
+                        File.Copy(openFileDialog.FileName, "C:\\FDA temp\\temp.png");
+                    }
+                    else
+                    {
+                        File.Copy(openFileDialog.FileName, "C:\\FDA temp\\temp.png");
+                    }
+
+                    Imagebd.Background = new ImageBrush(new BitmapImage(new Uri(openFileDialog.FileName)));
+                    imgSource = new FileInfo(openFileDialog.FileName);
+                }
         }
 
         private void Savebtn_Click(object sender, RoutedEventArgs e)
@@ -121,20 +134,39 @@ namespace FaceDetectionAttendance.MVVM.View
             Imagebd.Background = null;
 
             //luu du lieu
-            string avt = $"{username}.png";
-            imgSource.MoveTo(imgSource.Directory.FullName + "//"+avt);
-            File.Copy(imgSource.ToString(), @"//Resource//Avatar");
-            string querry = "Insert @username,@passwords,@fid, @gmail,@roles,@image";
+            string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
+            string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
+            string resourceFolderPath = System.IO.Path.Combine(fix, "Resource");
+            string avt = resourceFolderPath + @$"\Avatar\{username}.png";
+            File.Copy("C:\\FDA temp\\temp.png", avt);
+            string querry = "Insert into Account Values(@username,@passwords,@roles, @gmail,@images,@fid)";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
-            SQLcommand = new SqlCommand(querry, dtc.GetConnection());
-            SQLcommand.Parameters.AddWithValue("@username", username);
-            SQLcommand.Parameters.AddWithValue("@password", password);
-            SQLcommand.Parameters.AddWithValue("@fid", faculty);
-            SQLcommand.Parameters.AddWithValue("@gmail", gmail);
-            SQLcommand.Parameters.AddWithValue("@roles", role);
-
-            SQLcommand.ExecuteNonQuery();
+            int temp;
+            if (role == "Admin")
+            {
+                temp=1;
+            }
+            else
+            {
+                temp=0;
+            }
+            try
+            {
+                SQLcommand = new SqlCommand(querry, dtc.GetConnection());
+                SQLcommand.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
+                SQLcommand.Parameters.Add("@passwords", SqlDbType.NVarChar).Value = password;
+                SQLcommand.Parameters.Add("@fid", SqlDbType.NVarChar).Value = faculty;
+                SQLcommand.Parameters.Add("@gmail", SqlDbType.NVarChar).Value = gmail;
+                SQLcommand.Parameters.Add("@roles", SqlDbType.NVarChar).Value = temp;
+                SQLcommand.Parameters.Add("@images", SqlDbType.NVarChar).Value = username;
+                SQLcommand.ExecuteNonQuery();            
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            } 
         }
     }
 }
