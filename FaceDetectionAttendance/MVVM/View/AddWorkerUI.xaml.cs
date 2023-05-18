@@ -130,16 +130,15 @@ namespace FaceDetectionAttendance.MVVM.View
                         // Crop the face image
                         Rectangle face = faces[0];
                         Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
-
                         string nameimg = FullnameTxb.Text;
                         string imagePath = "D:\\"+nameimg+".png";
-                        
+
                         if (File.Exists(imagePath))
                         {
                             Worker_Image.Source = null;
                             File.Delete(imagePath);
                         }
-                        faceImage.Save(imagePath);
+                        Resize(faceImage).Save(imagePath);
 
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
@@ -150,6 +149,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         Worker_Image.Source = bitmap;
 
                         MessageBox.Show("Worker added successfully.");
+                        
                     }
                     timer.Stop();
                     capture.Dispose();
@@ -157,6 +157,11 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
             }
         }
-
+        Image<Gray, byte> Resize(Image<Gray, byte> image)
+        {
+            System.Drawing.Size size = new System.Drawing.Size(200, 200);
+            Image<Gray, byte> temp = image.Resize(size.Width, size.Height, Emgu.CV.CvEnum.Inter.Cubic);
+            return temp;
+        }
     }
 }

@@ -16,8 +16,7 @@ using Emgu.CV.Face;
 using CascadeClassifier = Emgu.CV.CascadeClassifier;
 using System.Windows.Interop;
 using System.Linq;
-using System.Net;
-using OpenCvSharp.Internal.Vectors;
+using System.IO;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -41,7 +40,6 @@ namespace FaceDetectionAttendance.MVVM.View
         private string _username;
         private string _faculty;
         private string querry;
-
         public AttendanceUI(string username)
         {
             InitializeComponent();
@@ -51,6 +49,9 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void setData()
         {
+            string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
+            string fix = projectFolderPath.Remove(projectFolderPath.Length - 9); 
             List<int> WorkerID = new List<int>();
             querry = "Select fid From Account where username = @username";
             if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
@@ -74,8 +75,9 @@ namespace FaceDetectionAttendance.MVVM.View
                 {
                     while (reader.Read())
                     {
-                        string imageName = reader.ToString() + ".png";
-                        Image<Gray, byte> temp = new Image<Gray, byte>("/Resource/WorkerImage/" + _faculty + "/" + imageName);
+                        string imageName = reader.GetString(0) + ".png";
+                        string resourceFolderPath = Path.Combine(fix, "Resource");
+                        Image<Gray, byte> temp = new Image<Gray, byte>(@$"{resourceFolderPath}\WorkerImage\{_faculty}\{imageName}");
                         WorkerList.Add(temp);
                     }
                 }
@@ -114,6 +116,7 @@ namespace FaceDetectionAttendance.MVVM.View
             }
             _recognizer.Train(new Emgu.CV.Util.VectorOfMat(workerImage.ToArray()), new VectorOfInt(WorkerID.ToArray()));
         }
+
         private void StartCam_Click(object sender, EventArgs e)
         {
             if (_isCapturing)
@@ -157,19 +160,18 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 // Extract face region of interest
                 var faceRect = new Rectangle(face.X, face.Y, face.Width, face.Height);
-                var faceImage = grayFrame.Copy(faceRect).Resize(320, 240, Inter.Cubic);
+                var faceImage = grayFrame.Copy(faceRect).Resize(200, 200, Inter.Cubic);
 
                 // Recognize face
                 var result = _recognizer.Predict(faceImage);
 
                 // Display result
                 var label = result.Label.ToString();
-                var distance = result.Distance;
 
-                if (WorkerList.Any() && distance < 3000)
+                if (WorkerList.Any())
                 {
-                    // Display worker name if recognized
-                    var worker = workerLabels.FirstOrDefault(w => w.Name == label);
+                    //Display worker name if recognized
+                    var worker = workerLabels.FirstOrDefault(w => w.Id == Int32.Parse(label));// take worker id
                     if (worker != null)
                     {
                         Dispatcher.Invoke(() =>
@@ -184,10 +186,10 @@ namespace FaceDetectionAttendance.MVVM.View
                             command.ExecuteNonQuery();
                             Dataconnecttion.GetConnection().Close();
                             AttendanceWorker temp = new AttendanceWorker();
-                            temp.name = label;
-                            temp.id = worker.Id;
-                            temp.date= DateTime.Now;
-                            AttendList.Add(temp);
+                            temp.name = worker.Name;
+                            temp.id = Int32.Parse(label);
+                            temp.date = DateTime.Now;
+                            Attendance.Items.Add(new { id = worker.Id,Name = worker.Name, TimeIn = DateTime.Now });
                         });
                     }
                 }
@@ -202,5 +204,11 @@ namespace FaceDetectionAttendance.MVVM.View
             VideoDisplay.Source = bitmapSource;
         }
 
+        private void EndBtn_Click(object sender, RoutedEventArgs e)
+        {
+            //Attendance.ItemsSource= AttendList;
+            //foreach (var worker in AttendList)
+            //    MessageBox.Show(worker.name);
+        }
     }
 }

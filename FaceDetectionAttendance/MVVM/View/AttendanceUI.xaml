@@ -24,10 +24,16 @@
         <TextBlock Text="Ca 1" FontWeight="Bold" FontSize="18" Height="20" Width="50" Margin="43,149,1237,731"/>
         <Button Height="27" Width="78" Content="Switch" FontWeight="Bold" FontSize="18" Margin="98,147,1154,726"/>
         <Image x:Name="VideoDisplay" Height="500" Width="500" Margin="60,214,770,186"/>
-        <DataGrid x:Name="Attendance" ItemsSource="{Binding AttendList}" Height="263" Width="434" Margin="810,187,86,450"/>
+        <DataGrid x:Name="Attendance" Height="263" Width="434" Margin="810,187,86,450">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="Id" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="4*" Header="Name" Binding="{Binding Name}"/>
+                <DataGridTextColumn Width="5*" Header="Time in" Binding="{Binding TimeIn}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <DataGrid x:Name="Absentee" ItemsSource="{Binding AbsenList}" Height="263" Width="434" Margin="810,518,86,119"/>
         <Button x:Name="StartBtn" Height="28" Width="71" Content="Start" FontWeight="Bold" FontSize="18" Margin="630,318,630,554"/>
-        <Button x:Name="EndBtn" Height="28" Width="71" Content="End" FontWeight="Bold" FontSize="18"/>
+        <Button x:Name="EndBtn" Height="28" Width="71" Content="End" FontWeight="Bold" FontSize="18" Click="EndBtn_Click"/>
         <TextBlock Text="Number of attendance workers: " Height="28" Width="267" FontSize="18" FontWeight="Bold" Margin="43,732,1020,140"/>
         <TextBlock Text="Number of absentee workers:" Height="28" Width="267" FontSize="18" FontWeight="Bold" Margin="43,765,1020,107"/>
         <TextBlock x:Name="AttendanceTxt" Text="{Binding NumAttend}" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,732,965,140"/>
