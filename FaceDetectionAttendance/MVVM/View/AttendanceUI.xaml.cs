@@ -190,15 +190,22 @@ namespace FaceDetectionAttendance.MVVM.View
                             //KHi nhan dien ra cong nhan
                             if (CheckAttandance(Int32.Parse(label),_faculty,shift))
                             {
-                                string querry = "INSERT INTO Attendance VALUES (@id,@id_worker, @date, @fid, @shift)";
-                                string querry2 = "SELECT MAX(id) FROM Attendance";
+                                string querry = "INSERT INTO Attendance VALUES (@id_worker, @date, @fid, @shift)";
+                               // string querry2 = "SELECT MAX(id) FROM Attendance";
                                 if (dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                                     dataconnecttion.GetConnection().Open();
-                                command = new SqlCommand(querry2, dataconnecttion.GetConnection());
-                                int id = Int32.Parse(command.ExecuteScalar().ToString()) + 1;
-
+                                //command = new SqlCommand(querry2, dataconnecttion.GetConnection());
+                                //int id;
+                                //if (command.ExecuteScalar() != null)
+                                //{
+                                //    id = Convert.ToInt32(command.ExecuteScalar().ToString()) + 1;
+                                //}                                  
+                                //else
+                                //{
+                                //    id = 1;
+                                //}                                
                                 command = new SqlCommand(querry, dataconnecttion.GetConnection());
-                                command.Parameters.AddWithValue("@id", id);
+                                //command.Parameters.AddWithValue("@id", id);
                                 command.Parameters.AddWithValue("@id_worker", Int32.Parse(label));
                                 command.Parameters.AddWithValue("@date", DateTime.Now);
                                 command.Parameters.AddWithValue("@fid", _faculty);
