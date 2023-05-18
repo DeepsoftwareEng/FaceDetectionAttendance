@@ -7,16 +7,16 @@ using Emgu.CV;
 using Emgu.CV.Util;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
-using System.Windows.Media;
 using Emgu.CV.CvEnum;
 using System.Windows.Media.Imaging;
-using System.Threading.Tasks;
 using System.Drawing;
 using Emgu.CV.Face;
 using CascadeClassifier = Emgu.CV.CascadeClassifier;
 using System.Windows.Interop;
 using System.Linq;
 using System.IO;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -25,7 +25,7 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class AttendanceUI : Page
     {
-        private Emgu.CV.VideoCapture _videoSource = new VideoCapture();
+        private Emgu.CV.VideoCapture _videoSource;
         private CascadeClassifier _faceClassifier;
         private readonly EigenFaceRecognizer _recognizer = new EigenFaceRecognizer();
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
@@ -33,7 +33,7 @@ namespace FaceDetectionAttendance.MVVM.View
         private List<Image<Gray, byte>> WorkerList = new List<Image<Gray, byte>>();// Worker's Image
         private List<AttendanceWorker> AttendList = new List<AttendanceWorker>(); //Attend datagrid
         private List<WorkerLabel> workerLabels = new List<WorkerLabel>();// Worker's infor
-        private List<int> IdListIn = new List<int>();
+        private DispatcherTimer timer = new System.Windows.Threading.DispatcherTimer();
         private bool _isCapturing;
         private string _username;
         private string _faculty;
@@ -131,14 +131,13 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 return;
             }
-
+            _videoSource = new VideoCapture();
             _videoSource.Start();
             _isCapturing = true;
 
             // Start capturing video frames
-            var timer = new System.Windows.Threading.DispatcherTimer();
             timer.Tick += new EventHandler(ProcessFrame);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 30);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 60);
             timer.Start();
         }
         private void StopCam_Click(object sender, EventArgs e)
@@ -147,7 +146,9 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 return;
             }
+            timer.Stop();
             _videoSource.Stop();
+            _videoSource.Dispose();
             _isCapturing = false;
             var absentWorkers = from workerLabel in workerLabels
                                 join workerAttend in AttendList on workerLabel.Id equals workerAttend.id into workerGroup
@@ -155,6 +156,7 @@ namespace FaceDetectionAttendance.MVVM.View
                                 where worker == null 
                                 select workerLabel;
             Absentee.ItemsSource= absentWorkers;
+            AbsenteeTxt.Text = Absentee.Items.Count.ToString(); 
         }
         private void ProcessFrame(object sender, EventArgs e)
         {
@@ -204,7 +206,7 @@ namespace FaceDetectionAttendance.MVVM.View
                             AttendanceTxt.Text = Attendance.Items.Count.ToString();
                         });
                     }
-                }
+                }    
                 // Draw a rectangle around the face
                 frame.Draw(faceRect, new Bgr(0, 0, 255), 2);
             }
@@ -214,6 +216,7 @@ namespace FaceDetectionAttendance.MVVM.View
             var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(
                 bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             VideoDisplay.Source = bitmapSource;
+
         }
         private bool checkId(int id)
         {
@@ -223,12 +226,6 @@ namespace FaceDetectionAttendance.MVVM.View
                     return true;
             }
             return false;
-        }
-        private void EndBtn_Click(object sender, RoutedEventArgs e)
-        {
-            //Attendance.ItemsSource= AttendList;
-            //foreach (var worker in AttendList)
-            //    MessageBox.Show(worker.name);
         }
 
         private void Switchbtn_Click(object sender, RoutedEventArgs e)
