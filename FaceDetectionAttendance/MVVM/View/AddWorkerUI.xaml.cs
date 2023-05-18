@@ -31,7 +31,7 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class AddWorkerUI : Page
     {
         Dataconnecttion dtc = new Dataconnecttion();
-        static readonly CascadeClassifier faceDetector = new CascadeClassifier("D:\\Download\\Webcam-master\\Webcam-master\\Webcam\\haarcascade_frontalface_default.xml");
+        static readonly CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_frontalface_default.xml");
         bool iscapture = false;
         VideoCapture capture;
         Image<Bgr, byte> image = null;
@@ -82,7 +82,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
                 BitmapSource bitmap = BitmapSourceConvert.ToBitmapSource(images);
                 // Set the Image control's Source property to the BitmapSource
-                webcam_image.Source = bitmap;
+                Stream_image.Source = bitmap;
 
             };
             timer.Start();
@@ -131,19 +131,22 @@ namespace FaceDetectionAttendance.MVVM.View
                         Rectangle face = faces[0];
                         Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
 
-                        string nameimg = FullName_Txb.Text;
+                        string nameimg = FullnameTxb.Text;
                         string imagePath = "D:\\"+nameimg+".png";
                         
                         if (File.Exists(imagePath))
                         {
+                            Worker_Image.Source = null;
                             File.Delete(imagePath);
                         }
                         faceImage.Save(imagePath);
 
                         BitmapImage bitmap = new BitmapImage();
                         bitmap.BeginInit();
-                        bitmap.UriSource = new Uri(imagePath);
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
                         bitmap.EndInit();
+
                         Worker_Image.Source = bitmap;
 
                         MessageBox.Show("Worker added successfully.");
