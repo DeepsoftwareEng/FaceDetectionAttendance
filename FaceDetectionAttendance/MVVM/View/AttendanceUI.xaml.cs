@@ -38,12 +38,15 @@ namespace FaceDetectionAttendance.MVVM.View
         private string _username;
         private string _faculty;
         private string querry;
+        private int shift=1;
         public AttendanceUI(string username)
         {
             InitializeComponent();
             _faceClassifier = new CascadeClassifier("haarcascade_frontalface_default.xml");
             _username = username;
             setData();
+            FacultyText.Text = _faculty;
+            ShiftText.Text = "Shift: " + shift;
         }
         private void setData()
         {
@@ -182,12 +185,14 @@ namespace FaceDetectionAttendance.MVVM.View
                         Dispatcher.Invoke(() =>
                         {
                             //KHi nhan dien ra cong nhan
-                            //string querry = "insert into Attendane values (@id, @date)";
+                            //string querry = "insert into Attendane values (@id, @date, @fid, @shift)";
                             //if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
                             //    Dataconnecttion.GetConnection().Open();
                             //command = new SqlCommand(querry, Dataconnecttion.GetConnection());
                             //command.Parameters.AddWithValue("@id", Int32.Parse(label));
                             //command.Parameters.AddWithValue("@date", DateTime.Now);
+                            //command.Parameters.AddWithValue("@fid", _faculty);
+                            //command.Parameters.AddWithValue("@shift", shift);
                             //command.ExecuteNonQuery();
                             //Dataconnecttion.GetConnection().Close();
                             AttendanceWorker temp = new AttendanceWorker();
@@ -196,6 +201,7 @@ namespace FaceDetectionAttendance.MVVM.View
                             temp.date = DateTime.Now;
                             Attendance.Items.Add(new { id = worker.Id,Name = worker.Name, TimeIn = DateTime.Now });
                             workerLabels.Remove(worker);
+                            AttendanceTxt.Text = Attendance.Items.Count.ToString();
                         });
                     }
                 }
@@ -223,6 +229,12 @@ namespace FaceDetectionAttendance.MVVM.View
             //Attendance.ItemsSource= AttendList;
             //foreach (var worker in AttendList)
             //    MessageBox.Show(worker.name);
+        }
+
+        private void Switchbtn_Click(object sender, RoutedEventArgs e)
+        {
+            shift = 2;
+            ShiftText.Text = "Shift: " + shift;
         }
     }
 }

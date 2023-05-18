@@ -17,12 +17,12 @@
         <Canvas>
             <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
             <TextBlock Text="Attendance" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
-            <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock x:Name="FacultyText" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
-            
+
         </Canvas>
-        <TextBlock Text="Ca 1" FontWeight="Bold" FontSize="18" Height="20" Width="50" Margin="43,149,1237,731"/>
-        <Button Height="27" Width="78" Content="Switch" FontWeight="Bold" FontSize="18" Margin="98,147,1154,726"/>
+        <TextBlock x:Name="ShiftText" FontWeight="Bold" FontSize="18" Height="20" Width="70" Margin="66,152,1194,728" RenderTransformOrigin="0.509,0.714"/>
+        <Button x:Name="Switchbtn" Click="Switchbtn_Click" Height="27" Width="78" Content="Switch" FontWeight="Bold" FontSize="18" Margin="141,150,1111,723"/>
         <Image x:Name="VideoDisplay" Height="500" Width="500" Margin="60,214,770,186"/>
         <DataGrid x:Name="Attendance" Height="263" Width="434" Margin="810,187,86,450">
             <DataGrid.Columns>
@@ -31,13 +31,13 @@
                 <DataGridTextColumn Width="5*" Header="Time in" Binding="{Binding TimeIn}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid x:Name="Absentee" ItemsSource="{Binding AbsenList}" Height="263" Width="434" Margin="810,518,86,119"/>
-        <Button x:Name="StartBtn" Height="28" Width="71" Content="Start" FontWeight="Bold" FontSize="18" Margin="630,318,630,554"/>
+        <DataGrid x:Name="Absentee"  Height="263" Width="434" Margin="810,518,86,119"/>
+        <Button x:Name="StartBtn" Height="28" Content="Start" FontWeight="Bold" FontSize="18" Margin="630,338,630,534"/>
         <Button x:Name="EndBtn" Height="28" Width="71" Content="End" FontWeight="Bold" FontSize="18" Click="EndBtn_Click"/>
         <TextBlock Text="Number of attendance workers: " Height="28" Width="267" FontSize="18" FontWeight="Bold" Margin="43,732,1020,140"/>
         <TextBlock Text="Number of absentee workers:" Height="28" Width="267" FontSize="18" FontWeight="Bold" Margin="43,765,1020,107"/>
-        <TextBlock x:Name="AttendanceTxt" Text="{Binding NumAttend}" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,732,965,140"/>
-        <TextBlock x:Name="AbsenteeTxt_Copy" Text="{Binding NumAbsen}" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,765,965,107"/>
+        <TextBlock x:Name="AttendanceTxt" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,732,965,140"/>
+        <TextBlock x:Name="AbsenteeTxt_Copy" FontWeight="Bold" FontSize="18" Height="28" Width="28" Margin="337,765,965,107"/>
         <Button Content="StartCam" Height="20" Width="50" Click="StartCam_Click" Margin="476,778,804,102"/>
         <Button Content="EndCam" Height="20" Width="50" Click="StopCam_Click" Margin="630,779,650,101"/>
     </Grid>
