@@ -28,7 +28,7 @@
 
         <TextBox x:Name="Gmailtxb" FontSize="18" Width="299" Height="32" Margin="148,537,882,331"/>
         <TextBox x:Name="Confirmtxb" FontSize="18" Width="299" Height="32" Margin="148,475,882,393"/>
-        <TextBox x:Name="Passwordtxb" FontSize="18" Width="299" Height="32" Margin="148,405,882,463" TextChanged="TextBox_TextChanged"/>
+        <TextBox x:Name="Passwordtxb" FontSize="18" Width="299" Height="32" Margin="148,405,882,463"/>
         <TextBox x:Name="Usernametxb" FontSize="18" Width="299" Height="32" Margin="148,334,882,534"/>
         <ComboBox x:Name="Rolecbb" Width="112" Height="37" Margin="540,631,678,232"/>
         <ComboBox x:Name="facultycbb" Width="112" Height="37" Margin="242,588,976,189"/>

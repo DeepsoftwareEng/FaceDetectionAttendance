@@ -38,15 +38,6 @@ namespace FaceDetectionAttendance.MVVM.View
             Add_SetComboBoxData();
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Addimagebtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
         private void Add_SetComboBoxData()
         {
 
