@@ -26,9 +26,9 @@
         <Image x:Name="VideoDisplay" Height="500" Width="500" Margin="60,214,770,186"/>
         <DataGrid x:Name="Attendance" Height="263" Width="434" Margin="810,187,86,450">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Header="Id" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="2*" Header="Id Worker" Binding="{Binding id_worker}"/>
                 <DataGridTextColumn Width="4*" Header="Name" Binding="{Binding Name}"/>
-                <DataGridTextColumn Width="5*" Header="Time in" Binding="{Binding TimeIn}"/>
+                <DataGridTextColumn Width="4*" Header="Time in" Binding="{Binding TimeIn}"/>
             </DataGrid.Columns>
         </DataGrid>
         <DataGrid x:Name="Absentee"  Height="263" Width="434" Margin="810,518,86,119"/>

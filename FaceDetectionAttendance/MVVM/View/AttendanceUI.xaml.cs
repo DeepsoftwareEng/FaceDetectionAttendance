@@ -28,7 +28,7 @@ namespace FaceDetectionAttendance.MVVM.View
         private Emgu.CV.VideoCapture _videoSource;
         private CascadeClassifier _faceClassifier;
         private readonly EigenFaceRecognizer _recognizer = new EigenFaceRecognizer();
-        private Dataconnecttion Dataconnecttion = new Dataconnecttion();
+        private Dataconnecttion dataconnecttion = new Dataconnecttion();
         private SqlCommand command;
         private List<Image<Gray, byte>> WorkerList = new List<Image<Gray, byte>>();// Worker's Image
         private List<AttendanceWorker> AttendList = new List<AttendanceWorker>(); //Attend datagrid
@@ -38,7 +38,7 @@ namespace FaceDetectionAttendance.MVVM.View
         private string _username;
         private string _faculty;
         private string querry;
-        private int shift=1;
+        private int shift = 1;
         public AttendanceUI(string username)
         {
             InitializeComponent();
@@ -52,14 +52,14 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
             string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
-            string fix = projectFolderPath.Remove(projectFolderPath.Length - 9); 
+            string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
             List<int> WorkerID = new List<int>();
             querry = "Select fid From Account where username = @username";
-            if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
-                Dataconnecttion.GetConnection().Open();
+            if (dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+                dataconnecttion.GetConnection().Open();
             try
             {
-                command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                command = new SqlCommand(querry, dataconnecttion.GetConnection());
                 command.Parameters.AddWithValue("@username", _username);
                 _faculty = Convert.ToString(command.ExecuteScalar());
             }
@@ -70,7 +70,7 @@ namespace FaceDetectionAttendance.MVVM.View
             querry = "Select images From WorkerList where fid = @fid";
             try
             {
-                command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                command = new SqlCommand(querry, dataconnecttion.GetConnection());
                 command.Parameters.AddWithValue("@fid", _faculty);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -82,7 +82,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         WorkerList.Add(temp);
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -91,7 +91,7 @@ namespace FaceDetectionAttendance.MVVM.View
             querry = "Select fullname, id from WorkerList where fid = @fid";
             try
             {
-                command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                command = new SqlCommand(querry, dataconnecttion.GetConnection());
                 command.Parameters.AddWithValue("@fid", _faculty);
                 using (SqlDataReader reader = command.ExecuteReader())
                 {
@@ -110,7 +110,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 MessageBox.Show(ex.Message);
             }
             List<Mat> workerImage = new List<Mat>();
-            foreach(var image in WorkerList)
+            foreach (var image in WorkerList)
             {
                 Mat mat = image.Mat;
                 workerImage.Add(mat);
@@ -118,11 +118,12 @@ namespace FaceDetectionAttendance.MVVM.View
             try
             {
                 _recognizer.Train(new VectorOfMat(workerImage.ToArray()), new VectorOfInt(WorkerID.ToArray()));
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Can not retrieve worker data! Please add worker data!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            
+
         }
 
         private void StartCam_Click(object sender, EventArgs e)
@@ -153,10 +154,10 @@ namespace FaceDetectionAttendance.MVVM.View
             var absentWorkers = from workerLabel in workerLabels
                                 join workerAttend in AttendList on workerLabel.Id equals workerAttend.id into workerGroup
                                 from worker in workerGroup.DefaultIfEmpty()
-                                where worker == null 
+                                where worker == null
                                 select workerLabel;
-            Absentee.ItemsSource= absentWorkers;
-            AbsenteeTxt.Text = Absentee.Items.Count.ToString(); 
+            Absentee.ItemsSource = absentWorkers;
+            AbsenteeTxt.Text = Absentee.Items.Count.ToString();
         }
         private void ProcessFrame(object sender, EventArgs e)
         {
@@ -187,26 +188,34 @@ namespace FaceDetectionAttendance.MVVM.View
                         Dispatcher.Invoke(() =>
                         {
                             //KHi nhan dien ra cong nhan
-                            //string querry = "insert into Attendane values (@id, @date, @fid, @shift)";
-                            //if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
-                            //    Dataconnecttion.GetConnection().Open();
-                            //command = new SqlCommand(querry, Dataconnecttion.GetConnection());
-                            //command.Parameters.AddWithValue("@id", Int32.Parse(label));
-                            //command.Parameters.AddWithValue("@date", DateTime.Now);
-                            //command.Parameters.AddWithValue("@fid", _faculty);
-                            //command.Parameters.AddWithValue("@shift", shift);
-                            //command.ExecuteNonQuery();
-                            //Dataconnecttion.GetConnection().Close();
+                            if (CheckAttandance(Int32.Parse(label),_faculty,shift))
+                            {
+                                string querry = "INSERT INTO Attendance VALUES (@id,@id_worker, @date, @fid, @shift)";
+                                string querry2 = "SELECT MAX(id) FROM Attendance";
+                                if (dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+                                    dataconnecttion.GetConnection().Open();
+                                command = new SqlCommand(querry2, dataconnecttion.GetConnection());
+                                int id = Int32.Parse(command.ExecuteScalar().ToString()) + 1;
+
+                                command = new SqlCommand(querry, dataconnecttion.GetConnection());
+                                command.Parameters.AddWithValue("@id", id);
+                                command.Parameters.AddWithValue("@id_worker", Int32.Parse(label));
+                                command.Parameters.AddWithValue("@date", DateTime.Now);
+                                command.Parameters.AddWithValue("@fid", _faculty);
+                                command.Parameters.AddWithValue("@shift", shift);
+                                command.ExecuteNonQuery();
+                                dataconnecttion.GetConnection().Close();
+                            }
                             AttendanceWorker temp = new AttendanceWorker();
                             temp.name = worker.Name;
                             temp.id = Int32.Parse(label);
                             temp.date = DateTime.Now;
-                            Attendance.Items.Add(new { id = worker.Id,Name = worker.Name, TimeIn = DateTime.Now });
+                            Attendance.Items.Add(new { id_worker = worker.Id, Name = worker.Name, TimeIn = DateTime.Now });
                             workerLabels.Remove(worker);
                             AttendanceTxt.Text = Attendance.Items.Count.ToString();
                         });
                     }
-                }    
+                }
                 // Draw a rectangle around the face
                 frame.Draw(faceRect, new Bgr(0, 0, 255), 2);
             }
@@ -220,7 +229,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private bool checkId(int id)
         {
-            for(int i =0; i < workerLabels.Count; i++)
+            for (int i = 0; i < workerLabels.Count; i++)
             {
                 if (workerLabels[i].Id == id)
                     return true;
@@ -230,8 +239,41 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Switchbtn_Click(object sender, RoutedEventArgs e)
         {
-            shift = 2;
+            if (ShiftText.Text.Equals("Shift: 1")) shift = 2;
+            else shift = 1;
             ShiftText.Text = "Shift: " + shift;
+            setData();
+            Attendance.Items.Clear();
+            Absentee.ItemsSource = null;
+            AttendanceTxt.Text = "";
+            AbsenteeTxt.Text = "";
         }
+
+        private bool CheckAttandance(int id_worker, string fid, int shift)
+        {   // check null or not 
+            string querry = "SELECT id " +
+                            "FROM Attendance " +
+                            "WHERE id_worker = @id_worker " +
+                            "AND DAY(d_m) = @day " +
+                            "AND MONTH(d_m) = @month " +
+                            "AND YEAR(d_m) = @year " +
+                            "AND id_faculty = @fid " +
+                            "AND shift_worked = @shift ";
+            if(dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+            {
+                dataconnecttion.GetConnection().Open();
+            }
+            command = new SqlCommand(querry, dataconnecttion.GetConnection());
+            command.Parameters.AddWithValue("@id_worker",id_worker);
+            command.Parameters.AddWithValue("@day", DateTime.Now.Day);
+            command.Parameters.AddWithValue("@month", DateTime.Now.Month);
+            command.Parameters.AddWithValue("@year", DateTime.Now.Year);
+            command.Parameters.AddWithValue("@fid", fid);
+            command.Parameters.AddWithValue("@shift", shift);
+
+            if (command.ExecuteScalar()== null) return true;
+            return false;
+        }
+
     }
 }
