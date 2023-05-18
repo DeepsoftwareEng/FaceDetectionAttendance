@@ -26,12 +26,10 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class AttendanceUI : Page
     {
         private Emgu.CV.VideoCapture _videoSource = new VideoCapture();
-        private Task _processingTask;
         private CascadeClassifier _faceClassifier;
         private readonly EigenFaceRecognizer _recognizer = new EigenFaceRecognizer();
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
         private SqlCommand command;
-        private readonly SolidColorBrush _highlightBrush = new SolidColorBrush(Colors.LimeGreen);
         private List<Image<Gray, byte>> WorkerList = new List<Image<Gray, byte>>();// Worker's Image
         private List<AttendanceWorker> AttendList = new List<AttendanceWorker>(); //Attend datagrid
         private List<WorkerLabel> workerLabels = new List<WorkerLabel>();// Worker's infor
@@ -114,7 +112,14 @@ namespace FaceDetectionAttendance.MVVM.View
                 Mat mat = image.Mat;
                 workerImage.Add(mat);
             }
-            _recognizer.Train(new Emgu.CV.Util.VectorOfMat(workerImage.ToArray()), new VectorOfInt(WorkerID.ToArray()));
+            try
+            {
+                _recognizer.Train(new VectorOfMat(workerImage.ToArray()), new VectorOfInt(WorkerID.ToArray()));
+            }catch(Exception ex)
+            {
+                MessageBox.Show("Can not retrieve worker data! Please add worker data!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            
         }
 
         private void StartCam_Click(object sender, EventArgs e)
@@ -168,7 +173,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 // Display result
                 var label = result.Label.ToString();
 
-                if (WorkerList.Any())
+                if (checkId(Int32.Parse(label)))
                 {
                     //Display worker name if recognized
                     var worker = workerLabels.FirstOrDefault(w => w.Id == Int32.Parse(label));// take worker id
@@ -177,19 +182,20 @@ namespace FaceDetectionAttendance.MVVM.View
                         Dispatcher.Invoke(() =>
                         {
                             //KHi nhan dien ra cong nhan
-                            string querry = "insert into Attendane values (@id, @date)";
-                            if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
-                                Dataconnecttion.GetConnection().Open();
-                            command = new SqlCommand(querry, Dataconnecttion.GetConnection());
-                            command.Parameters.AddWithValue("@id", worker.Id);
-                            command.Parameters.AddWithValue("@date", DateTime.Now);
-                            command.ExecuteNonQuery();
-                            Dataconnecttion.GetConnection().Close();
+                            //string querry = "insert into Attendane values (@id, @date)";
+                            //if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+                            //    Dataconnecttion.GetConnection().Open();
+                            //command = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                            //command.Parameters.AddWithValue("@id", Int32.Parse(label));
+                            //command.Parameters.AddWithValue("@date", DateTime.Now);
+                            //command.ExecuteNonQuery();
+                            //Dataconnecttion.GetConnection().Close();
                             AttendanceWorker temp = new AttendanceWorker();
                             temp.name = worker.Name;
                             temp.id = Int32.Parse(label);
                             temp.date = DateTime.Now;
                             Attendance.Items.Add(new { id = worker.Id,Name = worker.Name, TimeIn = DateTime.Now });
+                            workerLabels.Remove(worker);
                         });
                     }
                 }
@@ -203,7 +209,15 @@ namespace FaceDetectionAttendance.MVVM.View
                 bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             VideoDisplay.Source = bitmapSource;
         }
-
+        private bool checkId(int id)
+        {
+            for(int i =0; i < workerLabels.Count; i++)
+            {
+                if (workerLabels[i].Id == id)
+                    return true;
+            }
+            return false;
+        }
         private void EndBtn_Click(object sender, RoutedEventArgs e)
         {
             //Attendance.ItemsSource= AttendList;
