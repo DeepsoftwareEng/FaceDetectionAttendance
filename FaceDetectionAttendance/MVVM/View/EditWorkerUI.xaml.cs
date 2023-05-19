@@ -24,5 +24,14 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             InitializeComponent();
         }
+        private void Backbtn_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.GoBack();
+        }
+
+        private void Facultycbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

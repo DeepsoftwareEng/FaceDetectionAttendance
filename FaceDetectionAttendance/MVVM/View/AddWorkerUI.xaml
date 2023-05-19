@@ -24,7 +24,8 @@
         </TextBox>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Full Name" VerticalAlignment="Top" Width="299" FontSize="28" Margin="153,231,0,0"/>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Faculty:" VerticalAlignment="Center" Width="299" FontSize="28" Margin="153,0,0,0" />
-        <ComboBox x:Name="Facultycbb" HorizontalAlignment="Left" Height="123" Margin="259,423,0,0" VerticalAlignment="Top" Width="112"/>
+        <ComboBox x:Name="Falcutybox" HorizontalAlignment="Left" Height="123" Margin="259,423,0,0" VerticalAlignment="Top" Width="112" />
+       
 
 
         <Button x:Name="Backbtn" Click="Backbtn_Click" Content="Back" HorizontalAlignment="Left" Height="32" Margin="439,806,0,0" VerticalAlignment="Top" Width="78"/>

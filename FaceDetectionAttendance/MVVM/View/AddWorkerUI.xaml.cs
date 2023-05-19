@@ -18,13 +18,14 @@ namespace FaceDetectionAttendance.MVVM.View
         public AddWorkerUI()
         {
             InitializeComponent();
+            Add_SetComboBoxData();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(FullNametxt.Text) ||
                Dobtxt.Text.Length == 0 ||
-               Facultycbb.SelectedItem == null
+               Falcutybox.SelectedItem == null
                )
             {
                 MessageBox.Show("Hãy nhập đủ thông tin.");
@@ -32,12 +33,12 @@ namespace FaceDetectionAttendance.MVVM.View
             }
             string fullname = FullNametxt.Text;
             string DoB = Dobtxt.Text;
-            string faculty = Facultycbb.SelectedItem.ToString();
+            string faculty =    Falcutybox.SelectedItem.ToString();
             // string role = Rolecbb.SelectedItem.ToString();
             // BitmapImage image = ((ImageBrush)Imagebd.Background).ImageSource as BitmapImage;
             FullNametxt.Text = "";
             Dobtxt.Text = "";
-            Facultycbb.SelectedItem = null;
+            Falcutybox.SelectedItem = null;
             //Rolecbb.SelectedItem = null;
             // Imagebd.Background = null;
 
@@ -56,7 +57,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 SQLcommand = new SqlCommand(querry, dtc.GetConnection());
                 SQLcommand.Parameters.Add("@fullname", SqlDbType.NVarChar).Value = FullNametxt.Text;
                 SQLcommand.Parameters.Add("@birth", SqlDbType.Date).Value = Dobtxt.Text;
-                SQLcommand.Parameters.Add("@fid", SqlDbType.NVarChar).Value = Facultycbb.SelectedItem.ToString();
+                SQLcommand.Parameters.Add("@fid", SqlDbType.NVarChar).Value = Falcutybox.SelectedItem.ToString();
                 SQLcommand.Parameters.Add("@images", SqlDbType.NVarChar).Value = FullNametxt.Text;
                 SQLcommand.ExecuteNonQuery();
             }
@@ -70,6 +71,21 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             this.NavigationService.GoBack();
         }
+        private void Add_SetComboBoxData()
+        {
 
-    }
-}
+            string querry = "Select* from Faculty";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
+            SQLcommand = new SqlCommand(querry, dtc.GetConnection());
+            SqlDataReader reader = SQLcommand.ExecuteReader();
+            while (reader.Read())
+            {
+                Faculty a = new Faculty();
+                a.IdFaculty = reader.GetString(0);
+                a.NameFaculty = reader.GetString(1);
+                Falcutybox.Items.Add(a.IdFaculty);
+            }
+           
+        }
+    } }

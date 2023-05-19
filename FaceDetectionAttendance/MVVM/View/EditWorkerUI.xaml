@@ -14,7 +14,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="286,16,0,0" TextWrapping="Wrap" Text="Faculty :" VerticalAlignment="Top" Height="22" Width="122" FontSize="18" FontWeight="Bold" FontFamily="Arial"/>
         <TextBlock HorizontalAlignment="Left" Margin="286,53,0,0" TextWrapping="Wrap" Text="ISEKAI COMPANY" VerticalAlignment="Top" Height="20" Width="243" FontSize="18" FontWeight="Bold"/>
         <TextBlock HorizontalAlignment="Left" Margin="785,30,0,0" TextWrapping="Wrap" Text="Worker Management" VerticalAlignment="Top" Height="40" Width="391" FontSize="32" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Height="54" Margin="542,158,0,0" TextWrapping="Wrap" Text="Add Worker" VerticalAlignment="Top" Width="299" FontSize="28"/>
+        <TextBlock HorizontalAlignment="Left" Height="54" Margin="542,158,0,0" TextWrapping="Wrap" Text="Edit Worker" VerticalAlignment="Top" Width="299" FontSize="28"/>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Full Name" VerticalAlignment="Top" Width="299" FontSize="28" Margin="153,231,0,0"/>
         <TextBox x:Name="FullNametxt" HorizontalAlignment="Left" Height="32" Margin="153,285,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="299"/>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Day of Birth" VerticalAlignment="Top" Width="300" FontSize="28" Margin="151,322,0,0"/>
@@ -22,9 +22,9 @@
         </TextBox>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Full Name" VerticalAlignment="Top" Width="299" FontSize="28" Margin="153,231,0,0"/>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Faculty:" VerticalAlignment="Center" Width="299" FontSize="28" Margin="153,0,0,0" />
-        <ComboBox x:Name="Facultycbb" HorizontalAlignment="Left" Height="123" Margin="259,423,0,0" VerticalAlignment="Top" Width="112"/>
+        <ComboBox x:Name="Facultycbb" HorizontalAlignment="Left" Height="123" Margin="259,423,0,0" VerticalAlignment="Top" Width="112" SelectionChanged="Facultycbb_SelectionChanged"/>
         <Button x:Name="Backbtn" Click="Backbtn_Click" Content="Back" HorizontalAlignment="Left" Height="32" Margin="439,806,0,0" VerticalAlignment="Top" Width="78"/>
-        <Button Content="Save" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="763,806,0,0" Click="Button_Click"/>
+        <Button Content="Save" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="763,806,0,0" />
         <Button Content="Start" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="828,653,0,0" />
         <Button Content="Add image" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="1052,653,0,0" />
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="400" Margin="763,231,0,0" VerticalAlignment="Top" Width="400">

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FaceDetectionAttendance.MVVM.Model;
+using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +22,71 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class WorkerManageUI : Page
     {
-        public WorkerManageUI()
+        Dataconnecttion dtc = new Dataconnecttion();
+        SqlCommand cmd = new SqlCommand();
+        private string _faculty;
+        public WorkerManageUI(string username)
         {
             InitializeComponent();
+            getFid(username);
+            setData();
         }
-
+        private void getFid(string username)
+        {
+            string query = "Select fid from Account where username = @username";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
+            cmd = new SqlCommand(query, dtc.GetConnection());
+            try
+            {
+                cmd.Parameters.AddWithValue("@username", username);
+                _faculty = cmd.ExecuteScalar().ToString();
+                dtc.GetConnection().Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void setData()
+        {
+            string query = "Select id,fullname, birth, fid from WorkerList Where fid = @fid";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
+            cmd = new SqlCommand(query, dtc.GetConnection());
+            try
+            {
+                cmd.Parameters.AddWithValue("@fid", _faculty);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int id = Convert.ToInt32(reader.GetInt32(0));
+                    string fullname = reader.GetString(1);
+                    DateTime dob = reader.GetDateTime(2);
+                    string fid = reader.GetString(3);
+                    Workertxt.Items.Add(new { id = id, fullname = fullname, dob = dob, fid = fid });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            this.NavigationService.Navigate(new AddWorkerUI());
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new EditWorkerUI());
+        }
+
+        
+       
+            
+        
+
+    
     }
 }
