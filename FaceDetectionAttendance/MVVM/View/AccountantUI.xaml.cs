@@ -48,6 +48,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
             }
         }
+        // test combobox succefull
         public AccountantUI()
         {
 
