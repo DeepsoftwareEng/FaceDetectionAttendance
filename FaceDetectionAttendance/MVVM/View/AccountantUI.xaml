@@ -15,17 +15,20 @@
             <TextBlock Text="Attendance" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
+            <TextBox Name="Year" Canvas.Left="176" TextWrapping="Wrap" Canvas.Top="144" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"/>
+            <TextBlock Canvas.Left="144" TextWrapping="Wrap" Text="Year :" Canvas.Top="148" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         </Canvas>
         <TextBlock HorizontalAlignment="Left" Margin="12,122,0,0" TextWrapping="Wrap" Text="Faculity Name:" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="12,148,0,0" TextWrapping="Wrap" Text="Month: " VerticalAlignment="Top"/>
         <ComboBox Name="facultycbb" HorizontalAlignment="Left" Margin="106,118,0,0" VerticalAlignment="Top" Width="120"/>
-        <ComboBox Name="Monthcbb" HorizontalAlignment="Left" Margin="106,144,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox Name="Monthcbb" HorizontalAlignment="Left" Margin="58,144,0,0" VerticalAlignment="Top" Width="50" SelectionChanged="Monthcbb_SelectionChanged"/>
         <DataGrid x:Name="WorkersDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Workers}" Margin="3,192,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="45" />
+                <DataGridTextColumn Header="ID" Binding="{Binding ID_Worker}" Width="30" />
+                <DataGridTextColumn Header="Workers Name" Binding="{Binding WorkerName}" Width="50" />
             </DataGrid.Columns>
         </DataGrid>
-        
+
     </Grid>
 </Page>

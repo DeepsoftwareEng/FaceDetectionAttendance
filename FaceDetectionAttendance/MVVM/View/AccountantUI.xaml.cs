@@ -54,45 +54,80 @@ namespace FaceDetectionAttendance.MVVM.View
 
             InitializeComponent();
             Add_SetComboBoxData();
-            DataContext = this;
-
-            Workers = new ObservableCollection<Worker>();
-
-            // Generate some sample data
-            Random random = new Random();
-            for (int i = 0; i < 10; i++)
-            {
-                Worker worker = new Worker { WorkerName = "Worker " + (i + 1) };
-                for (int j = 0; j < 31; j++)
-                {
-                    int shift = random.Next(1, 2); // Random number between 1 and 3
-                    worker.Shifts.Add(shift);
-                }
-                Workers.Add(worker);
-            }
-
-            // Add DataGrid columns dynamically
-            for (int i = 1; i <= 31; i++)
-            {
-                DataGridTextColumn column = new DataGridTextColumn();
-                column.Header = i.ToString();
-                column.Binding = new Binding($"Shifts[{i - 1}]");
-                WorkersDataGrid.Columns.Add(column);
-            }
+            reloaddatagrid();
+            
 
 
         }
 
+        private void Monthcbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            reloaddatagrid();
+            
+             
+        }
+        private void reloaddatagrid() 
+        {
+            DataContext = this;
+
+            WorkersDataGrid.Columns.Clear();
+
+            //Workers = new ObservableCollection<Worker>();
+
+            List<Worker> source= new List<Worker>();
+            // Generate some sample data
+            Random random = new Random();
+            for (int i = 0; i < 10; i++)
+            {
+                List<int> shifts = new List<int>();
+        
+                for (int j = 0; j < 31; j++)
+                {
+                    int shift = random.Next(1, 4); // Random number between 1 and 3
+                    shifts.Add(shift);
+                }
+                Worker worker = new Worker(i, "Worker" + (i + 1), shifts);
+                source.Add(worker);
+            }
+            WorkersDataGrid.ItemsSource = source;
+            // Add DataGrid columns dynamically
+            DataGridTextColumn column1 = new DataGridTextColumn();
+            column1.Header = "ID";
+            column1.Binding = new Binding("ID_Worker");
+            WorkersDataGrid.Columns.Add(column1);
+
+            DataGridTextColumn column2 = new DataGridTextColumn();
+            column2.Header = "Name";
+            column2.Binding = new Binding("WorkerName");
+            WorkersDataGrid.Columns.Add(column2);
+
+
+            for (int i = 1; i <= 31; i++)
+            {
+                DataGridTextColumn column = new DataGridTextColumn();
+                column.Header = i.ToString() + "/" + Monthcbb.SelectedValue;
+                column.Binding = new Binding($"Shifts[{i - 1}]");
+                WorkersDataGrid.Columns.Add(column);
+            }
+
+        }
     }
 
     public class Worker
     {
+        public int ID_Worker { get; set; }
         public string WorkerName { get; set; }
         public List<int> Shifts { get; set; }
 
-        public Worker()
+        public Worker( )
         {
             Shifts = new List<int>();
+        }
+        public Worker(int ID, String Name, List<int>shifts) 
+        {
+            this.ID_Worker = ID;
+            this.WorkerName = Name;
+            Shifts = shifts;
         }
     }
 
