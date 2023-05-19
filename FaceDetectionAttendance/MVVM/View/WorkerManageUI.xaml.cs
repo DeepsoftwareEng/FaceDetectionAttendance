@@ -77,16 +77,25 @@ namespace FaceDetectionAttendance.MVVM.View
             this.NavigationService.Navigate(new AddWorkerUI());
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new EditWorkerUI());
-        }
-
-        
-       
+            //edit
+            WorkerList worker = new WorkerList();   
+            var temp = Workertxt.SelectedItems;
+            if (temp != null)
+            {
+                dynamic selected = temp;
+                worker.Fullname = selected.fullname;
+                worker.Birth = DateTime.Parse(selected.dob);
+                worker.Fid = selected.fid;
+                this.NavigationService.Navigate(new EditWorkerUI(worker));
+            }
+            else
+            {
+                MessageBox.Show("Select a worker please");
+            }
             
-        
-
-    
+        }
     }
 }

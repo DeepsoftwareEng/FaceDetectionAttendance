@@ -22,16 +22,16 @@
         </TextBox>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Full Name" VerticalAlignment="Top" Width="299" FontSize="28" Margin="153,231,0,0"/>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Faculty:" VerticalAlignment="Center" Width="299" FontSize="28" Margin="153,0,0,0" />
-        <ComboBox x:Name="Facultycbb" HorizontalAlignment="Left" Height="123" Margin="259,423,0,0" VerticalAlignment="Top" Width="112" SelectionChanged="Facultycbb_SelectionChanged"/>
+        <ComboBox x:Name="Facultycbb" HorizontalAlignment="Left" Height="27" Margin="253,431,0,0" VerticalAlignment="Top" Width="112"/>
         <Button x:Name="Backbtn" Click="Backbtn_Click" Content="Back" HorizontalAlignment="Left" Height="32" Margin="439,806,0,0" VerticalAlignment="Top" Width="78"/>
         <Button Content="Save" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="763,806,0,0" />
-        <Button Content="Start" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="828,653,0,0" />
-        <Button Content="Add image" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="1052,653,0,0" />
+        <Button Content="Start" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="828,653,0,0" Click="Button_Click" />
+        <Button Content="Add image" HorizontalAlignment="Left" Height="32"  VerticalAlignment="Top" Width="78" Margin="1052,653,0,0" Click="Button_Click_1" />
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="400" Margin="763,231,0,0" VerticalAlignment="Top" Width="400">
-            <Image HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="400"/>
+            <Image x:Name="webcam" HorizontalAlignment="Left" Height="400" VerticalAlignment="Top" Width="400"/>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="200"  VerticalAlignment="Top" Width="200" Margin="153,569,0,0">
-            <Image HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="200"/>
+            <Image x:Name="ResultImg" HorizontalAlignment="Left" Height="200" VerticalAlignment="Top" Width="200"/>
         </Border>
     </Grid>
 </Page>

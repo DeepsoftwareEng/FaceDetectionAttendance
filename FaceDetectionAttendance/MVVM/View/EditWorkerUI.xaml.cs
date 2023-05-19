@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Emgu.CV;
+using Emgu.CV.Structure;
+using FaceDetectionAttendance.MVVM.Model;
+using Microsoft.Data.SqlClient;
+using System;
+using System.Drawing;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -20,18 +18,144 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class EditWorkerUI : Page
     {
-        public EditWorkerUI()
+        private string fullname;
+        Dataconnecttion dtc = new Dataconnecttion();
+        SqlCommand cmd = new SqlCommand();
+        VideoCapture capture;
+        static readonly CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_frontalface_defult.xml");
+        Image<Bgr, byte> image = null;
+        DispatcherTimer timer = new DispatcherTimer();
+        private bool iscapturing = false;
+        public EditWorkerUI(WorkerList worker)
         {
             InitializeComponent();
+            fullname = worker.Fullname;
+            setComboboxData();
+            setCurrentInfor(worker);
+        }
+        private void setComboboxData()
+        {
+            string query = "Select Fid from Faculty Where Id_faculty";
+            if(dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open(); 
+            try
+            {
+                cmd = new SqlCommand(query, dtc.GetConnection());
+                SqlDataReader reader = cmd.ExecuteReader();
+                while(reader.Read()) 
+                {
+                    Facultycbb.Items.Add(reader.GetString(0));                    
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
+        private void setCurrentInfor(WorkerList worker)
+        {
+            FullNametxt.Text = worker.Fullname;
+            Dobtxt.Text = worker.Birth.ToString();
+            Facultycbb.SelectedItem = worker.Fid; 
         }
         private void Backbtn_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.GoBack();
         }
 
-        private void Facultycbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
+            capture = new VideoCapture();
+            capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth,200);
+            capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 200);
+            timer.Tick += Timer_Tick;
+            timer.Interval = TimeSpan.FromMilliseconds(60);
+            timer.Start();
+        }
 
+        async void Timer_Tick(object? sender, EventArgs e)
+        {
+            Mat frame = new Mat();
+            capture.Read(frame);
+            // Convert the image to a BitmapSource that can be displayed in the Image control
+            Image<Bgr, byte> images = frame.ToImage<Bgr, byte>(); 
+            //
+            Rectangle[] faces = faceDetector.DetectMultiScale(images.Convert<Gray, byte>(), 1.2, 10, System.Drawing.Size.Empty);
+
+            // Draw rectangles around the faces
+            foreach (Rectangle face in faces)
+            {
+                images.Draw(face, new Bgr(System.Drawing.Color.Red), 2);
+            }
+            BitmapSource bitmap = BitmapSourceConvert.ToBitmapSource(images);
+            // Set the Image control's Source property to the BitmapSource
+            webcam.Source = bitmap;
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            iscapturing = true;
+            using (capture)
+            {
+
+                // Capture images from the webcam
+                while (true)
+                {
+                    Mat frame = new Mat();
+                    capture.Read(frame);
+                    image = frame.ToImage<Bgr, byte>();
+
+                    // Detect faces in the image
+                    Rectangle[] faces = faceDetector.DetectMultiScale(image.Convert<Gray, byte>(), 1.2, 10, System.Drawing.Size.Empty);
+
+                    // Draw rectangles around the faces
+                    foreach (Rectangle face in faces)
+                    {
+                        image.Draw(face, new Bgr(System.Drawing.Color.Red), 2);
+                    }
+
+                    // Update the image control with the latest image
+                    //result.Source = BitmapSourceConvert.ToBitmapSource(image);
+                    // Wait for the user to click on the image control
+                    if (iscapturing == true)
+                    {
+                        // Crop the face image
+                        Rectangle face = faces[0];
+                        Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
+                        string nameimg = FullNametxt.Text;
+                        string imagePath = "D:\\" + nameimg + ".png";
+
+                        if (File.Exists(imagePath))
+                        {
+                            ResultImg.Source = null;
+                            File.Delete(imagePath);
+                        }
+                        Resize(faceImage).Save(imagePath);
+
+                        BitmapImage bitmap = new BitmapImage();
+                        bitmap.BeginInit();
+                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
+                        bitmap.EndInit();
+
+                        ResultImg.Source = bitmap;
+
+                        MessageBox.Show("Worker added successfully.");
+
+                    }
+                    timer.Stop();
+                    capture.Dispose();
+                    break;
+                }
+            }
+        }
+        Image<Gray, byte> Resize(Image<Gray, byte> image)
+        {
+            System.Drawing.Size size = new System.Drawing.Size(200, 200);
+            Image<Gray, byte> temp = image.Resize(size.Width, size.Height, Emgu.CV.CvEnum.Inter.Cubic);
+            return temp;
         }
     }
 }
+
