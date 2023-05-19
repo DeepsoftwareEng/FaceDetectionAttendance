@@ -65,49 +65,46 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void Searchbtn_Click(object sender, RoutedEventArgs e)
         {
-            string username = Usernametxb.Text;
+            Accountdtg.Items.Clear();
+            string username = "%" + Usernametxb.Text + "%";
 
             string query = "SELECT * FROM Account WHERE username LIKE @Username";
             List<Account> accounts = new List<Account>();
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
+            SqlCommand command = new SqlCommand(query, dtc.GetConnection());
+            command.Parameters.AddWithValue("@Username", username);
+            try
+            {
+                SqlDataReader reader = command.ExecuteReader();
 
-            
-                if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
-                    dtc.GetConnection().Open();
-
-                SqlCommand command = new SqlCommand(query, dtc.GetConnection());
-                command.Parameters.AddWithValue("@Username", "%" + username + "%");
-
-                try
+                while (reader.Read())
                 {
-                    SqlDataReader reader = command.ExecuteReader();
-
-                    while (reader.Read())
+                    int temp = reader.GetInt32(2);
+                    string role;
+                    if (temp == 1)
                     {
-                        int temp = reader.GetInt32(4);
-                        string role;
-                        if (temp == 1)
-                        {
-                            role = "Admin";
-                        }
-                        else
-                        {
-                            role = "Staff";
-                        }
-
-                        string Username = reader.GetString(0);
-                        string Passwords = reader.GetString(1);
-                        string Fid = reader.GetString(2);
-                        string Gmail = reader.GetString(3);
-                        string Roles = role;
-                        Accountdtg.Items.Add(new { username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles });
+                        role = "Admin";
+                    }
+                    else
+                    {
+                        role = "Staff";
                     }
 
-                    reader.Close();
+                    string Username = reader.GetString(0);
+                    string Passwords = reader.GetString(1);
+                    string Fid = reader.GetString(5);
+                    string Gmail = reader.GetString(3);
+                    string Roles = role;
+                    Accountdtg.Items.Add(new { username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles });
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error: " + ex.Message);
-                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
 
         private void Addbtn_Click(object sender, RoutedEventArgs e)
