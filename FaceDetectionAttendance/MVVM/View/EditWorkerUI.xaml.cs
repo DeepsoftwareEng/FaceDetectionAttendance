@@ -25,14 +25,18 @@ namespace FaceDetectionAttendance.MVVM.View
         Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd = new SqlCommand();
         VideoCapture capture;
-        static readonly CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_frontalface_defult.xml");
-        Image<Bgr, byte> image = null;
-        DispatcherTimer timer = new DispatcherTimer();
-        private bool iscapturing = false;
+
         private static string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
         private static string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
         private static string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
         private static string resourceFolderPath = System.IO.Path.Combine(fix, "Resource");
+        private static string XMLFolderPath = System.IO.Path.Combine(fix, "haarcascade_frontalface_default.xml");
+
+        static readonly CascadeClassifier faceDetector = new CascadeClassifier($"{XMLFolderPath}");
+        Image<Bgr, byte> image = null;
+        DispatcherTimer timer = new DispatcherTimer();
+        private bool iscapturing = false;
+
         public EditWorkerUI(WorkerList worker)
         {
             InitializeComponent();
@@ -43,7 +47,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void setComboboxData()
         {
-            string query = "Select Fid from Faculty Where Id_faculty";
+            string query = "SELECT id_faculty from Faculty";
             if(dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open(); 
             try
@@ -54,6 +58,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 {
                     Facultycbb.Items.Add(reader.GetString(0));                    
                 }
+                reader.Close();
             }
             catch(Exception ex)
             {

@@ -22,7 +22,15 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         private SqlCommand SQLcommand;
         VideoCapture capture;
-        static readonly CascadeClassifier faceDetector = new CascadeClassifier("C:\\Users\\MRSTHAO\\Source\\Repos\\DeepsoftwareEng\\FaceDetectionAttendance\\FaceDetectionAttendance\\haarcascade_frontalface_default.xml");
+
+        private static string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+        private static string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
+        private static string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
+        private static string resourceFolderPath = System.IO.Path.Combine(fix, "Resource");
+        private static string XMLFolderPath = System.IO.Path.Combine(fix, "haarcascade_frontalface_default.xml");
+
+        static readonly CascadeClassifier faceDetector = new CascadeClassifier($"{XMLFolderPath}");
+       
         Image<Bgr, byte> image = null;
         DispatcherTimer timer = new DispatcherTimer();
         private bool iscapturing = false;
@@ -65,16 +73,7 @@ namespace FaceDetectionAttendance.MVVM.View
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
 
-            string querry1 = "SELECT MAX(id) AS MaxID FROM WorkerList";
-            SQLcommand = new SqlCommand(querry1, dtc.GetConnection());
-            SqlDataReader reader = SQLcommand.ExecuteReader();
-            int id_worker = 0;
-            while(reader.Read())
-            {
-                if (reader.IsDBNull(reader.GetOrdinal("MaxID"))) id_worker++;
-                else id_worker = reader.GetInt32(0) + 1; 
-            }
-            reader.Close();
+            int id_worker = getIdWorker_Next();
 
             try
             {
@@ -84,6 +83,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 SQLcommand.Parameters.Add("@fid", SqlDbType.NVarChar).Value = faculty;
                 SQLcommand.Parameters.Add("@images", SqlDbType.NVarChar).Value = fullname+id_worker;
                 SQLcommand.ExecuteNonQuery();
+                MessageBox.Show("Worker added successfully.");
             }
             catch (Exception ex)
             {
@@ -143,10 +143,10 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Capture_Click(object sender, RoutedEventArgs e)
         {
-            string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
-            string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
-            string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
-            string resourceFolderPath = Path.Combine(fix, "Resource");
+            //string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            //string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
+            //string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
+            //string resourceFolderPath = Path.Combine(fix, "Resource");
             iscapturing = true;
             using (capture)
             {
@@ -178,7 +178,8 @@ namespace FaceDetectionAttendance.MVVM.View
                             Rectangle face = faces[0];
                             Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
                             string nameimg = FullNametxt.Text;
-                            string imagePath = $"{resourceFolderPath}\\WorkerImage\\{Falcutybox.SelectedItem.ToString()}\\{nameimg}.png";
+                            int idNext = getIdWorker_Next();
+                            string imagePath = $"{resourceFolderPath}\\WorkerImage\\{Falcutybox.SelectedItem.ToString()}\\{nameimg}{idNext}.png";
 
                             if (File.Exists(imagePath))
                             {
@@ -195,7 +196,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
                             ResultImg.Source = bitmap;
 
-                            MessageBox.Show("Worker added successfully.");
+                            MessageBox.Show("Add worker picture done.");
                         }
                         catch(Exception ex)
                         {
@@ -210,6 +211,21 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
             }
         }
+        private int getIdWorker_Next()
+        {
+            string querry1 = "SELECT MAX(id) AS MaxID FROM WorkerList";
+            SQLcommand = new SqlCommand(querry1, dtc.GetConnection());
+            SqlDataReader reader = SQLcommand.ExecuteReader();
+            int id_worker = 0;
+            while (reader.Read())
+            {
+                if (reader.IsDBNull(reader.GetOrdinal("MaxID"))) id_worker++;
+                else id_worker = reader.GetInt32(0) + 1;
+            }
+            reader.Close();
+            return id_worker;
+        }
+
         Image<Gray, byte> Resize(Image<Gray, byte> image)
         {
             System.Drawing.Size size = new System.Drawing.Size(200, 200);
