@@ -10,9 +10,12 @@
       Title="AddWorkerUI">
 
     <Grid>
-        <TextBlock HorizontalAlignment="Left" Margin="286,16,0,0" TextWrapping="Wrap" Text="Faculty :" VerticalAlignment="Top" Height="22" Width="122" FontSize="18" FontWeight="Bold" FontFamily="Arial"/>
-        <TextBlock HorizontalAlignment="Left" Margin="286,53,0,0" TextWrapping="Wrap" Text="ISEKAI COMPANY" VerticalAlignment="Top" Height="20" Width="243" FontSize="18" FontWeight="Bold"/>
-        <TextBlock HorizontalAlignment="Left" Margin="785,30,0,0" TextWrapping="Wrap" Text="Worker Management" VerticalAlignment="Top" Height="40" Width="391" FontSize="32" FontWeight="Bold"/>
+        <Canvas>
+            <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
+            <TextBlock Text="Manage Worker" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+            <TextBlock x:Name="FacultyText" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
+        </Canvas>
         <TextBlock HorizontalAlignment="Left" Height="54" Margin="542,158,0,0" TextWrapping="Wrap" Text="Add Worker" VerticalAlignment="Top" Width="299" FontSize="28"/>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Full Name" VerticalAlignment="Top" Width="299" FontSize="28" Margin="153,231,0,0"/>
         <TextBox x:Name="FullNametxt" HorizontalAlignment="Left" Height="32" Margin="153,285,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="299"/>

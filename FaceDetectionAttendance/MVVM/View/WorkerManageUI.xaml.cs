@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,12 +83,12 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             //edit
             WorkerList worker = new WorkerList();   
-            var temp = Workertxt.SelectedItems;
+            var temp = Workertxt.SelectedItem; 
             if (temp != null)
             {
                 dynamic selected = temp;
                 worker.Fullname = selected.fullname;
-                worker.Birth = DateTime.Parse(selected.dob);
+                worker.Birth = selected.dob;
                 worker.Fid = selected.fid;
                 this.NavigationService.Navigate(new EditWorkerUI(worker));
             }
