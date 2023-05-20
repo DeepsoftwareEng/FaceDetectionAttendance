@@ -22,7 +22,7 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         private SqlCommand SQLcommand;
         VideoCapture capture;
-        static readonly CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_frontalface_defult.xml");
+        static readonly CascadeClassifier faceDetector = new CascadeClassifier("C:\\Users\\MRSTHAO\\Source\\Repos\\DeepsoftwareEng\\FaceDetectionAttendance\\FaceDetectionAttendance\\haarcascade_frontalface_default.xml");
         Image<Bgr, byte> image = null;
         DispatcherTimer timer = new DispatcherTimer();
         private bool iscapturing = false;
@@ -45,7 +45,7 @@ namespace FaceDetectionAttendance.MVVM.View
             string fullname = FullNametxt.Text;
             DateTime DoB = DateTime.ParseExact($"{Dobtxt.Text}", "dd/MM/yyyy",
                                         CultureInfo.InvariantCulture); ;
-            string faculty =    Falcutybox.SelectedItem.ToString();
+            string faculty = Falcutybox.SelectedItem.ToString();
             FullNametxt.Text = "";
             Dobtxt.Text = "";
             Falcutybox.SelectedItem = null;
@@ -60,13 +60,28 @@ namespace FaceDetectionAttendance.MVVM.View
             string querry = "Insert into WorkerList Values(@fullname, @birth,@images, @fid)";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
+
+            string querry1 = "SELECT MAX(id) AS MaxID FROM WorkerList";
+            SQLcommand = new SqlCommand(querry1, dtc.GetConnection());
+            SqlDataReader reader = SQLcommand.ExecuteReader();
+            int id_worker = 0;
+            while(reader.Read())
+            {
+                if (reader.IsDBNull(reader.GetOrdinal("MaxID")))
+                {
+                    id_worker++;
+                }
+                else { id_worker = reader.GetInt32(0) + 1; }
+            }
+            reader.Close();
+
             try
             {
                 SQLcommand = new SqlCommand(querry, dtc.GetConnection());
-                SQLcommand.Parameters.Add("@fullname", SqlDbType.NVarChar).Value = FullNametxt.Text;
-                SQLcommand.Parameters.Add("@birth", SqlDbType.Date).Value = Dobtxt.Text;
-                SQLcommand.Parameters.Add("@fid", SqlDbType.NVarChar).Value = Falcutybox.SelectedItem.ToString();
-                SQLcommand.Parameters.Add("@images", SqlDbType.NVarChar).Value = FullNametxt.Text;
+                SQLcommand.Parameters.Add("@fullname", SqlDbType.NVarChar).Value = fullname;
+                SQLcommand.Parameters.Add("@birth", SqlDbType.Date).Value = DoB.Date.ToString();
+                SQLcommand.Parameters.Add("@fid", SqlDbType.NVarChar).Value = faculty;
+                SQLcommand.Parameters.Add("@images", SqlDbType.NVarChar).Value = fullname+id_worker;
                 SQLcommand.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -156,28 +171,36 @@ namespace FaceDetectionAttendance.MVVM.View
                     // Wait for the user to click on the image control
                     if (iscapturing == true)
                     {
-                        // Crop the face image
-                        Rectangle face = faces[0];
-                        Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
-                        string nameimg = FullNametxt.Text;
-                        string imagePath = $"{resourceFolderPath}\\WorkerImage\\{Falcutybox.SelectedItem.ToString()}\\{nameimg}.png";
-
-                        if (File.Exists(imagePath))
+                        try
                         {
-                            ResultImg.Source = null;
-                            File.Delete(imagePath);
+                            // Crop the face image
+                            Rectangle face = faces[0];
+                            Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
+                            string nameimg = FullNametxt.Text;
+                            string imagePath = $"{resourceFolderPath}\\WorkerImage\\{Falcutybox.SelectedItem.ToString()}\\{nameimg}.png";
+
+                            if (File.Exists(imagePath))
+                            {
+                                ResultImg.Source = null;
+                                File.Delete(imagePath);
+                            }
+                            Resize(faceImage).Save(imagePath);
+
+                            BitmapImage bitmap = new BitmapImage();
+                            bitmap.BeginInit();
+                            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                            bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
+                            bitmap.EndInit();
+
+                            ResultImg.Source = bitmap;
+
+                            MessageBox.Show("Worker added successfully.");
                         }
-                        Resize(faceImage).Save(imagePath);
-
-                        BitmapImage bitmap = new BitmapImage();
-                        bitmap.BeginInit();
-                        bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                        bitmap.UriSource = new Uri(imagePath, UriKind.Absolute);
-                        bitmap.EndInit();
-
-                        ResultImg.Source = bitmap;
-
-                        MessageBox.Show("Worker added successfully.");
+                        catch(Exception ex)
+                        {
+                            MessageBox.Show("Please, try add picture again", "Error add picture", MessageBoxButton.OK);
+                        }
+                        
 
                     }
                     timer.Stop();
