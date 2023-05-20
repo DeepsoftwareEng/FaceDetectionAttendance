@@ -26,10 +26,14 @@ namespace FaceDetectionAttendance.MVVM.View
         Image<Bgr, byte> image = null;
         DispatcherTimer timer = new DispatcherTimer();
         private bool iscapturing = false;
-        public AddWorkerUI()
+        private string _faculty;
+
+        public AddWorkerUI(string faculty)
         {
             InitializeComponent();
+            this._faculty = faculty;
             Add_SetComboBoxData();
+            FacultyText.Text = faculty;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -44,7 +48,7 @@ namespace FaceDetectionAttendance.MVVM.View
             }
             string fullname = FullNametxt.Text;
             DateTime DoB = DateTime.ParseExact($"{Dobtxt.Text}", "dd/MM/yyyy",
-                                        CultureInfo.InvariantCulture); ;
+                                        CultureInfo.InvariantCulture); 
             string faculty = Falcutybox.SelectedItem.ToString();
             FullNametxt.Text = "";
             Dobtxt.Text = "";
@@ -67,11 +71,8 @@ namespace FaceDetectionAttendance.MVVM.View
             int id_worker = 0;
             while(reader.Read())
             {
-                if (reader.IsDBNull(reader.GetOrdinal("MaxID")))
-                {
-                    id_worker++;
-                }
-                else { id_worker = reader.GetInt32(0) + 1; }
+                if (reader.IsDBNull(reader.GetOrdinal("MaxID"))) id_worker++;
+                else id_worker = reader.GetInt32(0) + 1; 
             }
             reader.Close();
 
@@ -109,7 +110,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 a.NameFaculty = reader.GetString(1);
                 Falcutybox.Items.Add(a.IdFaculty);
             }
-           
+            Falcutybox.SelectedIndex = Falcutybox.Items.IndexOf(_faculty);
         }
         private void Startcam_Click(object sender, RoutedEventArgs e)
         {

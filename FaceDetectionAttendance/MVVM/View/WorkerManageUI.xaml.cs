@@ -30,6 +30,7 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             InitializeComponent();
             getFid(username);
+            FacultyText.Text= _faculty;
             setData();
         }
         private void getFid(string username)
@@ -41,7 +42,7 @@ namespace FaceDetectionAttendance.MVVM.View
             try
             {
                 cmd.Parameters.AddWithValue("@username", username);
-                _faculty = cmd.ExecuteScalar().ToString();
+                this._faculty = cmd.ExecuteScalar().ToString();
                 dtc.GetConnection().Close();
             }
             catch (Exception ex)
@@ -75,7 +76,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new AddWorkerUI());
+            this.NavigationService.Navigate(new AddWorkerUI(_faculty));
         }
 
 
