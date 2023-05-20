@@ -10,6 +10,7 @@ using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using System.Globalization;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -42,15 +43,12 @@ namespace FaceDetectionAttendance.MVVM.View
                 return;
             }
             string fullname = FullNametxt.Text;
-            string DoB = Dobtxt.Text;
+            DateTime DoB = DateTime.ParseExact($"{Dobtxt.Text}", "dd/MM/yyyy",
+                                        CultureInfo.InvariantCulture); ;
             string faculty =    Falcutybox.SelectedItem.ToString();
-            // string role = Rolecbb.SelectedItem.ToString();
-            // BitmapImage image = ((ImageBrush)Imagebd.Background).ImageSource as BitmapImage;
             FullNametxt.Text = "";
             Dobtxt.Text = "";
             Falcutybox.SelectedItem = null;
-            //Rolecbb.SelectedItem = null;
-            // Imagebd.Background = null;
 
             /* add du kieu*/
             string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);

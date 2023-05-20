@@ -1,9 +1,10 @@
-﻿using Emgu.CV;
+﻿ using Emgu.CV;
 using Emgu.CV.Structure;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -19,6 +20,8 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class EditWorkerUI : Page
     {
         private string fullname;
+        private string _faculty;
+        private int id;
         Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd = new SqlCommand();
         VideoCapture capture;
@@ -26,10 +29,15 @@ namespace FaceDetectionAttendance.MVVM.View
         Image<Bgr, byte> image = null;
         DispatcherTimer timer = new DispatcherTimer();
         private bool iscapturing = false;
+        private static string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+        private static string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
+        private static string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
+        private static string resourceFolderPath = System.IO.Path.Combine(fix, "Resource");
         public EditWorkerUI(WorkerList worker)
         {
             InitializeComponent();
             fullname = worker.Fullname;
+            _faculty = worker.Fid;
             setComboboxData();
             setCurrentInfor(worker);
         }
@@ -55,9 +63,32 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void setCurrentInfor(WorkerList worker)
         {
+           
             FullNametxt.Text = worker.Fullname;
             Dobtxt.Text = worker.Birth.ToString();
-            Facultycbb.SelectedItem = worker.Fid; 
+            Facultycbb.SelectedItem = worker.Fid;
+            string query = "Select images, id from WorkerList where fullname =@fullname";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
+            cmd = new SqlCommand(query, dtc.GetConnection());
+            cmd.Parameters.AddWithValue("@fullname", fullname);
+            SqlDataReader reader = cmd.ExecuteReader();
+            string imageName =" ";
+            int idReader = 0;
+            while (reader.Read())
+            {
+                 imageName = reader.GetString(0);
+                 idReader = reader.GetInt32(1);
+            }
+            id = idReader;
+            string currentImage = $"{resourceFolderPath}\\WorkerImage\\{_faculty}\\{imageName}.png";
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+            bitmap.CacheOption = BitmapCacheOption.OnLoad;
+            bitmap.UriSource = new Uri(currentImage, UriKind.Absolute);
+            bitmap.EndInit();
+            ResultImg.Source = bitmap;
+            dtc.GetConnection().Close();
         }
         private void Backbtn_Click(object sender, RoutedEventArgs e)
         {
@@ -124,8 +155,8 @@ namespace FaceDetectionAttendance.MVVM.View
                         Rectangle face = faces[0];
                         Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
                         string nameimg = FullNametxt.Text;
-                        string imagePath = "D:\\" + nameimg + ".png";
-
+                        string imagePath = $"D:\\{nameimg}.png";
+    
                         if (File.Exists(imagePath))
                         {
                             ResultImg.Source = null;
@@ -155,6 +186,28 @@ namespace FaceDetectionAttendance.MVVM.View
             System.Drawing.Size size = new System.Drawing.Size(200, 200);
             Image<Gray, byte> temp = image.Resize(size.Width, size.Height, Emgu.CV.CvEnum.Inter.Cubic);
             return temp;
+        }
+
+        private void Save_click(object sender, RoutedEventArgs e)
+        {
+            DateTime DoB = DateTime.ParseExact($"{Dobtxt.Text}", "dd/MM/yyyy",
+                                        CultureInfo.InvariantCulture); ;
+            string query = "Update WorkerList set fullname = @fullname, Birth = @dob, fid =@fid, images = @image where id = @id";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
+            cmd = new SqlCommand(query, dtc.GetConnection());
+            cmd.Parameters.AddWithValue("@fullname" , FullNametxt.Text);
+            cmd.Parameters.AddWithValue("@dob", DoB);
+            cmd.Parameters.AddWithValue("@fid", Facultycbb.SelectedItem.ToString());
+            cmd.Parameters.AddWithValue("@image", FullNametxt.Text);
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.ExecuteNonQuery();
+            //Delete old image
+            string oldpath = $"{resourceFolderPath}\\WorkerImage\\{_faculty}\\{fullname}.png";
+            File.Delete(oldpath);
+            //Copy new image to directed folder
+            string targetpath = $"{resourceFolderPath}\\WorkerImage\\{Facultycbb.SelectedItem.ToString()}\\{FullNametxt.Text}.png";
+            File.Copy($"D:\\{FullNametxt.Text}.png", targetpath);
         }
     }
 }
