@@ -20,7 +20,7 @@ namespace FaceDetectionAttendance.MVVM.View
     public partial class AddWorkerUI : Page
     {
         private Dataconnecttion dtc = new Dataconnecttion();
-        private SqlCommand SQLcommand = new SqlCommand();
+        private SqlCommand SQLcommand;
         VideoCapture capture;
         static readonly CascadeClassifier faceDetector = new CascadeClassifier("haarcascade_frontalface_defult.xml");
         Image<Bgr, byte> image = null;
