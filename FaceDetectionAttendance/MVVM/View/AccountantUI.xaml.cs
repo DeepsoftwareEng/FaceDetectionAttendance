@@ -1,5 +1,6 @@
 ﻿using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,10 +25,10 @@ namespace FaceDetectionAttendance.MVVM.View
     /// Interaction logic for AccountantUI.xaml
     public partial class AccountantUI : Page
     {
-        public ObservableCollection<Worker> Workers { get; set; }
-        public Dataconnecttion dtc = new Dataconnecttion();
+        private Dataconnecttion dtc = new Dataconnecttion();
         public SqlCommand SQLcmd;
-        public AccountantUI(String faculty)
+        // test combobox succefull
+        public AccountantUI(string faculty)
         {
             InitializeComponent();
             Faculty_Header.Text = faculty;
@@ -37,7 +38,6 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         public void Add_SetComboBoxData()
         {
-
             string querry = "Select* from Faculty";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
@@ -59,6 +59,7 @@ namespace FaceDetectionAttendance.MVVM.View
                     break;
                 }
             }
+
             for (int i = 1; i <= 12; i++)
             {
                 Monthcbb.Items.Add(i + "");
@@ -66,23 +67,11 @@ namespace FaceDetectionAttendance.MVVM.View
                     Monthcbb.SelectedIndex = i - 1;
             }
         }
-        // test combobox succefull
-        public AccountantUI()
+        private void Monthcbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            InitializeComponent();
-            Add_SetComboBoxData();
             reloaddatagrid();
-            
-
-
         }
-
-        public void Monthcbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            reloaddatagrid();    
-        }
-        public void Year_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void Year_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             if (!char.IsDigit(e.Text, e.Text.Length - 1))
             {
@@ -90,15 +79,15 @@ namespace FaceDetectionAttendance.MVVM.View
                 message_label.Visibility = Visibility.Visible;
             }
         }
-        public void Year_TextChanged(object sender, TextChangedEventArgs e)
+        private void Year_TextChanged(object sender, TextChangedEventArgs e)
         {
             reloaddatagrid();
         }
-        public void facultycbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void facultycbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             reloaddatagrid();
         }
-        public void reloaddatagrid() 
+        private void reloaddatagrid()
         {
             if (Year.Text.Length == 0)
             {
@@ -240,28 +229,29 @@ namespace FaceDetectionAttendance.MVVM.View
             }
         }
 
+        private void WorkersDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 
     public class Worker
     {
         public int ID_Worker { get; set; }
         public string WorkerName { get; set; }
-        public List<int> Shifts { get; set; } 
-        public int sum { get; set; } 
-
-        public Worker( )
+        public List<int> Shifts { get; set; }
+        public int Sum { get; set; }
+        public Worker()
         {
             Shifts = new List<int>();
         }
-        public Worker(int ID, String Name, List<int>shifts,int sum) 
+        public Worker(int ID, String Name, List<int> shifts, int sum)
         {
             this.ID_Worker = ID;
             this.WorkerName = Name;
             Shifts = shifts;
-            this.sum = sum;
+            this.Sum = sum;
         }
     }
 
-}
-
-
+} 

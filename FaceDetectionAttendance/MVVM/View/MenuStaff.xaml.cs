@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Emgu.CV.Shape;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
 
@@ -24,10 +25,12 @@ namespace FaceDetectionAttendance.MVVM.View
     {
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
         private string _username;
+        private string faculty;
         public MenuStaff(string username)
         {
             InitializeComponent();
             setInfor(username);
+            setFaculty(username);
             _username = username;
         }
         private void WorkerManageBtn_Click(object sender, RoutedEventArgs e)
@@ -47,7 +50,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void AccountantBtn_Click(object sender, RoutedEventArgs e)
         {
-            Content.NavigationService.Navigate(new AccountantUI());
+            Content.NavigationService.Navigate(new AccountantUI(this.faculty));
         }
         void setInfor(string username)
         {
@@ -62,6 +65,23 @@ namespace FaceDetectionAttendance.MVVM.View
             source.EndInit();
             avt.Source = source;
             StaffName.Text = username;
+        }
+        void setFaculty(string username)
+        {
+            try
+            {
+                string querry = "SELECT fid FROM Account WHERE username = '" + username + "' ";
+                if (Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+                {
+                    Dataconnecttion.GetConnection().Open();
+                }
+                SqlCommand cmd = new SqlCommand(querry, Dataconnecttion.GetConnection());
+                this.faculty = Convert.ToString(cmd.ExecuteScalar());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }
