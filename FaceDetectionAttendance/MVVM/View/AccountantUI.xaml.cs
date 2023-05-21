@@ -149,7 +149,6 @@ namespace FaceDetectionAttendance.MVVM.View
                 column3.Binding = new Binding("Sum");
                 WorkersDataGrid.Columns.Add(column3);
 
-
                 // Get Data In Database
                 List<Worker> source = new List<Worker>();//items in datagrid
 
@@ -229,12 +228,17 @@ namespace FaceDetectionAttendance.MVVM.View
             }
         }
 
-        private void WorkersDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Send_Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Excel_Button_Click(object sender, RoutedEventArgs e)
         {
 
         }
     }
-
+                      
     public class Worker
     {
         public int ID_Worker { get; set; }
