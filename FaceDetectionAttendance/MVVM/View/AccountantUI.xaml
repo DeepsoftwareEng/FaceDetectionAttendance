@@ -13,10 +13,12 @@
         <Canvas>
             <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
             <TextBlock Text="Attendance" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
-            <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock Name="Faculty_Header" Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
-            <TextBox Name="Year" Canvas.Left="176" TextWrapping="Wrap" Canvas.Top="144" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"/>
+            <TextBox Name="Year" TextChanged="Year_TextChanged"  Canvas.Left="176" TextWrapping="Wrap" Canvas.Top="144" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22"/>
             <TextBlock Canvas.Left="144" TextWrapping="Wrap" Text="Year :" Canvas.Top="148" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBlock Canvas.Left="144" TextWrapping="Wrap" Text="Year :" Canvas.Top="148" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <Label Name="message_label" Foreground="Red" Content="Only number" Canvas.Left="231" Canvas.Top="142" Visibility="Collapsed"/>
 
         </Canvas>
         <TextBlock HorizontalAlignment="Left" Margin="12,122,0,0" TextWrapping="Wrap" Text="Faculity Name:" VerticalAlignment="Top"/>

@@ -24,9 +24,17 @@ namespace FaceDetectionAttendance.MVVM.View
     /// Interaction logic for AccountantUI.xaml
     public partial class AccountantUI : Page
     {
-        private ObservableCollection<Worker> Workers { get; set; }
-        private Dataconnecttion dtc = new Dataconnecttion();
+        public ObservableCollection<Worker> Workers { get; set; }
+        public Dataconnecttion dtc = new Dataconnecttion();
         public SqlCommand SQLcmd;
+        public AccountantUI(String faculty)
+        {
+            InitializeComponent();
+            Faculty_Header.Text = faculty;
+            Year.Text = DateTime.Now.Year + "";
+            Add_SetComboBoxData();
+            reloaddatagrid();
+        }
         public void Add_SetComboBoxData()
         {
 
@@ -42,10 +50,20 @@ namespace FaceDetectionAttendance.MVVM.View
                 a.NameFaculty = reader.GetString(1);
                 facultycbb.Items.Add(a.IdFaculty);
             }
+            reader.Close();
+            foreach (object item in facultycbb.Items)
+            {
+                if (item.ToString() == Faculty_Header.Text)
+                {
+                    facultycbb.SelectedItem = item;
+                    break;
+                }
+            }
             for (int i = 1; i <= 12; i++)
             {
-                Monthcbb.Items.Add( i + "");
-
+                Monthcbb.Items.Add(i + "");
+                if (i == DateTime.Now.Month)
+                    Monthcbb.SelectedIndex = i - 1;
             }
         }
         // test combobox succefull
@@ -60,74 +78,187 @@ namespace FaceDetectionAttendance.MVVM.View
 
         }
 
-        private void Monthcbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        public void Monthcbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            reloaddatagrid();    
+        }
+        public void Year_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            if (!char.IsDigit(e.Text, e.Text.Length - 1))
+            {
+                e.Handled = true;
+                message_label.Visibility = Visibility.Visible;
+            }
+        }
+        public void Year_TextChanged(object sender, TextChangedEventArgs e)
         {
             reloaddatagrid();
-            
-             
         }
-        private void reloaddatagrid() 
+        public void facultycbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataContext = this;
-
-            WorkersDataGrid.Columns.Clear();
-
-            //Workers = new ObservableCollection<Worker>();
-
-            List<Worker> source= new List<Worker>();
-            // Generate some sample data
-            Random random = new Random();
-            for (int i = 0; i < 10; i++)
-            {
-                List<int> shifts = new List<int>();
-        
-                for (int j = 0; j < 31; j++)
-                {
-                    int shift = random.Next(1, 4); // Random number between 1 and 3
-                    shifts.Add(shift);
-                }
-                Worker worker = new Worker(i, "Worker" + (i + 1), shifts);
-                source.Add(worker);
-            }
-            WorkersDataGrid.ItemsSource = source;
-            // Add DataGrid columns dynamically
-            DataGridTextColumn column1 = new DataGridTextColumn();
-            column1.Header = "ID";
-            column1.Binding = new Binding("ID_Worker");
-            WorkersDataGrid.Columns.Add(column1);
-
-            DataGridTextColumn column2 = new DataGridTextColumn();
-            column2.Header = "Name";
-            column2.Binding = new Binding("WorkerName");
-            WorkersDataGrid.Columns.Add(column2);
-
-
-            for (int i = 1; i <= 31; i++)
-            {
-                DataGridTextColumn column = new DataGridTextColumn();
-                column.Header = i.ToString() + "/" + Monthcbb.SelectedValue;
-                column.Binding = new Binding($"Shifts[{i - 1}]");
-                WorkersDataGrid.Columns.Add(column);
-            }
-
+            reloaddatagrid();
         }
+        public void reloaddatagrid() 
+        {
+            if (Year.Text.Length == 0)
+            {
+                WorkersDataGrid.Columns.Clear();
+            }
+            else
+            {
+                WorkersDataGrid.Columns.Clear();
+                string fid = Convert.ToString(facultycbb.SelectedItem);
+                int year = Convert.ToInt32(Year.Text);
+                int month = Convert.ToInt32(Monthcbb.SelectedItem);
+
+                // Add DataGrid columns dynamically
+                DataGridTextColumn column1 = new DataGridTextColumn();
+                column1.Header = "ID";
+                column1.Binding = new Binding("ID_Worker");
+                WorkersDataGrid.Columns.Add(column1);
+
+                DataGridTextColumn column2 = new DataGridTextColumn();
+                column2.Header = "Name";
+                column2.Binding = new Binding("WorkerName");
+                WorkersDataGrid.Columns.Add(column2);
+
+                int DayOfMonth = 31;
+                switch (month)
+                {
+                    case 1:
+                    case 3:
+                    case 5:
+                    case 7:
+                    case 8:
+                    case 10:
+                    case 12:
+                        DayOfMonth = 31;
+                        break;
+                    case 2:
+                        if (year % 4 == 0 && year % 100 != 0 && year % 400 != 0)
+                        {
+                            DayOfMonth = 29;
+                        }
+                        else DayOfMonth = 28;
+                        break;
+                    case 4:
+                    case 6:
+                    case 9:
+                    case 11:
+                        DayOfMonth = 30;
+                        break;
+                }
+                for (int i = 1; i <= DayOfMonth; i++)
+                {
+                    DataGridTextColumn column = new DataGridTextColumn();
+                    column.Header = i.ToString() + "/" + Monthcbb.SelectedValue;
+                    column.Binding = new Binding($"Shifts[{i - 1}]");
+                    WorkersDataGrid.Columns.Add(column);
+                }
+                DataGridTextColumn column3 = new DataGridTextColumn();
+                column3.Header = "Sum";
+                column3.Binding = new Binding("Sum");
+                WorkersDataGrid.Columns.Add(column3);
+
+
+                // Get Data In Database
+                List<Worker> source = new List<Worker>();//items in datagrid
+
+                List<WorkerList> listWorker = new List<WorkerList>();
+                try
+                {
+                    string querry1 = "SELECT * FROM WorkerList WHERE fid = '" + fid + "' ";
+                    if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                    {
+                        dtc.GetConnection().Open();
+                    }
+                    SQLcmd = new SqlCommand(querry1, dtc.GetConnection());
+                    SqlDataReader reader1 = SQLcmd.ExecuteReader();
+                    while (reader1.Read())
+                    {
+                        WorkerList addWorker = new WorkerList();
+                        addWorker.Id = reader1.GetInt32(0);
+                        addWorker.Fullname = reader1.GetString(1);
+                        DateTime date = reader1.GetDateTime(2);
+                        addWorker.Birth = date.Date;
+                        addWorker.Images = reader1.GetString(3);
+                        addWorker.Fid = reader1.GetString(4);
+                        listWorker.Add(addWorker);
+                    }
+                    reader1.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                for (int i = 0; i < listWorker.Count(); i++)
+                {
+                    try
+                    {
+                        List<int> shifts = new List<int>();
+                        for (int j = 0; j < DayOfMonth; j++)
+                        {
+                            string querry2 = "SELECT COUNT(shift_worked) FROM Attendance " +
+                                             "WHERE id_faculty = @fid " +
+                                             "AND YEAR(d_m) = @year " +
+                                             "AND MONTH(d_m) = @month " +
+                                             "AND DAY(d_m) = @day " +
+                                             "AND id_worker = @id ";
+                            SQLcmd = new SqlCommand(querry2, dtc.GetConnection());
+                            SQLcmd.Parameters.AddWithValue("@fid", fid);
+                            SQLcmd.Parameters.AddWithValue("@year", year);
+                            SQLcmd.Parameters.AddWithValue("@month", month);
+                            SQLcmd.Parameters.AddWithValue("@day", j + 1);
+                            SQLcmd.Parameters.AddWithValue("@id", listWorker[i].Id);
+
+                            int shift = Convert.ToInt32(SQLcmd.ExecuteScalar());
+                            shifts.Add(shift);
+                        }
+
+                        string querry3 = "SELECT COUNT(shift_worked) FROM Attendance " +
+                                         "WHERE id_faculty = @fid " +
+                                         "AND YEAR(d_m) = @year " +
+                                         "AND MONTH(d_m) = @month " +
+                                         "AND id_worker = @id ";
+                        SQLcmd = new SqlCommand(querry3, dtc.GetConnection());
+                        SQLcmd.Parameters.AddWithValue("@fid", fid);
+                        SQLcmd.Parameters.AddWithValue("@year", year);
+                        SQLcmd.Parameters.AddWithValue("@month", month);
+                        SQLcmd.Parameters.AddWithValue("@id", listWorker[i].Id);
+                        int sum = Convert.ToInt32(SQLcmd.ExecuteScalar());
+
+                        Worker worker = new Worker(listWorker[i].Id, listWorker[i].Fullname, shifts, sum);
+                        source.Add(worker);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                WorkersDataGrid.ItemsSource = source;
+            }
+        }
+
     }
 
     public class Worker
     {
         public int ID_Worker { get; set; }
         public string WorkerName { get; set; }
-        public List<int> Shifts { get; set; }
+        public List<int> Shifts { get; set; } 
+        public int sum { get; set; } 
 
         public Worker( )
         {
             Shifts = new List<int>();
         }
-        public Worker(int ID, String Name, List<int>shifts) 
+        public Worker(int ID, String Name, List<int>shifts,int sum) 
         {
             this.ID_Worker = ID;
             this.WorkerName = Name;
             Shifts = shifts;
+            this.sum = sum;
         }
     }
 
