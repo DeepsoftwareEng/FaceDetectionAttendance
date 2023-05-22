@@ -1,4 +1,4 @@
-﻿ using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
@@ -22,17 +22,14 @@ namespace FaceDetectionAttendance.MVVM.View
         private string fullname;
         private string _faculty;
         private int id;
-        Dataconnecttion dtc = new Dataconnecttion();
-        SqlCommand cmd = new SqlCommand();
-        VideoCapture capture;
-
         private static string binFolderPath = System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
         private static string projectFolderPath = Directory.GetParent(binFolderPath).FullName;
         private static string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
         private static string resourceFolderPath = System.IO.Path.Combine(fix, "Resource");
-        private static string XMLFolderPath = System.IO.Path.Combine(fix, "haarcascade_frontalface_default.xml");
-
-        static readonly CascadeClassifier faceDetector = new CascadeClassifier($"{XMLFolderPath}");
+        Dataconnecttion dtc = new Dataconnecttion();
+        SqlCommand cmd = new SqlCommand();
+        VideoCapture capture;
+        static readonly CascadeClassifier faceDetector = new CascadeClassifier(fix + "haarcascade_frontalface_default.xml");
         Image<Bgr, byte> image = null;
         DispatcherTimer timer = new DispatcherTimer();
         private bool iscapturing = false;
@@ -47,28 +44,28 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void setComboboxData()
         {
-            string query = "SELECT id_faculty from Faculty";
-            if(dtc.GetConnection().State == System.Data.ConnectionState.Closed)
-                dtc.GetConnection().Open(); 
+            string query = "Select id_faculty from Faculty ";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
             try
             {
                 cmd = new SqlCommand(query, dtc.GetConnection());
                 SqlDataReader reader = cmd.ExecuteReader();
-                while(reader.Read()) 
+                while (reader.Read())
                 {
-                    Facultycbb.Items.Add(reader.GetString(0));                    
+                    Facultycbb.Items.Add(reader.GetString(0));
                 }
                 reader.Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            
+
         }
         private void setCurrentInfor(WorkerList worker)
         {
-           
+
             FullNametxt.Text = worker.Fullname;
             Dobtxt.Text = worker.Birth.ToString();
             Facultycbb.SelectedItem = worker.Fid;
@@ -78,13 +75,14 @@ namespace FaceDetectionAttendance.MVVM.View
             cmd = new SqlCommand(query, dtc.GetConnection());
             cmd.Parameters.AddWithValue("@fullname", fullname);
             SqlDataReader reader = cmd.ExecuteReader();
-            string imageName =" ";
+            string imageName = " ";
             int idReader = 0;
             while (reader.Read())
             {
-                 imageName = reader.GetString(0);
-                 idReader = reader.GetInt32(1);
+                imageName = reader.GetString(0);
+                idReader = reader.GetInt32(1);
             }
+            reader.Close();
             id = idReader;
             string currentImage = $"{resourceFolderPath}\\WorkerImage\\{_faculty}\\{imageName}.png";
             BitmapImage bitmap = new BitmapImage();
@@ -103,7 +101,7 @@ namespace FaceDetectionAttendance.MVVM.View
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             capture = new VideoCapture();
-            capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth,200);
+            capture.Set(Emgu.CV.CvEnum.CapProp.FrameWidth, 200);
             capture.Set(Emgu.CV.CvEnum.CapProp.FrameHeight, 200);
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromMilliseconds(60);
@@ -115,7 +113,7 @@ namespace FaceDetectionAttendance.MVVM.View
             Mat frame = new Mat();
             capture.Read(frame);
             // Convert the image to a BitmapSource that can be displayed in the Image control
-            Image<Bgr, byte> images = frame.ToImage<Bgr, byte>(); 
+            Image<Bgr, byte> images = frame.ToImage<Bgr, byte>();
             //
             Rectangle[] faces = faceDetector.DetectMultiScale(images.Convert<Gray, byte>(), 1.2, 10, System.Drawing.Size.Empty);
 
@@ -160,8 +158,8 @@ namespace FaceDetectionAttendance.MVVM.View
                         Rectangle face = faces[0];
                         Image<Gray, byte> faceImage = image.Convert<Gray, byte>().Copy(face);
                         string nameimg = FullNametxt.Text;
-                        string imagePath = $"D:\\{nameimg}.png";
-    
+                        string imagePath = $"D:\\{nameimg}{id}.png";
+
                         if (File.Exists(imagePath))
                         {
                             ResultImg.Source = null;
@@ -201,19 +199,36 @@ namespace FaceDetectionAttendance.MVVM.View
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
             cmd = new SqlCommand(query, dtc.GetConnection());
-            cmd.Parameters.AddWithValue("@fullname" , FullNametxt.Text);
+            cmd.Parameters.AddWithValue("@fullname", FullNametxt.Text);
             cmd.Parameters.AddWithValue("@dob", DoB);
             cmd.Parameters.AddWithValue("@fid", Facultycbb.SelectedItem.ToString());
-            cmd.Parameters.AddWithValue("@image", FullNametxt.Text);
+            cmd.Parameters.AddWithValue("@image", FullNametxt.Text + id);
             cmd.Parameters.AddWithValue("@id", id);
             cmd.ExecuteNonQuery();
-            //Delete old image
-            string oldpath = $"{resourceFolderPath}\\WorkerImage\\{_faculty}\\{fullname}.png";
-            File.Delete(oldpath);
-            //Copy new image to directed folder
-            string targetpath = $"{resourceFolderPath}\\WorkerImage\\{Facultycbb.SelectedItem.ToString()}\\{FullNametxt.Text}.png";
-            File.Copy($"D:\\{FullNametxt.Text}.png", targetpath);
+            //Image processing
+            if (File.Exists($"D:\\{FullNametxt.Text}{id}.png") || FullNametxt.Text != fullname)
+            {
+                //change everything -> delete old image and replace
+                //Delete old image
+                string oldpath = $"{resourceFolderPath}\\WorkerImage\\{_faculty}\\{fullname}{id}.png";
+                File.Delete(oldpath);
+                //Copy new image to directed folder
+                string targetpath = $"{resourceFolderPath}\\WorkerImage\\{Facultycbb.SelectedItem.ToString()}\\{FullNametxt.Text}{id}.png";
+                File.Copy($"D:\\{FullNametxt.Text}.png", targetpath);
+                File.Delete($"D:\\{FullNametxt.Text}{id}.png");
+            }
+            else if (FullNametxt.Text == fullname && Facultycbb.SelectedItem.ToString() == _faculty)
+            {
+                //only change dob ->do not thing
+            }
+            else
+            {
+                //only change falculty-> Move old iamge to new folder
+                string oldpath = $"{resourceFolderPath}\\WorkerImage\\{_faculty}\\{fullname}{id}.png";
+                string targetpath = $"{resourceFolderPath}\\WorkerImage\\{Facultycbb.SelectedItem.ToString()}\\{FullNametxt.Text}{id}.png";
+                File.Move(oldpath, targetpath);
+            }
+            MessageBox.Show("Successful change worker's information");
         }
     }
 }
-
