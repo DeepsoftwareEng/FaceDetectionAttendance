@@ -16,10 +16,10 @@
             <TextBlock x:Name="FacultyText" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
         </Canvas>
-        <Button Content="Search" HorizontalAlignment="Left" Height="28" Margin="727,179,0,0" VerticalAlignment="Top" Width="86"/>
+        <Button Click="Search_Button_Click" Content="Search" HorizontalAlignment="Left" Height="28" Margin="727,179,0,0" VerticalAlignment="Top" Width="86"/>
         <Button Content="Add" HorizontalAlignment="Left" Height="28"  VerticalAlignment="Top" Width="58" Margin="992,276,0,0" Click="Button_Click"/>
         <Button Content="Edit" HorizontalAlignment="Left" Height="30"  VerticalAlignment="Top" Width="60" RenderTransformOrigin="6,7.467" Margin="1103,275,0,0" Click="Button_Click_2"/>
-        <Button Content="Del" HorizontalAlignment="Left" Height="30"  VerticalAlignment="Top" Width="59" Margin="1214,275,0,0"/>
+        <Button Click="Delete_Button_Click" Content="Del" HorizontalAlignment="Left" Height="30"  VerticalAlignment="Top" Width="59" Margin="1214,275,0,0"/>
         <DataGrid x:Name="Workertxt" HorizontalAlignment="Left" Height="477" Margin="42,368,0,0" VerticalAlignment="Top" Width="1256" >
             <DataGrid.Columns>
             <DataGridTextColumn Width="0.5*"   Header="ID" Binding="{Binding id}"/>
@@ -28,7 +28,7 @@
             <DataGridTextColumn Width="2*" Header="Faculty"   Binding="{Binding fid}"/>
             </DataGrid.Columns> 
             </DataGrid>
-        <TextBox HorizontalAlignment="Left" Height="46" Margin="113,170,0,0" TextWrapping="Wrap" Text="search" VerticalAlignment="Top" Width="589"/>
+        <TextBox Name="Search_TextBox" HorizontalAlignment="Left" Height="46" Margin="113,170,0,0" TextWrapping="Wrap" Text="search" VerticalAlignment="Top" Width="589"/>
 
 
     </Grid>
