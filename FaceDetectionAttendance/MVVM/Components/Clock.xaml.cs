@@ -26,6 +26,10 @@ namespace FaceDetectionAttendance.MVVM.Components
         public Clock()
         {
             InitializeComponent();
+            TimeTextBlock.FontSize= 20;
+            TimeTextBlock.Height=60;
+            TimeTextBlock.Width=120;
+            TimeTextBlock.FontWeight= FontWeights.Bold;
 
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -35,7 +39,7 @@ namespace FaceDetectionAttendance.MVVM.Components
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            TimeTextBlock.Text = DateTime.Now.ToString("HH:mm:ss");
+            TimeTextBlock.Text = DateTime.Now.ToString("dd/mm/yyyy\n     HH:mm:ss");
         }
     }
 }
