@@ -49,7 +49,6 @@ namespace FaceDetectionAttendance.MVVM.View
             source.EndInit();
             avt.Source = source;
             Name.Text = username;
-
         }
     }
 }

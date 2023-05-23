@@ -1,15 +1,25 @@
-﻿<Page x:Class="FaceDetectionAttendance.MVVM.View.RequestUI"
+﻿<Page
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance.MVVM.View"
+      xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components" x:Class="FaceDetectionAttendance.MVVM.View.RequestUI"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
       Title="RequestUI">
 
     <Grid>
-        
+        <Rectangle Fill="Aqua" Margin="0,0,0,800"/>
+        <Canvas>
+            <TextBlock Text="Request" FontSize="32" FontWeight="Bold" Margin="579,29,579,828"/>
+            <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Margin="10,10,1251,864"/>
+            <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Margin="10,52,1202,824"/>
+            <Components:Clock Margin="1198,26,88,858"/>
+        </Canvas>
+        <TextBlock Height="20" Width="80" Text="Request Status" Margin="48,167,1202,713"/>
+        <ComboBox Height="20" Width="80" Margin="146,167,1104,713" ItemsSource="{Binding StatusList}"/>
+        <StackPanel x:Name="Requestspn" Height="600" Width="1200" Margin="48,240,82,60"/>
     </Grid>
 </Page>
