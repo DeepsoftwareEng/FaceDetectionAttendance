@@ -32,6 +32,10 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             Content.NavigationService.Navigate(new ManageAccountUI());
         }
+        private void Requestbtn_click(object sebnder, RoutedEventArgs e)
+        {
+            Content.NavigationService.Navigate(new RequestUI());
+        }
         void setinfor(string username)
         {
             string querry = "Select images from Account where username = @username";
