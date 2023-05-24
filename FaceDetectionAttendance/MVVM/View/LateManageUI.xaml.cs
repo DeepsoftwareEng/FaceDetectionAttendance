@@ -49,7 +49,7 @@ namespace FaceDetectionAttendance.MVVM.View
                     DateTime date = reader.GetDateTime(3);
                     int shift = reader.GetInt32(4);
                     string detail = reader.GetString(5);
-                    Late_DataGrid.Items.Add(new { Id = id, IdWorker = id_worker, NameWorker = name_worker, Date = date.ToString(), Shift = shift, Detail = detail });
+                    Late_DataGrid.Items.Add(new { Id = id, IdWorker = id_worker, NameWorker = name_worker, DateTime = date.ToString(), Shift = shift, Detail = detail });
                 }
             }catch(Exception ex) 
             {

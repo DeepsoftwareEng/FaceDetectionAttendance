@@ -16,6 +16,7 @@
             <TextBlock Name ="Faculty_Header"  Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
 
+
         </Canvas>
         <DataGrid Name="Late_DataGrid" Margin="126,306,126,78" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -32,15 +33,15 @@
         <Button Name="Delete_Button" Content="Delete" Width="50" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1154,233,0,0"/>
         <Border BorderThickness="2" BorderBrush="Black" Margin="126,140,846,730"/>
         <TextBox Name="Search_TextBox" Margin="126,140,846,730"/>
-        <Border BorderThickness="2" BorderBrush="Black" Margin="179,182,1092,695"/>
-        <TextBox Name="Day_TextBox" Margin="179,182,1092,695"/>
-        <Border BorderThickness="2" BorderBrush="Black" Margin="305,182,967,695"/>
-        <TextBox Name="Month_TextBox" Margin="305,182,967,695"/>
-        <Border BorderThickness="2" BorderBrush="Black" Margin="425,182,846,695"/>
-        <TextBox Name="Year_TextBox" Margin="425,182,846,695"/>
-        <Label Content="Day" Margin="126,179,1167,692"/>
-        <Label Content="Month" Margin="255,179,1038,692"/>
-        <Label Content="Year" Margin="383,179,910,692"/>
-        <Button Name="Search_Button" Content="Search" Width="50" Height="26" HorizontalAlignment="Left" Margin="532,142,0,0" VerticalAlignment="Top"/>
+        <DatePicker Margin="173,233,942,641"/>
+        <Border BorderThickness="2" BorderBrush="Black" Margin="176,190,1096,687"/>
+        <TextBox Name="Month_TextBox" Margin="176,190,1096,687"/>
+        <Border BorderThickness="2" BorderBrush="Black" Margin="329,190,942,687"/>
+        <TextBox Name="Year_TextBox" Margin="329,190,942,687"/>
+        <Label Content="Input worker name or id of LateList" Margin="126,106,871,760"/>
+        <Label Content="Date" Margin="126,228,1167,643"/>
+        <Label Content="Month" Margin="126,187,1167,684"/>
+        <Label Content="Year" Margin="287,187,1006,684"/>
+        <Button Name="Search_Button" Content="Search" Width="50" Height="26" HorizontalAlignment="Left" Margin="434,184,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Page>
