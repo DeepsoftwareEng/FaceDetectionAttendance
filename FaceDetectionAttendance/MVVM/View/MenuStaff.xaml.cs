@@ -83,5 +83,10 @@ namespace FaceDetectionAttendance.MVVM.View
                 MessageBox.Show(ex.ToString());
             }
         }
+
+        private void LateManageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Content.NavigationService.Navigate(new LateManageUI(this.faculty));
+        }
     }
 }

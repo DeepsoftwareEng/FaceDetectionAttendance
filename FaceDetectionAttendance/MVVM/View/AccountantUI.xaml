@@ -12,7 +12,7 @@
     <Grid>
         <Canvas Margin="0,-5,0,5">
             <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
-            <TextBlock Text="Attendance" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+            <TextBlock Text="Accountant" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock Name ="Faculty_Header"  Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
             <TextBox Name="Year" Canvas.Left="262" TextWrapping="Wrap" Canvas.Top="196" Width="50" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" TextChanged="Year_TextChanged" PreviewTextInput="Year_PreviewTextInput"/>
@@ -26,7 +26,7 @@
         <TextBlock HorizontalAlignment="Left" Margin="79,193,0,0" TextWrapping="Wrap" Text="Month: " VerticalAlignment="Top"/>
         <ComboBox Name="facultycbb" HorizontalAlignment="Left" Margin="164,163,0,0" VerticalAlignment="Top" Width="149" SelectionChanged="facultycbb_SelectionChanged"/>
         <ComboBox Name="Monthcbb" HorizontalAlignment="Left" Margin="164,191,0,0" VerticalAlignment="Top" Width="50" SelectionChanged="Monthcbb_SelectionChanged"/>
-        <DataGrid IsReadOnly="true" x:Name="WorkersDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Workers}" Margin="79,302,83,129" SelectionChanged="WorkersDataGrid_SelectionChanged">
+        <DataGrid IsReadOnly="true" x:Name="WorkersDataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Workers}" Margin="79,302,83,129" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding ID_Worker}" Width="30" />
                 <DataGridTextColumn Header="Workers Name" Binding="{Binding WorkerName}" Width="50" />

@@ -1,0 +1,72 @@
+﻿using FaceDetectionAttendance.MVVM.Model;
+using Microsoft.Data.SqlClient;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace FaceDetectionAttendance.MVVM.View
+{
+    /// <summary>
+    /// Interaction logic for LateManageUI.xaml
+    /// </summary>
+    public partial class LateManageUI : Page
+    {
+        private Dataconnecttion dtc = new Dataconnecttion();
+        SqlCommand cmd = new SqlCommand();
+        private string faculty;
+        
+        public void setLate_DataGrid()
+        {
+            try
+            {
+                string querry = "SELECT LateList.id, LateList.id_worker, " +
+                                "fullname, d_m, shift_worked, detail " +
+                                "FROM LateList INNER JOIN WorkerList ON " +
+                                "LateList.id_worker = WorkerList.id " +
+                                "AND id_faculty = '" + this.faculty + "' ";
+                if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                {
+                    dtc.GetConnection().Open();
+                }
+                cmd = new SqlCommand(querry, dtc.GetConnection());
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int id = reader.GetInt32(0);
+                    int id_worker = reader.GetInt32(1);
+                    string name_worker = reader.GetString(2);
+                    DateTime date = reader.GetDateTime(3);
+                    int shift = reader.GetInt32(4);
+                    string detail = reader.GetString(5);
+                    Late_DataGrid.Items.Add(new { Id = id, IdWorker = id_worker, NameWorker = name_worker, Date = date.ToString(), Shift = shift, Detail = detail });
+                }
+            }catch(Exception ex) 
+            {
+                MessageBox.Show(ex.ToString(),"Error");
+            }
+        }
+        public LateManageUI(string faculty)
+        {
+            InitializeComponent();
+            this.faculty = faculty;
+            Faculty_Header.Text = faculty;
+            setLate_DataGrid();
+        }
+
+        private void Add_Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.NavigationService.Navigate(new AddLateUI(faculty));
+        }
+    }
+}
