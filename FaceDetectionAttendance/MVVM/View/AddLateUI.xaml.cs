@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -78,11 +79,18 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             try
             {
-                string querry = "SELECT id FROM Attendance " +
+                /*
+                 "SELECT id FROM Attendance " +
                                 "WHERE id_worker = @id_worker " +
                                 "AND DAY(d_m) = @day " +
                                 "AND MONTH(d_m) = @month " +
                                 "AND YEAR(d_m) = @year " +
+                                "AND shift_worked = @shift ";
+                 */
+
+                string querry = "SELECT id FROM Attendance " +
+                                "WHERE id_worker = @id_worker " +
+                                "AND d_m = @date " +
                                 "AND shift_worked = @shift ";
                 if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 {
@@ -90,9 +98,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
                 cmd = new SqlCommand(querry, dtc.GetConnection());
                 cmd.Parameters.AddWithValue("@id_worker", id_worker);
-                cmd.Parameters.AddWithValue("@day", date.Day);
-                cmd.Parameters.AddWithValue("@month", date.Month);
-                cmd.Parameters.AddWithValue("@year", date.Year);
+                cmd.Parameters.AddWithValue("@date", date);
                 cmd.Parameters.AddWithValue("@shift", shift);
                 object result = cmd.ExecuteScalar();
                 if (result == null)
@@ -101,6 +107,35 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
                 return true;
             }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return false;
+            }
+        }
+        private bool checkExist(int id_worker, DateTime date, int shift)
+        {
+            try
+            {
+                string querry = "SELECT id FROM LateList " +
+                                "WHERE id_worker = @id_worker " +
+                                "AND d_m = @date " +
+                                "AND shift_worked = @shift ";
+                if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                {
+                    dtc.GetConnection().Open();
+                }
+                cmd = new SqlCommand(querry, dtc.GetConnection());
+                cmd.Parameters.AddWithValue("@id_worker", id_worker);
+                cmd.Parameters.AddWithValue("@date", date.Date);
+                cmd.Parameters.AddWithValue("@shift", shift);
+                object result = cmd.ExecuteScalar();
+                if (result == null)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error");
                 return false;
@@ -123,7 +158,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 int shift = Convert.ToInt32(Shift_ComboBox.SelectedValue);
                 string detail = Detail_TextBox.Text.Trim();
 
-                if (checkAttendanced(id_worker, date, shift))
+                if (!checkAttendanced(id_worker, date, shift))
                 {
                     try
                     {
@@ -131,20 +166,11 @@ namespace FaceDetectionAttendance.MVVM.View
                         {
                             dtc.GetConnection().Close();
                         }
-                        string querryGetDateTime = "SELECT d_m FROM Attendance " +
-                                                   "WHERE id_worker = @id_worker " +
-                                                   "AND DAY(d_m) = @day " +
-                                                   "AND MONTH(d_m) = @month " +
-                                                   "AND YEAR(d_m) = @year " +
-                                                   "AND shift_worked = @shift ";
-                        cmd = new SqlCommand(querryGetDateTime,dtc.GetConnection());
-                        DateTime dateAttendance = Convert.ToDateTime(cmd.ExecuteScalar());
-
                         string querry = "INSERT INTO LateList VALUES (@id_worker, @id_faculty, @d_m , @shift_worked , @detail )";
                         cmd = new SqlCommand(querry, dtc.GetConnection());
                         cmd.Parameters.AddWithValue("@id_worker", id_worker);
                         cmd.Parameters.AddWithValue("@id_faculty", this.faculty);
-                        cmd.Parameters.AddWithValue("@d_m", dateAttendance);
+                        cmd.Parameters.AddWithValue("@d_m", date.Date);
                         cmd.Parameters.AddWithValue("@shift_worked", shift);
                         cmd.Parameters.AddWithValue("@detail", detail);
                         cmd.ExecuteNonQuery();
@@ -155,7 +181,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         MessageBox.Show(ex.ToString());
                     }
                 }
-                else MessageBox.Show("The worker must be Attendanced to allow lated","Message");
+                else MessageBox.Show("The worker Attendanced on time","Message");
             }
             
         }
