@@ -79,15 +79,6 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             try
             {
-                /*
-                 "SELECT id FROM Attendance " +
-                                "WHERE id_worker = @id_worker " +
-                                "AND DAY(d_m) = @day " +
-                                "AND MONTH(d_m) = @month " +
-                                "AND YEAR(d_m) = @year " +
-                                "AND shift_worked = @shift ";
-                 */
-
                 string querry = "SELECT id FROM Attendance " +
                                 "WHERE id_worker = @id_worker " +
                                 "AND d_m = @date " +
@@ -105,6 +96,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 {
                     return false;
                 }
+                MessageBox.Show("The worker Attendanced on time", "Message");
                 return true;
             }catch(Exception ex)
             {
@@ -133,6 +125,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 {
                     return false;
                 }
+                MessageBox.Show("Already exists this data in the database", "Message");
                 return true;
             }
             catch (Exception ex)
@@ -158,7 +151,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 int shift = Convert.ToInt32(Shift_ComboBox.SelectedValue);
                 string detail = Detail_TextBox.Text.Trim();
 
-                if (!checkAttendanced(id_worker, date, shift))
+                if (!checkAttendanced(id_worker, date, shift) && !checkExist(id_worker, date, shift))
                 {
                     try
                     {
@@ -181,7 +174,6 @@ namespace FaceDetectionAttendance.MVVM.View
                         MessageBox.Show(ex.ToString());
                     }
                 }
-                else MessageBox.Show("The worker Attendanced on time","Message");
             }
             
         }
