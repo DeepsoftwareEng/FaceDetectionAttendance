@@ -87,5 +87,33 @@ namespace FaceDetectionAttendance.MVVM.View
                 MessageBox.Show("Please choose one to edit", "Message");
             }
         }
+        private void Delete_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (Late_DataGrid.SelectedItems.Count == 1)
+            {
+                MessageBoxResult result = MessageBox.Show("Delete this data from database ?", "Warning", MessageBoxButton.OKCancel);
+                if (result == MessageBoxResult.OK)
+                {
+                    dynamic temp = Late_DataGrid.SelectedItem;
+                    if (temp != null)
+                    {
+                        dynamic Idselected = temp.Id;
+                        string querry = "DELETE FROM LateList WHERE id = '" + Idselected + "'";
+                        if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                        {
+                            dtc.GetConnection().Open();
+                        }
+                        cmd = new SqlCommand(querry, dtc.GetConnection());
+                        cmd.ExecuteNonQuery();
+                        MessageBox.Show("Successful", "Message");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please choose one to edit", "Message");
+            }
+        }
+
     }
 }
