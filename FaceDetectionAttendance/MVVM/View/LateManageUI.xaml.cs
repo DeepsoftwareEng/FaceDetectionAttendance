@@ -22,10 +22,10 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class LateManageUI : Page
     {
-       private Dataconnecttion dtc = new Dataconnecttion();
+        private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd = new SqlCommand();
         private string faculty;
-        
+
         public void setLate_DataGrid()
         {
             try
@@ -51,9 +51,10 @@ namespace FaceDetectionAttendance.MVVM.View
                     string detail = reader.GetString(5);
                     Late_DataGrid.Items.Add(new { Id = id, IdWorker = id_worker, NameWorker = name_worker, DateTime = date.ToString(), Shift = shift, Detail = detail });
                 }
-            }catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(),"Error");
+                MessageBox.Show(ex.ToString(), "Error");
             }
         }
         public LateManageUI(string faculty)
@@ -71,6 +72,7 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             this.NavigationService.Navigate(new AddLateUI(faculty));
         }
+
         private void Edit_Button_Click(object sender, RoutedEventArgs e)
         {
             if (Late_DataGrid.SelectedItems.Count == 1)
@@ -87,6 +89,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 MessageBox.Show("Please choose one to edit", "Message");
             }
         }
+
         private void Delete_Button_Click(object sender, RoutedEventArgs e)
         {
             if (Late_DataGrid.SelectedItems.Count == 1)
@@ -115,5 +118,38 @@ namespace FaceDetectionAttendance.MVVM.View
             }
         }
 
+        private void Date_DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                /*DateTime dateSearch = Convert.ToDateTime(Date_DatePicker.SelectedDate.Value);
+                string querry = "SELECT LateList.id, LateList.id_worker, " +
+                                "fullname, d_m, shift_worked, detail " +
+                                "FROM LateList INNER JOIN WorkerList ON " +
+                                "LateList.id_worker = WorkerList.id " +
+                                "AND id_faculty = '" + this.faculty + "' " +
+                                "AND ";
+                if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                {
+                    dtc.GetConnection().Open();
+                }
+                cmd = new SqlCommand(querry, dtc.GetConnection());
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    int id = reader.GetInt32(0);
+                    int id_worker = reader.GetInt32(1);
+                    string name_worker = reader.GetString(2);
+                    DateTime date = reader.GetDateTime(3);
+                    int shift = reader.GetInt32(4);
+                    string detail = reader.GetString(5);
+                    Late_DataGrid.Items.Add(new { Id = id, IdWorker = id_worker, NameWorker = name_worker, DateTime = date.ToString(), Shift = shift, Detail = detail });
+                }*/
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error");
+            }
+        }
     }
 }
