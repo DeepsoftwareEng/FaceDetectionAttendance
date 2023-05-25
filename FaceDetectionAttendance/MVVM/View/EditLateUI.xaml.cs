@@ -115,9 +115,7 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 string querry = "SELECT id FROM Attendance " +
                                 "WHERE id_worker = @id_worker " +
-                                "AND DAY(d_m) = @day " +
-                                "AND MONTH(d_m) = @month " +
-                                "AND YEAR(d_m) = @year " +
+                                "AND d_m = @date " +
                                 "AND shift_worked = @shift ";
                 if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 {
@@ -125,15 +123,44 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
                 cmd = new SqlCommand(querry, dtc.GetConnection());
                 cmd.Parameters.AddWithValue("@id_worker", id_worker);
-                cmd.Parameters.AddWithValue("@day", date.Day);
-                cmd.Parameters.AddWithValue("@month", date.Month);
-                cmd.Parameters.AddWithValue("@year", date.Year);
+                cmd.Parameters.AddWithValue("@date", date);
                 cmd.Parameters.AddWithValue("@shift", shift);
                 object result = cmd.ExecuteScalar();
                 if (result == null)
                 {
                     return false;
                 }
+                MessageBox.Show("The worker Attendanced on time", "Message");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return false;
+            }
+        }
+        private bool checkExist(int id_worker, DateTime date, int shift)
+        {
+            try
+            {
+                string querry = "SELECT id FROM LateList " +
+                                "WHERE id_worker = @id_worker " +
+                                "AND d_m = @date " +
+                                "AND shift_worked = @shift ";
+                if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                {
+                    dtc.GetConnection().Open();
+                }
+                cmd = new SqlCommand(querry, dtc.GetConnection());
+                cmd.Parameters.AddWithValue("@id_worker", id_worker);
+                cmd.Parameters.AddWithValue("@date", date.Date);
+                cmd.Parameters.AddWithValue("@shift", shift);
+                object result = cmd.ExecuteScalar();
+                if (result == null)
+                {
+                    return false;
+                }
+                MessageBox.Show("Already exists this data in the database", "Message");
                 return true;
             }
             catch (Exception ex)
@@ -152,7 +179,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 int shift = Convert.ToInt32(Shift_ComboBox.SelectedValue);
                 string detail = Detail_TextBox.Text.Trim();
 
-                if (!checkAttendanced(id_worker, date, shift))
+                if (!checkAttendanced(id_worker, date, shift) && !checkExist(id_worker, date, shift))
                 {
                     try
                     {
