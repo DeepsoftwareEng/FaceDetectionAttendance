@@ -22,10 +22,10 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class LateManageUI : Page
     {
-        private Dataconnecttion dtc = new Dataconnecttion();
+       private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd = new SqlCommand();
         private string faculty;
-
+        
         public void setLate_DataGrid()
         {
             try
@@ -61,12 +61,31 @@ namespace FaceDetectionAttendance.MVVM.View
             InitializeComponent();
             this.faculty = faculty;
             Faculty_Header.Text = faculty;
+            Date_DatePicker.SelectedDate = DateTime.Now.Date;
+            Month_TextBox.Text = DateTime.Now.Month.ToString();
+            Year_TextBox.Text = DateTime.Now.Year.ToString();
             setLate_DataGrid();
         }
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
             this.NavigationService.Navigate(new AddLateUI(faculty));
+        }
+        private void Edit_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (Late_DataGrid.SelectedItems.Count == 1)
+            {
+                dynamic temp = Late_DataGrid.SelectedItem;
+                if (temp != null)
+                {
+                    dynamic Idselected = temp.Id;
+                    this.NavigationService.Navigate(new EditLateUI(this.faculty, Idselected));
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please choose one to edit", "Message");
+            }
         }
     }
 }
