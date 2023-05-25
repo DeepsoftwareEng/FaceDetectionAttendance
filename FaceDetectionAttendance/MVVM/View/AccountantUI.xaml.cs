@@ -149,6 +149,11 @@ namespace FaceDetectionAttendance.MVVM.View
                 column3.Binding = new Binding("Sum");
                 WorkersDataGrid.Columns.Add(column3);
 
+                DataGridTextColumn column4 = new DataGridTextColumn();
+                column4.Header = "SumLate";
+                column4.Binding = new Binding("SumLate");
+                WorkersDataGrid.Columns.Add(column4);
+
                 // Get Data In Database
                 List<Worker> source = new List<Worker>();//items in datagrid
 
@@ -187,36 +192,62 @@ namespace FaceDetectionAttendance.MVVM.View
                         List<int> shifts = new List<int>();
                         for (int j = 0; j < DayOfMonth; j++)
                         {
-                            string querry2 = "SELECT COUNT(shift_worked) FROM Attendance " +
+                            string querryAttendance = "SELECT COUNT(shift_worked) FROM Attendance " +
                                              "WHERE id_faculty = @fid " +
                                              "AND YEAR(d_m) = @year " +
                                              "AND MONTH(d_m) = @month " +
                                              "AND DAY(d_m) = @day " +
                                              "AND id_worker = @id ";
-                            SQLcmd = new SqlCommand(querry2, dtc.GetConnection());
+                            SQLcmd = new SqlCommand(querryAttendance, dtc.GetConnection());
                             SQLcmd.Parameters.AddWithValue("@fid", fid);
                             SQLcmd.Parameters.AddWithValue("@year", year);
                             SQLcmd.Parameters.AddWithValue("@month", month);
                             SQLcmd.Parameters.AddWithValue("@day", j + 1);
                             SQLcmd.Parameters.AddWithValue("@id", listWorker[i].Id);
+                            int shiftAttendance = Convert.ToInt32(SQLcmd.ExecuteScalar());
 
-                            int shift = Convert.ToInt32(SQLcmd.ExecuteScalar());
-                            shifts.Add(shift);
+                            string querryLate = "SELECT COUNT(shift_worked) FROM LateList " +
+                                             "WHERE id_faculty = @fid " +
+                                             "AND YEAR(d_m) = @year " +
+                                             "AND MONTH(d_m) = @month " +
+                                             "AND DAY(d_m) = @day " +
+                                             "AND id_worker = @id ";
+                            SQLcmd = new SqlCommand(querryLate, dtc.GetConnection());
+                            SQLcmd.Parameters.AddWithValue("@fid", fid);
+                            SQLcmd.Parameters.AddWithValue("@year", year);
+                            SQLcmd.Parameters.AddWithValue("@month", month);
+                            SQLcmd.Parameters.AddWithValue("@day", j + 1);
+                            SQLcmd.Parameters.AddWithValue("@id", listWorker[i].Id);
+                            int shiftLate = Convert.ToInt32(SQLcmd.ExecuteScalar());
+
+                            shifts.Add(shiftAttendance + shiftLate);
                         }
 
-                        string querry3 = "SELECT COUNT(shift_worked) FROM Attendance " +
+                        string querrySum = "SELECT COUNT(shift_worked) FROM Attendance " +
                                          "WHERE id_faculty = @fid " +
                                          "AND YEAR(d_m) = @year " +
                                          "AND MONTH(d_m) = @month " +
                                          "AND id_worker = @id ";
-                        SQLcmd = new SqlCommand(querry3, dtc.GetConnection());
+                        SQLcmd = new SqlCommand(querrySum, dtc.GetConnection());
                         SQLcmd.Parameters.AddWithValue("@fid", fid);
                         SQLcmd.Parameters.AddWithValue("@year", year);
                         SQLcmd.Parameters.AddWithValue("@month", month);
                         SQLcmd.Parameters.AddWithValue("@id", listWorker[i].Id);
                         int sum = Convert.ToInt32(SQLcmd.ExecuteScalar());
 
-                        Worker worker = new Worker(listWorker[i].Id, listWorker[i].Fullname, shifts, sum);
+                        string querrySumLate = "SELECT COUNT(shift_worked) FROM LateList " +
+                                         "WHERE id_faculty = @fid " +
+                                         "AND YEAR(d_m) = @year " +
+                                         "AND MONTH(d_m) = @month " +
+                                         "AND id_worker = @id ";
+                        SQLcmd = new SqlCommand(querrySumLate, dtc.GetConnection());
+                        SQLcmd.Parameters.AddWithValue("@fid", fid);
+                        SQLcmd.Parameters.AddWithValue("@year", year);
+                        SQLcmd.Parameters.AddWithValue("@month", month);
+                        SQLcmd.Parameters.AddWithValue("@id", listWorker[i].Id);
+                        int sumLate = Convert.ToInt32(SQLcmd.ExecuteScalar());
+
+                        Worker worker = new Worker(listWorker[i].Id, listWorker[i].Fullname, shifts, sum + sumLate, sumLate);
                         source.Add(worker);
                     }
                     catch (Exception ex)
@@ -238,24 +269,26 @@ namespace FaceDetectionAttendance.MVVM.View
 
         }
     }
-                      
+
     public class Worker
     {
         public int ID_Worker { get; set; }
         public string WorkerName { get; set; }
         public List<int> Shifts { get; set; }
         public int Sum { get; set; }
+        public int SumLate { get; set; }
         public Worker()
         {
             Shifts = new List<int>();
         }
-        public Worker(int ID, String Name, List<int> shifts, int sum)
+        public Worker(int ID, String Name, List<int> shifts, int sum, int sumLate)
         {
             this.ID_Worker = ID;
             this.WorkerName = Name;
             Shifts = shifts;
             this.Sum = sum;
+            this.SumLate = sumLate;
         }
     }
 
-} 
+}
