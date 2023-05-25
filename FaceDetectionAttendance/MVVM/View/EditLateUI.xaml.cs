@@ -210,7 +210,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         MessageBox.Show(ex.ToString(), "Error");
                     }
                 }
-                else MessageBox.Show("The worker attendanced on time", "Message");
+            
             }
         }
 
