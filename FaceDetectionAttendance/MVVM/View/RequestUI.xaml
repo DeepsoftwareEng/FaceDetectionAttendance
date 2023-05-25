@@ -19,7 +19,16 @@
             <Components:Clock Margin="1198,26,88,858"/>
         </Canvas>
         <TextBlock Height="20" Width="80" Text="Request Status" Margin="48,167,1202,713"/>
-        <ComboBox Height="20" Width="80" Margin="146,167,1104,713" ItemsSource="{Binding StatusList}"/>
-        <StackPanel x:Name="Requestspn" Height="600" Width="1200" Margin="48,240,82,60"/>
+        <ComboBox x:Name="Statuscbb" Height="20" Width="80" Margin="146,167,1104,713" ItemsSource="{Binding StatusList}" SelectionChanged="Statuscbb_SelectionChanged"/>
+        <Button x:Name="Acceptbtn" Height="30" Content="Accept" FontSize="16" FontWeight="Bold" Width="100" Margin="1023,205,207,665" Click="Acceptbtn_Click"/>
+        <Button x:Name="Denybtn" Height="30" Content="Deny" FontSize="16" FontWeight="Bold" Width="100" Margin="1150,205,80,665" Click="Denybtn_Click"/>
+        <DataGrid x:Name="Requestdtg" CanUserResizeColumns="False" IsReadOnly="True" Height="600" Width="1200" Margin="65,240,65,60" ItemsSource="{Binding requests}">
+            <!--<DataGrid.Columns>
+                <DataGridTextColumn Width="1*" Header="ID Attendance" Binding="{Binding id_attendance}"/>
+                <DataGridTextColumn Width="8*" Header="Detail" Binding="{Binding detail}"/>
+                <DataGridTextColumn Width="2*" Header="Status" Binding="{Binding status}"/>
+                <DataGridTextColumn Width="2*" Header="Sender"   Binding="{Binding usernamesent}"/>
+            </DataGrid.Columns>-->
+        </DataGrid>
     </Grid>
 </Page>
