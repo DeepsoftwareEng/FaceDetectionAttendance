@@ -25,7 +25,7 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd = new SqlCommand();
         private string faculty;
-        
+
         public void setLate_DataGrid()
         {
             try

@@ -29,16 +29,16 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="Add_Button" Content="Add" Width="50" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1017,232,0,0" Click="Add_Button_Click"/>
-        <Button Name="Edit_Button" Content="Edit" Width="50" Height="25" RenderTransformOrigin="-0.063,0.576" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1084,233,0,0" Click="Edit_Button_Click"/>
-        <Button Name="Delete_Button" Content="Delete" Width="50" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1154,233,0,0" Click="Delete_Button_Click"/>
+        <Button Name="Edit_Button" Content="Edit" Width="50" Height="25" RenderTransformOrigin="-0.063,0.576" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1084,233,0,0"/>
+        <Button Name="Delete_Button" Content="Delete" Width="50" Height="25" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="1154,233,0,0"/>
         <Border BorderThickness="2" BorderBrush="Black" Margin="126,140,846,730"/>
         <TextBox Name="Search_TextBox" Margin="126,140,846,730"/>
-        <DatePicker Name ="Date_DatePicker"  Margin="173,233,942,641" SelectedDateChanged="Date_DatePicker_SelectedDateChanged" />
+        <DatePicker Margin="173,233,942,641"/>
         <Border BorderThickness="2" BorderBrush="Black" Margin="176,190,1096,687"/>
         <TextBox Name="Month_TextBox" Margin="176,190,1096,687"/>
         <Border BorderThickness="2" BorderBrush="Black" Margin="329,190,942,687"/>
         <TextBox Name="Year_TextBox" Margin="329,190,942,687"/>
-        <Label Content="Input worker name" Margin="126,106,871,760"/>
+        <Label Content="Input worker name or id of LateList" Margin="126,106,871,760"/>
         <Label Content="Date" Margin="126,228,1167,643"/>
         <Label Content="Month" Margin="126,187,1167,684"/>
         <Label Content="Year" Margin="287,187,1006,684"/>
