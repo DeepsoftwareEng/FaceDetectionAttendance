@@ -38,6 +38,7 @@ namespace FaceDetectionAttendance.MVVM.View
     {
         private Dataconnecttion dtc = new Dataconnecttion();
         private string fid;
+        private SqlCommand cmd = new SqlCommand();
         private void Get_NameFaculty(string fid)
         {
             string querry = "SELECT name_faculty FROM Faculty WHERE id_faculty = @id_faculty";
@@ -60,39 +61,45 @@ namespace FaceDetectionAttendance.MVVM.View
             string selectedValue = Shift_ComboBox.SelectedValue.ToString();
             if (AttandanceWorkers_DataGrid_1 != null &&
                 AbsenteeWorkers_DataGrid_1 != null &&
+                LateWorkers_DataGrid_1 != null &&
                 AttandanceWorkers_DataGrid_2 != null &&
-                AbsenteeWorkers_DataGrid_2 != null)
+                AbsenteeWorkers_DataGrid_2 != null &&
+                LateWorkers_DataGrid_2 != null )
             {
                 if ("Ca 1".Equals(selectedValue))
                 {
                     AttandanceWorkers_DataGrid_2.Visibility = Visibility.Collapsed;
+                    LateWorkers_DataGrid_2.Visibility = Visibility.Collapsed;
                     AbsenteeWorkers_DataGrid_2.Visibility = Visibility.Collapsed;
 
                     AttandanceWorkers_DataGrid_1.Visibility = Visibility.Visible;
+                    LateWorkers_DataGrid_1.Visibility = Visibility.Visible;
                     AbsenteeWorkers_DataGrid_1.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     AttandanceWorkers_DataGrid_1.Visibility = Visibility.Collapsed;
+                    LateWorkers_DataGrid_1.Visibility = Visibility.Collapsed;
                     AbsenteeWorkers_DataGrid_1.Visibility = Visibility.Collapsed;
 
                     AttandanceWorkers_DataGrid_2.Visibility = Visibility.Visible;
+                    LateWorkers_DataGrid_2.Visibility = Visibility.Visible;
                     AbsenteeWorkers_DataGrid_2.Visibility = Visibility.Visible;
                 }
 
             }
         }
 
-        private void TextBlock_OnlyNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            if (!char.IsDigit(e.Text, e.Text.Length - 1))
-            {
-                e.Handled = true;
-                Message_Label.Visibility = Visibility.Visible;
-            }
-            else Message_Label.Visibility = Visibility.Collapsed;
-        }
-        public bool Check_DMY(){ //DayMonthYear
+        //private void TextBlock_OnlyNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        //{
+        //    if (!char.IsDigit(e.Text, e.Text.Length - 1))
+        //    {
+        //        e.Handled = true;
+        //        Message_Label.Visibility = Visibility.Visible;
+        //    }
+        //    else Message_Label.Visibility = Visibility.Collapsed;
+        //}
+        /*public bool Check_DMY(){ //DayMonthYear
             if (Day_TextBox.Text.ToString() == "" || Month_TextBox.Text.ToString() == "" || Year_TextBox.ToString() == "")
             {
                 MessageBox.Show("Please enter full information", "Error", MessageBoxButton.OK);
@@ -156,23 +163,23 @@ namespace FaceDetectionAttendance.MVVM.View
                         return false;
                 }
             }
-        }
+        }*/
         private void Search_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (Check_DMY())
+            if (Date_DatePicker.SelectedDate != null)
             {
-                int day = int.Parse(Day_TextBox.Text.ToString());
-                int month = int.Parse(Month_TextBox.Text.ToString());
-                int year = int.Parse(Year_TextBox.Text.ToString());
+                DateTime date = Convert.ToDateTime(Date_DatePicker.SelectedDate);
 
                 AttandanceWorkers_DataGrid_1.Items.Clear();
                 AttandanceWorkers_DataGrid_2.Items.Clear();
+                LateWorkers_DataGrid_1.Items.Clear();
+                LateWorkers_DataGrid_2.Items.Clear();
                 AbsenteeWorkers_DataGrid_1.Items.Clear();
                 AbsenteeWorkers_DataGrid_2.Items.Clear();
 
                 try
                 {
-                    for (int i = 1; i <=2; i++) // 2 ca
+                    for (int i = 1; i <= 2; i++) // 2 ca
                     {
                         string query1 = "SELECT id_worker,fullname,d_m " +
                                        "FROM Attendance " +
@@ -180,32 +187,41 @@ namespace FaceDetectionAttendance.MVVM.View
                                        "ON Attendance.id_worker = WorkerList.id " +
                                        "WHERE id_faculty = @fid " +
                                        "AND shift_worked = @i " +
-                                       "AND DAY(d_m) = @day " +
-                                       "AND MONTH(d_m) = @month " +
-                                       "AND YEAR(d_m) = @year ";
+                                       "AND CONVERT(date,d_m) = @date";
 
-                        string query2 = "SELECT id, fullname " +
+                        string query2 = "SELECT id_worker,fullname,d_m " +
+                                       "FROM LateList " +
+                                       "INNER JOIN WorkerList " +
+                                       "ON LateList.id_worker = WorkerList.id " +
+                                       "WHERE id_faculty = @fid " +
+                                       "AND shift_worked = @i " +
+                                       "AND CONVERT(date,d_m) = @date";
+
+                        string query3 = "SELECT id, fullname " +
                                         "FROM WorkerList " +
                                         "WHERE id NOT IN (" +
                                             "SELECT id_worker " +
                                             "FROM Attendance " +
                                             "WHERE id_faculty = @fid " +
                                             "AND shift_worked = @i " +
-                                            "AND DAY(d_m) = @day " +
-                                            "AND MONTH(d_m) = @month " +
-                                            "AND YEAR(d_m) = @year " +
-                                        ")";
+                                            "AND CONVERT(date,d_m) = @date " +
+                                        ") " +
+                                        "AND id NOT IN (" +
+                                            "SELECT id_worker " +
+                                            "FROM LateList " +
+                                            "WHERE id_faculty = @fid " +
+                                            "AND shift_worked = @i " +
+                                            "AND CONVERT(date,d_m) = @date " +
+                                        ") ";
                         if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                         {
                             dtc.GetConnection().Open();
                         }
 
-                        SqlCommand cmd = new SqlCommand(query1, dtc.GetConnection());
+                        cmd = new SqlCommand(query1, dtc.GetConnection());
                         cmd.Parameters.AddWithValue("@fid", this.fid);
                         cmd.Parameters.AddWithValue("@i", i);
-                        cmd.Parameters.AddWithValue("@year", year);
-                        cmd.Parameters.AddWithValue("@month", month);
-                        cmd.Parameters.AddWithValue("@day", day);
+                        cmd.Parameters.AddWithValue("@date", date.Date);
                         SqlDataReader read1 = cmd.ExecuteReader();
                         while (read1.Read())
                         {
@@ -216,42 +232,62 @@ namespace FaceDetectionAttendance.MVVM.View
                             {
                                 AttandanceWorkers_DataGrid_1.Items.Add(new { id = id, name = name, dt = dt });
                             }
-                            else 
+                            else
                             {
                                 AttandanceWorkers_DataGrid_2.Items.Add(new { id = id, name = name, dt = dt });
                             }
                         }
                         read1.Close();
 
-                        SqlCommand cmd2 = new SqlCommand(query2, dtc.GetConnection());
-                        cmd2.Parameters.AddWithValue("@fid", this.fid);
-                        cmd2.Parameters.AddWithValue("@i", i);
-                        cmd2.Parameters.AddWithValue("@year", year);
-                        cmd2.Parameters.AddWithValue("@month", month);
-                        cmd2.Parameters.AddWithValue("@day", day);
-                        SqlDataReader read2 = cmd2.ExecuteReader();
+                        cmd = new SqlCommand(query2, dtc.GetConnection());
+                        cmd.Parameters.AddWithValue("@fid", this.fid);
+                        cmd.Parameters.AddWithValue("@i", i);
+                        cmd.Parameters.AddWithValue("@date", date.Date);
+                        SqlDataReader read2 = cmd.ExecuteReader();
                         while (read2.Read())
                         {
                             int id = read2.GetInt32(0);
                             string name = read2.GetString(1);
+                            DateTime dt = read2.GetDateTime(2);
                             if (i == 1)
                             {
-                                AbsenteeWorkers_DataGrid_1.Items.Add(new { id = id, name = name});
+                                LateWorkers_DataGrid_1.Items.Add(new { id = id, name = name, dt = dt });
                             }
                             else
                             {
-                                AbsenteeWorkers_DataGrid_2.Items.Add(new { id = id, name = name});
+                                LateWorkers_DataGrid_2.Items.Add(new { id = id, name = name, dt = dt });
                             }
                         }
                         read2.Close();
+
+                        cmd = new SqlCommand(query3, dtc.GetConnection());
+                        cmd.Parameters.AddWithValue("@fid", this.fid);
+                        cmd.Parameters.AddWithValue("@i", i);
+                        cmd.Parameters.AddWithValue("@date", date.Date);
+                        SqlDataReader read3 = cmd.ExecuteReader();
+                        while (read3.Read())
+                        {
+                            int id = read3.GetInt32(0);
+                            string name = read3.GetString(1);
+                            if (i == 1)
+                            {
+                                AbsenteeWorkers_DataGrid_1.Items.Add(new { id = id, name = name });
+                            }
+                            else
+                            {
+                                AbsenteeWorkers_DataGrid_2.Items.Add(new { id = id, name = name });
+                            }
+                        }
+                        read3.Close();
                     }
 
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString(), "error");
+                    MessageBox.Show(ex.ToString(), "Error");
                 }
             }
+            else MessageBox.Show("Please choose a date", "Message");
         }
 
         private void ReportMonth_Button_Click(object sender, RoutedEventArgs e)
@@ -274,7 +310,10 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Export_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (AttandanceWorkers_DataGrid_1.Items.Count > 0) {
+            if (AttandanceWorkers_DataGrid_1.Items.Count != 0 &&
+                LateWorkers_DataGrid_1.Items.Count != 0 &&
+                AbsenteeWorkers_DataGrid_1.AlternationCount !=0)
+            {
                 SaveFileDialog savefile = new SaveFileDialog();
                 savefile.DefaultExt = ".xlsx";
                 savefile.Filter = "Excel Files|*xlsx;*xls;*xlsm";
@@ -290,7 +329,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
                         Type t;
                         PropertyInfo[] p;
-
+                        //Attendance
                         sheet1.Cell(rowWrite, 1).Value = "Attandance workers list";
                         rowWrite++;
                         for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
@@ -311,7 +350,28 @@ namespace FaceDetectionAttendance.MVVM.View
                         }
                         rowWrite++;
 
-                        //
+                        //Late
+                        sheet1.Cell(rowWrite, 1).Value = "Late workers list";
+                        rowWrite++;
+                        for (int col = 0; col < LateWorkers_DataGrid_1.Columns.Count; col++)
+                        {
+                            sheet1.Cell(rowWrite, col + 1).Value = LateWorkers_DataGrid_1.Columns[col].Header.ToString();
+                        }
+                        rowWrite++;
+
+                        for (int row = 0; row < LateWorkers_DataGrid_1.Items.Count; row++)
+                        {
+                            t = LateWorkers_DataGrid_1.Items[row].GetType();
+                            p = t.GetProperties();
+                            for (int col = 0; col < LateWorkers_DataGrid_1.Columns.Count; col++)
+                            {
+                                sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(LateWorkers_DataGrid_1.Items[row]).ToString();
+                            }
+                            rowWrite++;
+                        }
+                        rowWrite++;
+
+                        //Absentee
                         sheet1.Cell(rowWrite, 1).Value = "Absentee workers list";
                         rowWrite++;
                         for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
@@ -335,6 +395,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         ////////// sheet2 ///////////////////////////////////////////////////////////
                         rowWrite = 1;
                         var sheet2 = workbook.Worksheets.Add("shift 2");
+                        //Attandance
                         sheet2.Cell(rowWrite, 1).Value = "Attandance workers list";
                         rowWrite++;
                         for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
@@ -355,7 +416,27 @@ namespace FaceDetectionAttendance.MVVM.View
                         }
                         rowWrite++;
 
-                        //
+                        //Late
+                        sheet2.Cell(rowWrite, 1).Value = "Late workers list";
+                        rowWrite++;
+                        for (int col = 0; col < LateWorkers_DataGrid_2.Columns.Count; col++)
+                        {
+                            sheet2.Cell(rowWrite, col + 1).Value = LateWorkers_DataGrid_2.Columns[col].Header.ToString();
+                        }
+                        rowWrite++;
+
+                        for (int row = 0; row < LateWorkers_DataGrid_2.Items.Count; row++)
+                        {
+                            t = LateWorkers_DataGrid_2.Items[row].GetType();
+                            p = t.GetProperties();
+                            for (int col = 0; col < LateWorkers_DataGrid_2.Columns.Count; col++)
+                            {
+                                sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(LateWorkers_DataGrid_2.Items[row]).ToString();
+                            }
+                            rowWrite++;
+                        }
+                        rowWrite++;
+                        //Absentee
                         sheet2.Cell(rowWrite, 1).Value = "Absentee workers list";
                         rowWrite++;
                         for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
