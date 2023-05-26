@@ -5,17 +5,17 @@ namespace FaceDetectionAttendance.MVVM.Model;
 
 public partial class Account
 {
-    public string Username { get; set; } = null!;
+    public string username { get; set; } = null!;
 
-    public string? Passwords { get; set; }
+    public string? password { get; set; }
 
-    public int Roles { get; set; }
+    public int roles { get; set; }
 
-    public string? Gmail { get; set; }
+    public string? gmail { get; set; }
 
-    public string? Images { get; set; }
+    public string? images { get; set; }
 
-    public string? Fid { get; set; }
+    public string? fid { get; set; }
 
     //public virtual Faculty? FidNavigation { get; set; }
 }
