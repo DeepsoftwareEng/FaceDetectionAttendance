@@ -16,6 +16,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
+using DocumentFormat.OpenXml.Drawing;
+using Microsoft.IdentityModel.Logging;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -27,6 +29,7 @@ namespace FaceDetectionAttendance.MVVM.View
     {
         private Dataconnecttion dtc = new Dataconnecttion();
         private string fid;
+        SqlCommand cmd = new SqlCommand();
         private void Get_NameFaculty(string fid)
         {
             string querry = "SELECT name_faculty FROM Faculty WHERE id_faculty = @id_faculty";
@@ -34,7 +37,7 @@ namespace FaceDetectionAttendance.MVVM.View
             {
                 dtc.GetConnection().Open();
             }
-            SqlCommand cmd = new SqlCommand(querry, dtc.GetConnection());
+            cmd = new SqlCommand(querry, dtc.GetConnection());
             cmd.Parameters.AddWithValue("@id_faculty", fid);
             NameFaculty_TextBlock.Text = "Faculty name : " + cmd.ExecuteScalar().ToString();
         }
@@ -97,40 +100,65 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             if (Check_DMY())
             {
+                MonthCount_DataGrid.Items.Clear();
                 int month = int.Parse(Month_TextBox.Text.ToString());
                 int year = int.Parse(Year_TextBox.Text.ToString());
+                int CountDay = DateTime.DaysInMonth(year, month);
                 try
                 {
-                    string querry = "SELECT WorkerList.id, fullname, COUNT(id_worker) As Attend " +
-                                    "FROM WorkerList FULL JOIN Attendance " +
-                                    "ON Attendance.id_worker = WorkerList.id " +
-                                    "AND id_faculty = @fid " +
-                                    "AND MONTH(d_m) = @month " +
-                                    "AND YEAR(d_m) = @year " +
-                                    "GROUP BY WorkerList.id, fullname ";
                     if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                     {
                         dtc.GetConnection().Open();
                     }
-                    SqlCommand cmd = new SqlCommand(querry,dtc.GetConnection());
-                    cmd.Parameters.AddWithValue("@fid", this.fid);
-                    cmd.Parameters.AddWithValue("@month", month);
-                    cmd.Parameters.AddWithValue("@year", year);
+                    string querry = "SELECT * FROM WorkerList WHERE fid = '" + this.fid + "' ";
+                    cmd = new SqlCommand(querry, dtc.GetConnection());
+                    List<WorkerList> listWorker = new List<WorkerList>();
                     SqlDataReader reader = cmd.ExecuteReader();
-                    while(reader.Read())
+                    while (reader.Read())
                     {
-                        int id = reader.GetInt32(0);
-                        string name = reader.GetString(1);
-                        string monthYear = month + "/" + year;
-                        int attend = reader.GetInt32(2);
-                        MonthCount_DataGrid.Items.Add(new {id=id,name=name, monthYear = monthYear,attend = attend});
+                        WorkerList item = new WorkerList();
+                        item.Id = reader.GetInt32(0);
+                        item.Fullname = reader.GetString(1);
+                        item.Birth = reader.GetDateTime(2);
+                        item.Images= reader.GetString(3);
+                        item.Fid = reader.GetString(4);
+                        listWorker.Add(item);
                     }
                     reader.Close();
+
+                    string monthYear = month+"/"+ year;
+                    foreach (WorkerList item in listWorker)
+                    {
+                        string querryAttend = "SELECT COUNT(shift_worked) FROM Attendance " +
+                                              "WHERE id_worker = @id_worker " +
+                                              "AND MONTH(d_m) = @month " +
+                                              "AND YEAR(d_m) = @year ";
+                        cmd = new SqlCommand(querryAttend, dtc.GetConnection());
+                        cmd.Parameters.AddWithValue("@id_worker", item.Id);
+                        cmd.Parameters.AddWithValue("@month", month);
+                        cmd.Parameters.AddWithValue("@year", year);
+                        int attend = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        string querryLate = "SELECT COUNT(shift_worked) FROM LateList " +
+                                            "WHERE id_worker = @id_worker " +
+                                            "AND MONTH(d_m) = @month " +
+                                            "AND YEAR(d_m) = @year ";
+                        cmd = new SqlCommand(querryLate, dtc.GetConnection());
+                        cmd.Parameters.AddWithValue("@id_worker", item.Id);
+                        cmd.Parameters.AddWithValue("@month", month);
+                        cmd.Parameters.AddWithValue("@year", year);
+                        int late = Convert.ToInt32(cmd.ExecuteScalar());
+
+                        // all of shift in month - all of worked = absent (shift not working)
+                        int absent = CountDay * 2 - (attend + late);
+                        MonthCount_DataGrid.Items.Add(new {id = item.Id , name = item.Fullname , monthYear = monthYear , worked = attend+late , late = late, absent = absent});
+                    }
                 }
-                catch(Exception ex) 
+                catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString(), "Error");
                 }
+
             }
         }
 

@@ -74,10 +74,12 @@
             CanUserResizeColumns="False"
             IsReadOnly="True" Margin="71,281,71,129">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding id}" Width="*" Header="ID"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding name}" Width="3*" Header ="Name" ></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding monthYear}" Width="3*" Header ="Month-Year"></DataGridTextColumn>
-                <DataGridTextColumn Binding="{Binding attend}" Width="3*" Header ="Attend"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding id}" Width="0.5*" Header="ID"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding name}" Width="2.5*" Header ="Name" ></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding monthYear}" Width="1*" Header ="Month-Year"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding worked}" Width="2*" Header ="Go to work"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding late}" Width="2*" Header="Late"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding absent}" Width="2*" Header="Absent"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
 

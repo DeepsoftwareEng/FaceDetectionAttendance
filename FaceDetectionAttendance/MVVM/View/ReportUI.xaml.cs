@@ -328,7 +328,7 @@ namespace FaceDetectionAttendance.MVVM.View
                     {
                         var workbook = new XLWorkbook();
 
-                        workbook.Style.Font.FontSize = 14;
+                        workbook.Style.Font.FontSize = 11;
                         workbook.Style.Font.FontName = "Times New Roman";
 
                         var sheet1 = workbook.Worksheets.Add("Shift 1");
@@ -336,14 +336,20 @@ namespace FaceDetectionAttendance.MVVM.View
 
                         Type t;
                         PropertyInfo[] p;
+                        IXLCell cell;
                         //Attendance
-                        sheet1.Cell(rowWrite, 1).Value = "Attandance workers list";
-                        //sheet1.Cell(rowWrite, 1).Style.
+                        cell = sheet1.Cell(rowWrite, 1);
+                        cell.Value = "Attandance workers list";
+                        cell.Style.Font.Bold= true;
+                        cell.Style.Font.FontSize = 14;
                         rowWrite++;
                         for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = AttandanceWorkers_DataGrid_1.Columns[col].Header.ToString();
-                            sheet1.Cell(rowWrite, col + 1).Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell = sheet1.Cell(rowWrite, col + 1);
+                            cell.Value = AttandanceWorkers_DataGrid_1.Columns[col].Header.ToString();
+                            cell.Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
 
@@ -353,20 +359,28 @@ namespace FaceDetectionAttendance.MVVM.View
                             p = t.GetProperties();
                             for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
                             {
-                                sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
-                                sheet1.Cell(rowWrite, col + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell = sheet1.Cell(rowWrite, col + 1);
+                                cell.Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
+                                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
                         rowWrite++;
 
                         //Late
-                        sheet1.Cell(rowWrite, 1).Value = "Late workers list";
+                        cell = sheet1.Cell(rowWrite, 1);
+                        cell.Value = "Late workers list";
+                        cell.Style.Font.Bold = true;
+                        cell.Style.Font.FontSize = 14;
                         rowWrite++;
                         for (int col = 0; col < LateWorkers_DataGrid_1.Columns.Count; col++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = LateWorkers_DataGrid_1.Columns[col].Header.ToString();
-                            sheet1.Cell(rowWrite, col + 1).Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell = sheet1.Cell(rowWrite, col + 1);
+                            cell.Value = LateWorkers_DataGrid_1.Columns[col].Header.ToString();
+                            cell.Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
 
@@ -376,20 +390,28 @@ namespace FaceDetectionAttendance.MVVM.View
                             p = t.GetProperties();
                             for (int col = 0; col < LateWorkers_DataGrid_1.Columns.Count; col++)
                             {
-                                sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(LateWorkers_DataGrid_1.Items[row]).ToString();
-                                sheet1.Cell(rowWrite, col + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell = sheet1.Cell(rowWrite, col + 1);
+                                cell.Value = p[col].GetValue(LateWorkers_DataGrid_1.Items[row]).ToString();
+                                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
                         rowWrite++;
 
                         //Absentee
-                        sheet1.Cell(rowWrite, 1).Value = "Absentee workers list";
+                        cell = sheet1.Cell(rowWrite, 1);
+                        cell.Value = "Absentee workers list";
+                        cell.Style.Font.Bold = true;
+                        cell.Style.Font.FontSize= 14;
                         rowWrite++;
                         for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
                         {
-                            sheet1.Cell(rowWrite, col + 1).Value = AbsenteeWorkers_DataGrid_1.Columns[col].Header.ToString();
-                            sheet1.Cell(rowWrite, col + 1).Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell = sheet1.Cell(rowWrite, col + 1);
+                            cell.Value = AbsenteeWorkers_DataGrid_1.Columns[col].Header.ToString();
+                            cell.Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
                         for (int row = 0; row < AbsenteeWorkers_DataGrid_1.Items.Count; row++)
@@ -398,13 +420,14 @@ namespace FaceDetectionAttendance.MVVM.View
                             p = t.GetProperties();
                             for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
                             {
-                                sheet1.Cell(rowWrite, col + 1).Value = p[col].GetValue(AbsenteeWorkers_DataGrid_1.Items[row]).ToString();
-                                sheet1.Cell(rowWrite, col + 1).Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell = sheet1.Cell(rowWrite, col + 1);
+                                cell.Value = p[col].GetValue(AbsenteeWorkers_DataGrid_1.Items[row]).ToString();
+                                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
                         rowWrite++;
-
                         sheet1.Columns().AdjustToContents(); // adjust column width auto fit with contents
 
 
@@ -412,11 +435,18 @@ namespace FaceDetectionAttendance.MVVM.View
                         rowWrite = 1;
                         var sheet2 = workbook.Worksheets.Add("shift 2");
                         //Attandance
-                        sheet2.Cell(rowWrite, 1).Value = "Attandance workers list";
+                        cell = sheet2.Cell(rowWrite, 1);
+                        cell.Value = "Attandance workers list";
+                        cell.Style.Font.Bold = true;
+                        cell.Style.Font.FontSize = 14;
                         rowWrite++;
                         for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
                         {
-                            sheet2.Cell(rowWrite, col + 1).Value = AttandanceWorkers_DataGrid_2.Columns[col].Header.ToString();
+                            cell = sheet2.Cell(rowWrite, col + 1);
+                            cell.Value = AttandanceWorkers_DataGrid_2.Columns[col].Header.ToString();
+                            cell.Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
 
@@ -426,18 +456,28 @@ namespace FaceDetectionAttendance.MVVM.View
                             p = t.GetProperties();
                             for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
                             {
-                                sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
+                                cell = sheet2.Cell(rowWrite, col + 1);
+                                cell.Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
+                                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
                         rowWrite++;
 
                         //Late
-                        sheet2.Cell(rowWrite, 1).Value = "Late workers list";
+                        cell = sheet2.Cell(rowWrite, 1);
+                        cell.Value = "Late workers list";
+                        cell.Style.Font.Bold = true;
+                        cell.Style.Font.FontSize = 14;
                         rowWrite++;
                         for (int col = 0; col < LateWorkers_DataGrid_2.Columns.Count; col++)
                         {
-                            sheet2.Cell(rowWrite, col + 1).Value = LateWorkers_DataGrid_2.Columns[col].Header.ToString();
+                            cell = sheet2.Cell(rowWrite, col + 1);
+                            cell.Value = LateWorkers_DataGrid_2.Columns[col].Header.ToString();
+                            cell.Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
 
@@ -447,17 +487,27 @@ namespace FaceDetectionAttendance.MVVM.View
                             p = t.GetProperties();
                             for (int col = 0; col < LateWorkers_DataGrid_2.Columns.Count; col++)
                             {
-                                sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(LateWorkers_DataGrid_2.Items[row]).ToString();
+                                cell = sheet2.Cell(rowWrite, col + 1);
+                                cell.Value = p[col].GetValue(LateWorkers_DataGrid_2.Items[row]).ToString();
+                                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
                         rowWrite++;
                         //Absentee
-                        sheet2.Cell(rowWrite, 1).Value = "Absentee workers list";
+                        cell = sheet2.Cell(rowWrite, 1);
+                        cell.Value = "Absentee workers list";
+                        cell.Style.Font.Bold = true;
+                        cell.Style.Font.FontSize = 14;
                         rowWrite++;
                         for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
                         {
-                            sheet2.Cell(rowWrite, col + 1).Value = AbsenteeWorkers_DataGrid_2.Columns[col].Header.ToString();
+                            cell = sheet2.Cell(rowWrite, col + 1);
+                            cell.Value = AbsenteeWorkers_DataGrid_2.Columns[col].Header.ToString();
+                            cell.Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
                         for (int row = 0; row < AbsenteeWorkers_DataGrid_2.Items.Count; row++)
@@ -466,7 +516,10 @@ namespace FaceDetectionAttendance.MVVM.View
                             p = t.GetProperties();
                             for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
                             {
-                                sheet2.Cell(rowWrite, col + 1).Value = p[col].GetValue(AbsenteeWorkers_DataGrid_2.Items[row]).ToString();
+                                cell = sheet2.Cell(rowWrite, col + 1);
+                                cell.Value = p[col].GetValue(AbsenteeWorkers_DataGrid_2.Items[row]).ToString();
+                                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
