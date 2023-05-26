@@ -1,11 +1,9 @@
-
 using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
-using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,10 +15,11 @@ using Emgu.CV;
 using Emgu.CV.UI;
 using System.Text.RegularExpressions;
 using System.Windows.Media.Media3D;
-using System.Windows.Threading;
 using Emgu.CV.Structure;
 using static System.Net.Mime.MediaTypeNames;
-using System.IO;
+using System.Windows.Controls;
+using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -246,6 +245,6 @@ namespace FaceDetectionAttendance.MVVM.View
     } 
 
         
-    }
+    
 
 }
