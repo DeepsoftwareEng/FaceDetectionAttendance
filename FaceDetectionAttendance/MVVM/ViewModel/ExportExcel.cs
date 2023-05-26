@@ -11,6 +11,7 @@ using ClosedXML;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2013.Excel;
 using System.Reflection;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace FaceDetectionAttendance.MVVM.ViewModel
 {
@@ -31,11 +32,19 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
                         var workbook = new XLWorkbook();
                         var sheet = workbook.Worksheets.Add(temp.Name);
                         int rowWrite = 1;
-                        sheet.Cell(rowWrite,1).Value= temp.Name;
+                        IXLCell cell;
+                        cell = sheet.Cell(rowWrite, 1);
+                        cell.Value= temp.Name;
+                        cell.Style.Font.Bold = true;
+                        cell.Style.Font.FontSize = 14;
                         rowWrite++;
                         for(int col = 0; col< temp.Columns.Count; col++)
                         {
-                            sheet.Cell(rowWrite, col+1).Value = temp.Columns[col].Header.ToString();
+                            cell = sheet.Cell(rowWrite, col + 1);
+                            cell.Value = temp.Columns[col].Header.ToString();
+                            cell.Style.Fill.BackgroundColor = XLColor.Aqua;
+                            cell.Style.Font.Bold = true;
+                            cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
                         Type t;
@@ -46,7 +55,10 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
                             p = t.GetProperties();
                             for(int col = 0; col < temp.Columns.Count; col++)
                             {
-                                sheet.Cell(rowWrite, col + 1).Value = p[col].GetValue(temp.Items[row]).ToString();
+                                cell = sheet.Cell(rowWrite, col + 1);
+                                cell.Value = p[col].GetValue(temp.Items[row]).ToString();
+                                cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
+                                cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
