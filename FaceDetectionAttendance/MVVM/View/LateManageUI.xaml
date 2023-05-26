@@ -15,8 +15,6 @@
             <TextBlock Text="Late Manage" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock Name ="Faculty_Header"  Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
-
-
         </Canvas>
         <DataGrid Name="Late_DataGrid" Margin="126,306,126,78" AutoGenerateColumns="False">
             <DataGrid.Columns>
@@ -44,5 +42,6 @@
         <Label Content="Year" Margin="287,187,1006,684"/>
         <Label Name="Message_Label" Content="Year is a number" Foreground="Red" Margin="287,206,945,667" Visibility="Collapsed"/>
         <Button Name="Search_Button" Content="Search" Width="50" Height="26" HorizontalAlignment="Left" Margin="434,184,0,0" VerticalAlignment="Top" Click="Search_Button_Click"/>
+        
     </Grid>
 </Page>

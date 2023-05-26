@@ -26,12 +26,25 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
         private string _username;
         private string faculty;
+        private string fid;
+        private void get_Fid()
+        {
+            string querry = "SELECT fid FROM Account WHERE username = @username";
+            if(Dataconnecttion.GetConnection().State == System.Data.ConnectionState.Closed)
+            {
+                Dataconnecttion.GetConnection().Open();
+            }
+            SqlCommand cmd = new SqlCommand(querry,Dataconnecttion.GetConnection());
+            cmd.Parameters.AddWithValue("@username", _username);
+            this.fid = cmd.ExecuteScalar().ToString();
+        }
         public MenuStaff(string username)
         {
             InitializeComponent();
             setInfor(username);
             setFaculty(username);
             _username = username;
+            get_Fid();
         }
         private void WorkerManageBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -45,7 +58,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void ReportBtn_Click(object sender, RoutedEventArgs e)
         {
-            Content.NavigationService.Navigate(new ReportUI());
+            Content.NavigationService.Navigate(new ReportUI(fid));
         }
 
         private void AccountantBtn_Click(object sender, RoutedEventArgs e)

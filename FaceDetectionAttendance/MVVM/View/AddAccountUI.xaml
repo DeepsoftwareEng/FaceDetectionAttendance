@@ -10,6 +10,47 @@
       Title="AddAccountUI">
 
     <Grid>
+        <Canvas>
+            <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
+            <TextBlock Text="Worker Management" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+            <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
+            <TextBox Canvas.Left="211" TextWrapping="Wrap" Text="TextBox" Canvas.Top="325" Width="120"/>
+            <TextBox Canvas.Left="211" TextWrapping="Wrap" Text="TextBox" Canvas.Top="411" Width="120" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <ComboBox Name ="Faculty_ComboBox" Canvas.Left="211" Canvas.Top="496" Width="120"/>
+            <Label Content="FullName" Canvas.Left="211" Canvas.Top="273"/>
+            <Label Content="Data of Bi" Canvas.Left="211" Canvas.Top="380" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Content="Label" Canvas.Left="211" Canvas.Top="450" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        </Canvas>
         
+        <Label Content="Add Worker" HorizontalAlignment="Left" Margin="627,175,0,0" VerticalAlignment="Top"/>
+
+
+            <TextBlock Text="Account Management" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+            <TextBlock Text="Admin" FontSize="18" FontWeight="Bold" Height="26" Width="auto" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
+            <TextBlock Height="4" Canvas.Left="448" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="166" Width="8"/>
+
+        </Canvas>
+        <TextBlock Text="Add Account" FontSize="40" FontWeight="Bold" Width="250" Height="50" Margin="540,169,540,681"/>
+        <TextBlock Text="Username:" FontSize="20" Width="105" Height="28" Margin="148,298,1076,574"/>
+        <TextBlock Text="Password:" FontSize="20" Width="105" Height="28" Margin="148,366,1076,506" RenderTransformOrigin="0.49,-0.571"/>
+        <TextBlock Text="Confirm Password:" FontSize="20" Height="28" Margin="148,442,994,430"/>
+        <TextBlock Text="Gmail:" FontSize="20" Width="105" Height="28" Margin="148,500,1076,372"/>
+        <TextBlock Text="Faculty:" FontSize="20" Width="105" Height="28" Margin="148,574,1076,298"/>
+        <TextBlock Text="Role:" FontSize="20" Width="105" Height="28" Margin="499,574,726,298"/>
+
+        <TextBox x:Name="Gmailtxb" FontSize="18" Width="299" Height="32" Margin="148,537,882,331"/>
+        <TextBox x:Name="Confirmtxb" FontSize="18" Width="299" Height="32" Margin="148,475,882,393"/>
+        <TextBox x:Name="Passwordtxb" FontSize="18" Width="299" Height="32" Margin="148,405,882,463"/>
+        <TextBox x:Name="Usernametxb" FontSize="18" Width="299" Height="32" Margin="148,334,882,534"/>
+        <ComboBox x:Name="Rolecbb" Width="112" Height="37" Margin="540,631,678,232"/>
+        <ComboBox x:Name="facultycbb" Width="112" Height="37" Margin="242,588,976,189"/>
+        <Border x:Name="Imagebd" BorderThickness="1" BorderBrush="Black" Width="200" Height="200" Margin="883,321,247,379">
+        </Border>
+        <Button Name="Addimagebtn" Content="Add Image" Width="109" Margin="928,570,292,279" FontSize="18" Click="Addimagebtn_Click_1"/>
+        <Button Name="Savebtn" Content="Save" FontSize="18" Width="78" Height="32" Margin="712,762,540,106" Click="Savebtn_Click"/>
+        <Button x:Name="Back" Content="Back" FontSize="18" Width="78" Height="32" Margin="474,762,778,106" Click="Back_Click"/>
     </Grid>
 </Page>

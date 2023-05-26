@@ -1,3 +1,4 @@
+
 ﻿using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
 using System;
@@ -20,8 +21,7 @@ namespace FaceDetectionAttendance.MVVM.View
     /// <summary>
     /// Interaction logic for LateManageUI.xaml
     /// </summary>
-    public partial class LateManageUI : Page
-    {
+    public partial class LateManageUI : Pa
         private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd = new SqlCommand();
         private string faculty;
