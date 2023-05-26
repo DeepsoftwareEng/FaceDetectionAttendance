@@ -7,9 +7,9 @@ public partial class WorkerList
 {
     public int Id { get; set; }
 
-    public string? Fullname { get; set; }
+    public string Fullname { get; set; }
 
-    public DateTime? Birth { get; set; }
+    public DateTime Birth { get; set; }
 
     public string Images { get; set; } = null!;
 

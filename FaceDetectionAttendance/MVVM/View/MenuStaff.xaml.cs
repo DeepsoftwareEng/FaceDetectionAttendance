@@ -48,7 +48,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void WorkerManageBtn_Click(object sender, RoutedEventArgs e)
         {
-            Content.NavigationService.Navigate(new WorkerManageUI());
+            Content.NavigationService.Navigate(new WorkerManageUI(_username));
         }
 
         private void AttendanceBtn_Click(object sender, RoutedEventArgs e)

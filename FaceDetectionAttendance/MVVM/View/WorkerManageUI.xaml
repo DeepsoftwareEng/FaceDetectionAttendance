@@ -5,21 +5,32 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance"
       mc:Ignorable="d" 
-      d:DesignHeight="900" d:DesignWidth="1330"
+      d:DesignHeight="900"
       Background="White"
-      Title="WorkerManageUI">
+      Title="WorkerManageUI" Width="1330">
 
     <Grid>
         <Canvas>
             <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
-            <TextBlock Text="Worker Management" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
-            <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+            <TextBlock Text="Manage Worker" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+            <TextBlock x:Name="FacultyText" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
-
         </Canvas>
-        <TextBox Width="500" Height="40" Margin="85,173,745,687" BorderThickness="2" BorderBrush="Black"/>
-        <Button x:Name="Search_Button" Content="Search" Width="50" Height="40" Margin="615,173,665,687"/>
-        <Button Name="Add_Button"  Content="Add" Height="25" HorizontalAlignment="Left" Margin="1052,230,0,0" VerticalAlignment="Top" Click="Add_Button_Click"/>
-
+        <Button Click="Search_Button_Click" Content="Search" HorizontalAlignment="Left" Height="28" Margin="727,179,0,0" VerticalAlignment="Top" Width="86"/>
+        <Button Content="Add" HorizontalAlignment="Left" Height="28"  VerticalAlignment="Top" Width="58" Margin="992,276,0,0" Click="Button_Click"/>
+        <Button Content="Edit" HorizontalAlignment="Left" Height="30"  VerticalAlignment="Top" Width="60" RenderTransformOrigin="6,7.467" Margin="1103,275,0,0" Click="Button_Click_2"/>
+        <Button Click="Delete_Button_Click" Content="Del" HorizontalAlignment="Left" Height="30"  VerticalAlignment="Top" Width="59" Margin="1214,275,0,0"/>
+        <DataGrid x:Name="Workertxt" HorizontalAlignment="Left" Height="477" Margin="42,368,0,0" VerticalAlignment="Top" Width="1256" >
+            <DataGrid.Columns>
+            <DataGridTextColumn Width="0.5*"   Header="ID" Binding="{Binding id}"/>
+            <DataGridTextColumn Width="4*"   Header="Fullname" Binding="{Binding fullname}"/>
+            <DataGridTextColumn Width="2*"   Header="DOB" Binding="{Binding dob}"/>
+            <DataGridTextColumn Width="2*" Header="Faculty"   Binding="{Binding fid}"/>
+            </DataGrid.Columns> 
+        </DataGrid>
+        <TextBox Name="Search_TextBox" HorizontalAlignment="Left" Height="46" Margin="113,170,0,0" TextWrapping="Wrap" Text="search" VerticalAlignment="Top" Width="589"/>
+        <TextBlock Text="Worker Management" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
+        <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
+        <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/> 
     </Grid>
 </Page>
