@@ -222,7 +222,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Add_Button_Click(object sender, RoutedEventArgs e)
         {
-            this.NavigationService.Navigate(new AddWorkerUI());
+            this.NavigationService.Navigate(new AddWorkerUI(_faculty));
         }
     }
 }
