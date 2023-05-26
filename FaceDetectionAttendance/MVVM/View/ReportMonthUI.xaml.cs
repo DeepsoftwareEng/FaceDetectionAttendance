@@ -30,22 +30,11 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         private string fid;
         SqlCommand cmd = new SqlCommand();
-        private void Get_NameFaculty(string fid)
-        {
-            string querry = "SELECT name_faculty FROM Faculty WHERE id_faculty = @id_faculty";
-            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
-            {
-                dtc.GetConnection().Open();
-            }
-            cmd = new SqlCommand(querry, dtc.GetConnection());
-            cmd.Parameters.AddWithValue("@id_faculty", fid);
-            NameFaculty_TextBlock.Text = "Faculty name : " + cmd.ExecuteScalar().ToString();
-        }
         public ReportMonthUI(string fid)
         {
             InitializeComponent();
             this.fid = fid;
-            Get_NameFaculty(fid);
+            Faculty_TextBlock.Text = fid;
         }
 
         private void ReportMonth_Button_Click(object sender, RoutedEventArgs e)

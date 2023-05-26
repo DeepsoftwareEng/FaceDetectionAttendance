@@ -12,6 +12,7 @@ using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2013.Excel;
 using System.Reflection;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Data;
 
 namespace FaceDetectionAttendance.MVVM.ViewModel
 {
@@ -47,22 +48,20 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
                             cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
-                        Type t;
-                        PropertyInfo[] p;
-                        for(int row = 0; row < temp.Items.Count; row++)
+
+                        foreach (var item in temp.Items)
                         {
-                            t = temp.Items[row].GetType();
-                            p = t.GetProperties();
                             for(int col = 0; col < temp.Columns.Count; col++)
                             {
+                                TextBlock Value = temp.Columns[col].GetCellContent(item) as TextBlock;
                                 cell = sheet.Cell(rowWrite, col + 1);
-                                cell.Value = p[col].GetValue(temp.Items[row]).ToString();
+                                cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                                 cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
                             rowWrite++;
                         }
-                        
+
                         workbook.SaveAs(saveDialog.FileName);
                         MessageBox.Show("Export to excel successfull", "Message");
                         workbook.Dispose();

@@ -39,22 +39,11 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         private string fid;
         private SqlCommand cmd = new SqlCommand();
-        private void Get_NameFaculty(string fid)
-        {
-            string querry = "SELECT name_faculty FROM Faculty WHERE id_faculty = @id_faculty";
-            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
-            {
-                dtc.GetConnection().Open();
-            }
-            SqlCommand cmd = new SqlCommand(querry, dtc.GetConnection());
-            cmd.Parameters.AddWithValue("@id_faculty", fid);
-            NameFaculty_TextBlock.Text = "Faculty name : " + cmd.ExecuteScalar().ToString();
-        }
         public ReportUI(string fid)
         {
             InitializeComponent();
             this.fid = fid;
-            Get_NameFaculty(fid);
+            Faculty_TextBlock.Text = fid;
         }
         private void Shift_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -89,81 +78,6 @@ namespace FaceDetectionAttendance.MVVM.View
 
             }
         }
-
-        //private void TextBlock_OnlyNumber_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        //{
-        //    if (!char.IsDigit(e.Text, e.Text.Length - 1))
-        //    {
-        //        e.Handled = true;
-        //        Message_Label.Visibility = Visibility.Visible;
-        //    }
-        //    else Message_Label.Visibility = Visibility.Collapsed;
-        //}
-        /*public bool Check_DMY(){ //DayMonthYear
-            if (Day_TextBox.Text.ToString() == "" || Month_TextBox.Text.ToString() == "" || Year_TextBox.ToString() == "")
-            {
-                MessageBox.Show("Please enter full information", "Error", MessageBoxButton.OK);
-                return false;
-            }
-            else 
-            {
-                int day = int.Parse(Day_TextBox.Text.ToString());
-                int month = int.Parse(Month_TextBox.Text.ToString());
-                int year = int.Parse(Year_TextBox.Text.ToString());
-
-                switch (month)
-                {
-                    case 1:
-                    case 3: 
-                    case 5:
-                    case 7:
-                    case 8:
-                    case 10:
-                    case 12:
-                        if (day <= 0 || day > 31) 
-                        {
-                            MessageBox.Show("There are only 31 days in "+month+", please re-enter", "Error", MessageBoxButton.OK);
-                            return false; 
-                        } 
-                        else return true;
-                        break;
-                    case 2:
-                        if(year % 4 == 0 && year % 100 != 0)
-                        {
-                            if (day <= 0 || day > 29) 
-                            {
-                                MessageBox.Show("There are only 29 days in " + month + "/" + year + ", please re-enter", "Error", MessageBoxButton.OK);
-                                return false;
-                            } 
-                            else return true;
-                        }
-                        else
-                        {
-                            if(day <= 0 || day > 28)
-                            {
-                                MessageBox.Show("There are only 28 days in " + month + "/" + year + ", please re-enter", "Error", MessageBoxButton.OK);
-                                return false;
-                            }
-                            else return true;
-                        }
-                        break;
-                    case 4:
-                    case 6:
-                    case 9:
-                    case 11:
-                        if (day <= 0 || day > 30)
-                        {
-                            MessageBox.Show("There are only 30 days in " + month + ", please re-enter", "Error", MessageBoxButton.OK);
-                            return false;
-                        }
-                        else return true;
-                        break;
-                    default:
-                        MessageBox.Show("There are only 12 months in a year, please re-enter", "Error", MessageBoxButton.OK);
-                        return false;
-                }
-            }
-        }*/
         private void Search_Button_Click(object sender, RoutedEventArgs e)
         {
             if (Date_DatePicker.SelectedDate != null)
@@ -312,7 +226,7 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             if (AttandanceWorkers_DataGrid_1.Items.Count == 0 &&
                 LateWorkers_DataGrid_1.Items.Count == 0 &&
-                AbsenteeWorkers_DataGrid_1.AlternationCount == 0)
+                AbsenteeWorkers_DataGrid_1.Items.Count == 0)
             {
                 MessageBox.Show("Data in the table is empty", "Error", MessageBoxButton.OK);
             }
@@ -353,14 +267,13 @@ namespace FaceDetectionAttendance.MVVM.View
                         }
                         rowWrite++;
 
-                        for (int row = 0; row < AttandanceWorkers_DataGrid_1.Items.Count; row++)
+                        foreach (var item in AttandanceWorkers_DataGrid_1.Items) 
                         {
-                            t = AttandanceWorkers_DataGrid_1.Items[row].GetType();
-                            p = t.GetProperties();
                             for (int col = 0; col < AttandanceWorkers_DataGrid_1.Columns.Count; col++)
                             {
+                                TextBlock Value = AttandanceWorkers_DataGrid_1.Columns[col].GetCellContent(item) as TextBlock;
                                 cell = sheet1.Cell(rowWrite, col + 1);
-                                cell.Value = p[col].GetValue(AttandanceWorkers_DataGrid_1.Items[row]).ToString();
+                                cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                                 cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
@@ -384,14 +297,13 @@ namespace FaceDetectionAttendance.MVVM.View
                         }
                         rowWrite++;
 
-                        for (int row = 0; row < LateWorkers_DataGrid_1.Items.Count; row++)
+                        foreach (var item in LateWorkers_DataGrid_1.Items)
                         {
-                            t = LateWorkers_DataGrid_1.Items[row].GetType();
-                            p = t.GetProperties();
                             for (int col = 0; col < LateWorkers_DataGrid_1.Columns.Count; col++)
                             {
+                                TextBlock Value = LateWorkers_DataGrid_1.Columns[col].GetCellContent(item) as TextBlock;
                                 cell = sheet1.Cell(rowWrite, col + 1);
-                                cell.Value = p[col].GetValue(LateWorkers_DataGrid_1.Items[row]).ToString();
+                                cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                                 cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
@@ -414,14 +326,13 @@ namespace FaceDetectionAttendance.MVVM.View
                             cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
-                        for (int row = 0; row < AbsenteeWorkers_DataGrid_1.Items.Count; row++)
+                        foreach (var item in AbsenteeWorkers_DataGrid_1.Items)
                         {
-                            t = AbsenteeWorkers_DataGrid_1.Items[row].GetType();
-                            p = t.GetProperties();
                             for (int col = 0; col < AbsenteeWorkers_DataGrid_1.Columns.Count; col++)
                             {
+                                TextBlock Value = AbsenteeWorkers_DataGrid_1.Columns[col].GetCellContent(item) as TextBlock;
                                 cell = sheet1.Cell(rowWrite, col + 1);
-                                cell.Value = p[col].GetValue(AbsenteeWorkers_DataGrid_1.Items[row]).ToString();
+                                cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                                 cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
@@ -450,14 +361,13 @@ namespace FaceDetectionAttendance.MVVM.View
                         }
                         rowWrite++;
 
-                        for (int row = 0; row < AttandanceWorkers_DataGrid_2.Items.Count; row++)
+                        foreach (var item in AttandanceWorkers_DataGrid_2.Items)
                         {
-                            t = AttandanceWorkers_DataGrid_2.Items[row].GetType();
-                            p = t.GetProperties();
                             for (int col = 0; col < AttandanceWorkers_DataGrid_2.Columns.Count; col++)
                             {
+                                TextBlock Value = AttandanceWorkers_DataGrid_2.Columns[col].GetCellContent(item) as TextBlock;
                                 cell = sheet2.Cell(rowWrite, col + 1);
-                                cell.Value = p[col].GetValue(AttandanceWorkers_DataGrid_2.Items[row]).ToString();
+                                cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                                 cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
@@ -481,14 +391,13 @@ namespace FaceDetectionAttendance.MVVM.View
                         }
                         rowWrite++;
 
-                        for (int row = 0; row < LateWorkers_DataGrid_2.Items.Count; row++)
+                        foreach (var item in LateWorkers_DataGrid_2.Items)
                         {
-                            t = LateWorkers_DataGrid_2.Items[row].GetType();
-                            p = t.GetProperties();
                             for (int col = 0; col < LateWorkers_DataGrid_2.Columns.Count; col++)
                             {
+                                TextBlock Value = LateWorkers_DataGrid_2.Columns[col].GetCellContent(item) as TextBlock;
                                 cell = sheet2.Cell(rowWrite, col + 1);
-                                cell.Value = p[col].GetValue(LateWorkers_DataGrid_2.Items[row]).ToString();
+                                cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                                 cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
@@ -510,14 +419,13 @@ namespace FaceDetectionAttendance.MVVM.View
                             cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                         }
                         rowWrite++;
-                        for (int row = 0; row < AbsenteeWorkers_DataGrid_2.Items.Count; row++)
+                        foreach (var item in AbsenteeWorkers_DataGrid_2.Items)
                         {
-                            t = AbsenteeWorkers_DataGrid_2.Items[row].GetType();
-                            p = t.GetProperties();
                             for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
                             {
+                                TextBlock Value = AbsenteeWorkers_DataGrid_2.Columns[col].GetCellContent(item) as TextBlock; 
                                 cell = sheet2.Cell(rowWrite, col + 1);
-                                cell.Value = p[col].GetValue(AbsenteeWorkers_DataGrid_2.Items[row]).ToString();
+                                cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");
                                 cell.Style.Border.OutsideBorder = XLBorderStyleValues.Thin;
                             }
