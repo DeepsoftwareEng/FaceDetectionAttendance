@@ -27,74 +27,35 @@
                 Width="47"
                 Height="27" 
                 Margin="88,138,1195,735" 
-                RenderTransformOrigin="1.368,0.238"
+                RenderTransformOrigin="1.368,0.238" Click="ReportDay_Button_Click"
                 />
         <Button x:Name="ReportMonth_Button"
                 Content="Month"
                 FontSize="13"
                 Width="47"
-                Height="27" Margin="166,138,1117,735"
+                Height="27" Margin="166,138,1117,735" Click="ReportMonth_Button_Click"
                 />
-        <Label Content="Insert date for getting the list" 
+        <Label Content="Choose date for getting the list" 
                Margin="97,187,1008,683"
                FontSize="16"
                Width="225"
                Height="30"/>
-        <TextBox x:Name="Day_TextBox"
-                 Width="79"
-                 Height="27"
-                 BorderThickness="5"
-                 Margin="97,222,1154,651"
-                 PreviewTextInput="TextBlock_OnlyNumber_PreviewTextInput"/>
-        <TextBox x:Name="Month_TextBox"
-                 Width="79"
-                 Height="27"
-                 BorderThickness="5"
-                 Margin="199,222,1052,651" 
-                 PreviewTextInput="TextBlock_OnlyNumber_PreviewTextInput"/>
-        <TextBox x:Name="Year_TextBox"
-                 Width="79"
-                 Height="27"
-                 BorderThickness="5" 
-                 Margin="299,222,952,651"
-                 PreviewTextInput="TextBlock_OnlyNumber_PreviewTextInput"/>
+        <DatePicker Name="Date_DatePicker"
+                    Margin="152,227,953,643"
+                    FontSize="18"/>
         <Button Content="Search"
                 x:Name="Search_Button"
                 Width="81"
                 Height="27"
                 FontSize="18"
-                Margin="408,222,841,651" Click="Search_Button_Click"/>
-        <Label Content="-"
-            Width="15"
-            Height="25" 
-            FontSize="15"
-            FontWeight="Bold"
-            Margin="172,239,1143,636"/>
-        <Label Content="-"
-            Width="15"
-            Height="25" 
-            FontSize="15"
-            FontWeight="Bold"
-            Margin="270,239,1045,636"/>
-        <TextBlock Text="Day"
+                Margin="415,230,834,643" Click="Search_Button_Click"/>
+        <TextBlock Text="Date"
                    FontSize="18"
                    TextAlignment="Center"
                    VerticalAlignment="Top"
                    Width="50" 
-                   Margin="111,254,1169,0" 
+                   Margin="97,230,1183,0" 
                    />
-        <TextBlock Text="Month"
-                   FontSize="18"
-                   TextAlignment="Center"
-                   VerticalAlignment="Top"
-                   Width="50" 
-                   Margin="212,254,1068,0" />
-        <TextBlock Text="Year"
-                   FontSize="18"
-                   TextAlignment="Center"
-                   VerticalAlignment="Top"
-                   Width="50" 
-                   Margin="313,254,967,0" />
         <ComboBox Name="Shift_ComboBox"
                   Width="67"
                   Height="30" 
@@ -107,69 +68,122 @@
             <ComboBoxItem Content="Ca 2" ></ComboBoxItem>
         </ComboBox>
 
+        <!--/////////////////////////////////////////////////-->
         <DataGrid 
-                  x:Name="AttandanceWorkers_DataGrid_1"
-                  Width="500"
-                  Height="200" Margin="88,350,742,350"
-                  Visibility="Visible">
+            x:Name="AttandanceWorkers_DataGrid_1"
+            Width="500"
+            Margin="89,380,741,322"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Visible">
             <DataGrid.Columns>
-                <DataGridTextColumn/>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
+                <DataGridTextColumn Width="4.5*" Header="Date_Time" Binding="{Binding dt}"/>
             </DataGrid.Columns>
         </DataGrid>
 
         <DataGrid 
             x:Name="AbsenteeWorkers_DataGrid_1"
             Width="500"
-            Height="200" Margin="727,350,102,350"
+            Margin="415,644,415,58"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
             Visibility="Visible">
             <DataGrid.Columns>
-                <DataGridTextColumn/>
+                <DataGridTextColumn Width="2*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="8*" Header="Name" Binding="{Binding name}"/>
             </DataGrid.Columns>
         </DataGrid>
-
+        <DataGrid 
+            x:Name="LateWorkers_DataGrid_1"
+            Width="500"
+            Margin="728,380,102,322"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Visible">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
+                <DataGridTextColumn Width="4.5*" Header="Date_Time" Binding="{Binding dt}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--/////////////////////////////////////////////////-->
         <Label Content="Attendance workers list" 
-            Margin="88,315,1017,555"
+            Margin="88,345,1017,525"
             FontSize="16"
             Width="225"
-            Height="30"/>
+            Height="30" RenderTransformOrigin="0.597,1.823"/>
+        <Label Content="Late workers list" 
+            Margin="728,345,377,525"
+            FontSize="16"
+            Width="225"
+            Height="30" RenderTransformOrigin="0.597,1.823"/>
         <Label Content="Absentee workers list" 
-            Margin="728,315,378,555"
+            Margin="415,609,690,261"
             FontSize="16"
             Width="225"
             Height="30"/>
-
+        <!--/////////////////////////////////////////////////-->
         <DataGrid 
             x:Name="AttandanceWorkers_DataGrid_2"
             Width="500"
-            Height="200" Margin="88,598,742,102"
-            Visibility="Visible">
+            Margin="89,380,741,322"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Collapsed">
             <DataGrid.Columns>
-                <DataGridTextColumn/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <DataGrid 
-            x:Name="AbsenteeWorkers_DataGrid_2"
-            Width="500"
-            Height="200" Margin="728,598,102,102"
-            Visibility="Visible">
-            <DataGrid.Columns>
-                <DataGridTextColumn/>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
+                <DataGridTextColumn Width="4.5*" Header="Date_Time" Binding="{Binding dt}"/>
             </DataGrid.Columns>
         </DataGrid>
 
+        <DataGrid 
+            x:Name="AbsenteeWorkers_DataGrid_2"
+            Width="500"
+            Margin="415,644,415,58"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Collapsed">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="2*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="8*" Header="Name" Binding="{Binding name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid 
+            x:Name="LateWorkers_DataGrid_2"
+            Width="500"
+            Margin="728,380,102,322"
+            AutoGenerateColumns="False"
+            CanUserResizeColumns="False"
+            IsReadOnly="True"
+            Visibility="Collapsed">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="ID" Binding="{Binding id}"/>
+                <DataGridTextColumn Width="4.5*" Header="Name" Binding="{Binding name}"/>
+                <DataGridTextColumn Width="4.5*" Header="Date_Time" Binding="{Binding dt}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <!--/////////////////////////////////////////////////-->
         <Button Content="Export"
                 x:Name="Export_Button"
                 Width="81"
                 Height="27"
                 FontSize="18"
-                Margin="1022,829,227,44"/>
+                Margin="1022,829,227,44" Click="Export_Button_Click"/>
         <Button Content="Send"
             x:Name="Send_Button"
             Width="81"
             Height="27"
             FontSize="18"
-            Margin="1147,829,102,44"/>
-        
+            Margin="1147,829,102,44" Click="Send_Button_Click"/>
+
         <Label Name="Message_Label"
             Content="Only number"
             Visibility="Collapsed"
@@ -178,6 +192,7 @@
             FontSize="16"
             Width="225"
             Height="30"/>
+        
 
     </Grid>
 </Page>
