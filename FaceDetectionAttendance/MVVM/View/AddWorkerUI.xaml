@@ -16,6 +16,7 @@
             <TextBlock Text="Manage Worker" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock x:Name="FacultyText" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
+            <Components:Clock Margin="1198,26,88,858"/>
         </Canvas>
         <TextBlock HorizontalAlignment="Left" Height="54" Margin="542,158,0,0" TextWrapping="Wrap" Text="Add Worker" VerticalAlignment="Top" Width="299" FontSize="28"/>
         <TextBlock HorizontalAlignment="Left" Height="54"  TextWrapping="Wrap" Text="Full Name" VerticalAlignment="Top" Width="299" FontSize="28" Margin="153,231,0,0"/>

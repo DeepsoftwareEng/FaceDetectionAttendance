@@ -39,7 +39,7 @@ namespace FaceDetectionAttendance.MVVM.Components
 
         private void Timer_Tick(object sender, EventArgs e)
         {
-            TimeTextBlock.Text = DateTime.Now.ToString("dd/mm/yyyy\n     HH:mm:ss");
+            TimeTextBlock.Text = DateTime.Now.ToString("dd/MM/yyyy\n     hh:m:ss");
         }
     }
 }

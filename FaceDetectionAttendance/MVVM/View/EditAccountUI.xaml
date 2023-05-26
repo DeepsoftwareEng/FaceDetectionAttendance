@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance"
+      xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
@@ -16,7 +17,7 @@
             <TextBlock Text="Admin" FontSize="18" FontWeight="Bold" Height="26" Width="auto" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
             <TextBlock Height="4" Canvas.Left="448" TextWrapping="Wrap" Text="TextBlock" Canvas.Top="166" Width="8"/>
-
+            <Components:Clock Margin="1198,26,88,858"/>
         </Canvas>
         <TextBlock Text="Edit Account" FontSize="40" FontWeight="Bold" Width="250" Height="50" Margin="540,169,540,681"/>
         <TextBlock Text="Username:" FontSize="20" Width="105" Height="28" Margin="148,298,1076,574"/>

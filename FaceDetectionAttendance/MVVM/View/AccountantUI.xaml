@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance"
+            xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
@@ -20,7 +21,7 @@
             <Label Name="message_label" Foreground="Red" Content="Only number" Canvas.Left="231" Canvas.Top="142" Visibility="Collapsed"/>
             <Button x:Name="Send_Button" Content="Send" Canvas.Left="1034" Canvas.Top="192" Click="Send_Button_Click"/>
             <Button x:Name="Excel_Button" Content="Expost excel" Canvas.Left="1033" Canvas.Top="230" Click="Excel_Button_Click"/>
-
+            <Components:Clock Margin="1198,26,88,858"/>
         </Canvas>
         <TextBlock HorizontalAlignment="Left" Margin="79,166,0,0" TextWrapping="Wrap" Text="Faculty Name:" VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="79,193,0,0" TextWrapping="Wrap" Text="Month: " VerticalAlignment="Top"/>

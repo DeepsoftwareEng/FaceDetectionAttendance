@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FaceDetectionAttendance.MVVM.View"
+      xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components"      
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
       Background="White"
@@ -15,7 +16,7 @@
             <TextBlock Text="Late Manage" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock Name ="Faculty_Header"  Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Height="26" Width="69" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
-
+            <Components:Clock Margin="1198,26,88,858"/>
         </Canvas>
         <Label Content="Edit" Height="50" Margin="629,112,629,738" FontWeight="Bold" FontSize="32"/>
 
