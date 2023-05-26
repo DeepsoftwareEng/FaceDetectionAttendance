@@ -1,16 +1,26 @@
-﻿using System;
+
+using System;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
-using Emgu.CV.Structure;
-using Emgu.CV;
 using FaceDetectionAttendance.MVVM.Model;
 using Microsoft.Data.SqlClient;
-using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Globalization;
+using System.Windows.Navigation;
+using Emgu.CV;
+using Emgu.CV.UI;
+using System.Text.RegularExpressions;
+using System.Windows.Media.Media3D;
+using System.Windows.Threading;
+using Emgu.CV.Structure;
+using static System.Net.Mime.MediaTypeNames;
+using System.IO;
 
 namespace FaceDetectionAttendance.MVVM.View
 {
@@ -19,6 +29,7 @@ namespace FaceDetectionAttendance.MVVM.View
     /// </summary>
     public partial class AddWorkerUI : Page
     {
+
         private Dataconnecttion dtc = new Dataconnecttion();
         private SqlCommand SQLcommand;
         VideoCapture capture;
@@ -233,4 +244,8 @@ namespace FaceDetectionAttendance.MVVM.View
             return temp;
         }
     } 
+
+        
+    }
+
 }

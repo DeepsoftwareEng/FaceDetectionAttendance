@@ -17,5 +17,6 @@
         <Button x:Name="AccountantBtn" Height="49" Width="234" Content="Accountant" FontSize="18" FontWeight="Bold" Margin="21,656,1345,195" IsEnabled="True" Click="AccountantBtn_Click"/>
         <Image x:Name="avt" Height="145" Width="145" Margin="66,52,1390,703"  Stretch="Fill"/>
         <TextBlock x:Name="StaffName" Height="26" Width="145" FontSize="18" FontWeight="Bold" Margin="66,228,1390,646" TextAlignment="Center"/>
+        <Button x:Name= "LateManageBtn" Height="49" Width="234" Margin="21,754,1345,97" Content="Late Manage" FontSize="18" FontWeight="Bold" Click="LateManageBtn_Click"/>
     </Grid>
 </Page>

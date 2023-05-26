@@ -24,7 +24,7 @@ namespace FaceDetectionAttendance.MVVM.ViewModel
         private Dataconnecttion Dataconnecttion = new Dataconnecttion();
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        private AccountModel acc = new AccountModel();
+        private Account acc = new Account();
         private object _currentPage { get; set; }
         public object CurrentPage
         {
