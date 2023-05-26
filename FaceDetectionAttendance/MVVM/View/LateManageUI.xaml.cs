@@ -21,7 +21,10 @@ namespace FaceDetectionAttendance.MVVM.View
     /// <summary>
     /// Interaction logic for LateManageUI.xaml
     /// </summary>
-    public partial class LateManageUI : Pa
+    public partial class LateManageUI : Page
+    {
+
+    
         private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd = new SqlCommand();
         private string faculty;
