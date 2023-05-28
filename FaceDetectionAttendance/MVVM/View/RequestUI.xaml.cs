@@ -72,6 +72,21 @@ namespace FaceDetectionAttendance.MVVM.View
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
                 Requestdtg.Items.Refresh();
+                string query2 = "Delete from Attendance where id = @id";
+                if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                    dtc.GetConnection().Open();
+                try
+                {
+                    cmd = new SqlCommand(query2, dtc.GetConnection());
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.ExecuteNonQuery();
+                    dtc.GetConnection().Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                Requestdtg.Items.Refresh();
             }
             catch (Exception ex)
             {

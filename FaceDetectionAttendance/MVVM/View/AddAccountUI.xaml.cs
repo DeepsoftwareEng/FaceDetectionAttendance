@@ -96,14 +96,14 @@ namespace FaceDetectionAttendance.MVVM.View
                 Rolecbb.SelectedItem == null ||
                 Imagebd.Background == null)
             {
-                MessageBox.Show("Hãy nhập đủ thông tin.");
+                MessageBox.Show("Please enter enough information.");
                 return;
             }
 
             // Kiểm tra xem mật khẩu và xác nhận mật khẩu có giống nhau không
             if (Passwordtxb.Text != Confirmtxb.Text)
             {
-                MessageBox.Show("Hãy nhập lại mật khẩu.");
+                MessageBox.Show("Please re-enter the password.");
                 return;
             }
 

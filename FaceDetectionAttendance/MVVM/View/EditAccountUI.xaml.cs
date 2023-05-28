@@ -117,7 +117,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 Rolecbb.SelectedItem == null ||
                 Imagebd.Background == null)
             {
-                MessageBox.Show("Hãy nhập đủ thông tin.");
+                MessageBox.Show("Please enter enough information.");
                 return;
             }
 
