@@ -1,4 +1,5 @@
 ﻿using FaceDetectionAttendance.MVVM.Model;
+using FaceDetectionAttendance.MVVM.ViewModel;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
@@ -261,12 +262,14 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Send_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            SendEmailUI win = new SendEmailUI();
+            win.Show();
         }
 
         private void Excel_Button_Click(object sender, RoutedEventArgs e)
         {
-
+            ExportExcel export = new ExportExcel();
+            export.ExportExcel_DataGrid(WorkersDataGrid);
         }
     }
 
