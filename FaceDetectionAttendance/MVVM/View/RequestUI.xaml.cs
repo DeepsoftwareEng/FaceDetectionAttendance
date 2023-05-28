@@ -65,6 +65,8 @@ namespace FaceDetectionAttendance.MVVM.View
                 dynamic selected = temp;
                 id = selected.id;
             }
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
             string query = "Update Request set states = 'Accept' where id = @id";
             try
             {
@@ -104,6 +106,8 @@ namespace FaceDetectionAttendance.MVVM.View
                 dynamic selected = temp;
                 id = selected.id;
             }
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
             string query = "Update Request set states = 'Deny' where id = @id";
             try
             {
