@@ -67,7 +67,7 @@ namespace FaceDetectionAttendance.MVVM.View
             }
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
-            string query = "Update Request set states = 'Accept' where id = @id";
+            string query = "Update Request set states = 'Accepted' where id = @id";
             try
             {
                 cmd = new SqlCommand(query, dtc.GetConnection());
@@ -108,7 +108,7 @@ namespace FaceDetectionAttendance.MVVM.View
             }
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
-            string query = "Update Request set states = 'Deny' where id = @id";
+            string query = "Update Request set states = 'Denied' where id = @id";
             try
             {
                 cmd = new SqlCommand(query, dtc.GetConnection());
