@@ -48,7 +48,7 @@ namespace FaceDetectionAttendance.MVVM.View
                     request.detail = reader.GetString(2);
                     request.states = reader.GetString(3);
                     request.usernamesent = reader.GetString(4);
-                    requests.Add(request);
+                    Requestdtg.Items.Add(new {id = request.id ,id_attendance = request.id_attendance, detail = request.detail, status = request.states, usernamesent = request.usernamesent});
                 }
             }
             catch (Exception ex)
@@ -71,6 +71,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 cmd = new SqlCommand(query, dtc.GetConnection());
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
+                Requestdtg.Items.Refresh();
             }
             catch (Exception ex)
             {
