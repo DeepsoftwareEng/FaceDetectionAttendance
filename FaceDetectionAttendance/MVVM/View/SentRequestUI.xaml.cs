@@ -19,11 +19,17 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             InitializeComponent();
             setRequestSent(username);
+            setComboboxData();
             _username = username;
+        }
+        private void setComboboxData()
+        {
+            Shiftcbb.Items.Add("1");
+            Shiftcbb.Items.Add("2");
         }
         private void setRequestSent(string username)
         {
-            string query = "Select detail, states, usernamesent from Request where username = @username";
+            string query = "Select detail, states, usernamesent from Request where usernamesent = @username";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
             try
@@ -49,24 +55,32 @@ namespace FaceDetectionAttendance.MVVM.View
         private void SendRequestbtn_Click(object sender, RoutedEventArgs e)
         {
             int attendanceId = getID();
-            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
-                dtc.GetConnection().Open();
-            string query = "Insert into Request values(@attendanceId, @detail, @states, @usernamesent)";
-            try
+            if(attendanceId != null)
             {
-                string detail = "Delete worker: " + Nametxb.Text + " Id: " + Idtxb.Text + " At: " + Datetxb.Text + " Shift: " + Shiftcbb.SelectedItem.ToString();
-                cmd = new SqlCommand(query, dtc.GetConnection());
-                cmd.Parameters.AddWithValue("@attendanceId", attendanceId);
-                cmd.Parameters.AddWithValue("@detail", detail);
-                cmd.Parameters.AddWithValue("states", "Idle");
-                cmd.Parameters.AddWithValue("@usernamesent", _username);
-                cmd.ExecuteNonQuery();
-                MessageBox.Show("Successful sent request");
+                if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                    dtc.GetConnection().Open();
+                string query = "Insert into Request values(@attendanceId, @detail, @states, @usernamesent)";
+                try
+                {
+                    string detail = "Delete worker: " + Nametxb.Text + " Id: " + Idtxb.Text + " At: " + Datetxb.Text + " Shift: " + Shiftcbb.SelectedItem.ToString();
+                    cmd = new SqlCommand(query, dtc.GetConnection());
+                    cmd.Parameters.AddWithValue("@attendanceId", attendanceId);
+                    cmd.Parameters.AddWithValue("@detail", detail);
+                    cmd.Parameters.AddWithValue("states", "Idle");
+                    cmd.Parameters.AddWithValue("@usernamesent", _username);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Successful sent request");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Wrong worker's information");
             }
+           
         }
         private int getID()
         {
@@ -89,7 +103,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Wrong worker's information");
+                    
                 }
             }
             dtc.GetConnection().Close();

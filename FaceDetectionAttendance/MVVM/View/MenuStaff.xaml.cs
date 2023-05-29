@@ -102,5 +102,9 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             Content.NavigationService.Navigate(new LateManageUI(this.faculty));
         }
+        private void RequestBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Content.NavigationService.Navigate(new SendRequestUI(_username));
+        }
     }
 }
