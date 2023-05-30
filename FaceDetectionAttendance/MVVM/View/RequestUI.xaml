@@ -7,17 +7,17 @@
       xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components" 
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
-      Background="White"
+      Background="#C7EEFF"
       Title="RequestUI">
 
     <Grid>
-        <Rectangle Fill="Aqua" Margin="0,0,0,800"/>
         <Canvas>
             <TextBlock Text="Request" FontSize="32" FontWeight="Bold" Margin="579,29,579,828"/>
             <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Margin="10,10,1251,864"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Margin="10,52,1202,824"/>
             <Components:Clock Canvas.Left="1200" Canvas.Top="23" />
         </Canvas>
+        <Line X1="0" X2="1330" Y1="0" Y2="0" StrokeThickness="2" Stroke="DarkGray" Height="2" Margin="0,93,0,805" />
         <TextBlock Height="20" Width="80" Text="Request Status" Margin="48,167,1202,713"/>
         <ComboBox x:Name="Statuscbb" Height="20" Width="80" Margin="146,167,1104,713" ItemsSource="{Binding StatusList}" SelectionChanged="Statuscbb_SelectionChanged"/>
         <Button x:Name="Acceptbtn" Height="30" Content="Accept" FontSize="16" FontWeight="Bold" Width="100" Margin="1023,205,207,665" Click="Acceptbtn_Click"/>

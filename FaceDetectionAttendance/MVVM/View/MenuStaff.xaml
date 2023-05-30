@@ -6,11 +6,11 @@
       xmlns:local="clr-namespace:FaceDetectionAttendance"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1600"
-      Background="White"
+      Background="#8fbfff"
       Title="MenuStaff">
 
     <Grid>
-        <Frame  Height="900" Width="1330" x:Name="Content" Margin="270,0,0,0" Background="Aqua"/>
+        <Frame  Height="900" Width="1330" x:Name="Content" Margin="270,0,0,0" Background="#C7EEFF"/>
         <Button x:Name= "WorkerManageBtn" Height="49" Width="234" Margin="21,344,1345,507" Content="Worker Manage" FontSize="18" FontWeight="Bold" Click="WorkerManageBtn_Click"/>
         <Button x:Name= "AttendanceBtn" Height="49" Width="234" Margin="21,426,1345,426" Content="Attendance" FontSize="18" FontWeight="Bold" Click="AttendanceBtn_Click"/>
         <Button x:Name="ReportBtn" Height="49" Width="234" Margin="21,505,1345,346" Content="Report" FontSize="18" FontWeight="Bold" Click="ReportBtn_Click"/>

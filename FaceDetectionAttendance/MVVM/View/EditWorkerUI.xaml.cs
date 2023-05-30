@@ -41,6 +41,7 @@ namespace FaceDetectionAttendance.MVVM.View
             _faculty = worker.Fid;
             setComboboxData();
             setCurrentInfor(worker);
+            FacultyText.Text = worker.Fid;
         }
         private void setComboboxData()
         {

@@ -7,17 +7,17 @@
       xmlns:Components="clr-namespace:FaceDetectionAttendance.MVVM.Components"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
-      Background="White"
+      Background="#C7EEFF"
       Title="SendRequestUI">
 
     <Grid>
-        <Rectangle Fill="Aqua" Margin="0,0,0,800"/>
         <Canvas Margin="-10,0,10,0">
             <TextBlock Text="Request" FontSize="32" FontWeight="Bold" Margin="579,29,579,828"/>
             <TextBlock Text="{Binding FacultyName}" FontSize="18" FontWeight="Bold" Margin="10,10,1251,864"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Margin="10,52,1202,824"/>
             <Components:Clock Margin="1198,26,88,858"/>
         </Canvas>
+        <Line X1="0" X2="1330" Y1="0" Y2="0" StrokeThickness="2" Stroke="DarkGray" Height="2" Margin="0,93,0,805" />
         <Line X1="0" X2="0"
               Y1="0" Y2="500" StrokeThickness="2" Stroke="Black" Height="500" Width="2" Margin="602,300,726,100"/>
         <TextBlock Height="30" Width="150" Text="Request sent" FontWeight="Bold" FontSize="18" Margin="633,232,547,638"/>

@@ -15,12 +15,14 @@ namespace FaceDetectionAttendance.MVVM.View
         private Dataconnecttion dtc = new Dataconnecttion();
         SqlCommand cmd;
         private string _username;
-        public SendRequestUI(string username)
+        string FacultyName;
+        public SendRequestUI(string username, string fid)
         {
             InitializeComponent();
             setRequestSent(username);
             setComboboxData();
             _username = username;
+            FacultyName = fid;
         }
         private void setComboboxData()
         {

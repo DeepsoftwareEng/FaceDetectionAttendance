@@ -8,19 +8,20 @@
       xmlns:ViewModel ="clr-namespace:FaceDetectionAttendance.MVVM.ViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="900" d:DesignWidth="1330"
-      Background="White"
+      Background="#C7EEFF"
       Title="ReportUI">
     <Page.DataContext>
         <ViewModel:ReportDayViewModel></ViewModel:ReportDayViewModel>
     </Page.DataContext>
     <Grid>
         <Canvas>
-            <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="Aqua"/>
+            <Rectangle Height="100" Width="1330" Margin="0,0,0,800" Fill="#C7EEFF"/>
             <TextBlock Text="Report" FontSize="32" FontWeight="Bold" Canvas.Left="579" Canvas.Top="29"/>
             <TextBlock Name="Faculty_TextBlock" FontSize="18" FontWeight="Bold" Height="26" Width="auto" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
             <Components:Clock Margin="1198,26,88,858"/>
         </Canvas>
+        <Line X1="0" X2="1330" Y1="0" Y2="0" StrokeThickness="2" Stroke="DarkGray" Height="2" Margin="0,93,0,805" />
         <Button x:Name="ReportDay_Button"
                 Content="Day"
                 FontSize="13"

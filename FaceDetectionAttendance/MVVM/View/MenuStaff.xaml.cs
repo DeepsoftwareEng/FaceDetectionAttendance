@@ -104,7 +104,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void RequestBtn_Click(object sender, RoutedEventArgs e)
         {
-            Content.NavigationService.Navigate(new SendRequestUI(_username));
+            Content.NavigationService.Navigate(new SendRequestUI(_username , fid));
         }
     }
 }
