@@ -57,6 +57,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 if (item.ToString() == Faculty_Header.Text)
                 {
                     facultycbb.SelectedItem = item;
+                    facultycbb.IsEnabled = false;
                     break;
                 }
             }
