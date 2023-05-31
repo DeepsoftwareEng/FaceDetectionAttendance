@@ -53,7 +53,7 @@ namespace FaceDetectionAttendance.MVVM.View
         }
         private void setData()
         {
-            string query = "Select id,fullname, birth, fid from WorkerList Where fid = @fid";
+            string query = "Select id,fullname, birth, salary ,fid from WorkerList Where fid = @fid";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
             cmd = new SqlCommand(query, dtc.GetConnection());
@@ -66,8 +66,9 @@ namespace FaceDetectionAttendance.MVVM.View
                     int id = Convert.ToInt32(reader.GetInt32(0));
                     string fullname = reader.GetString(1);
                     DateTime dob = reader.GetDateTime(2);
-                    string fid = reader.GetString(3);
-                    Workertxt.Items.Add(new { id = id, fullname = fullname, dob = dob, fid = fid });
+                    int salary = reader.GetInt32(3);
+                    string fid = reader.GetString(4);
+                    Workertxt.Items.Add(new { id = id, fullname = fullname, dob = dob,salary = salary, fid = fid });
                 }
             }
             catch (Exception ex)
@@ -92,6 +93,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 worker.Fullname = selected.fullname;
                 worker.Birth = selected.dob;
                 worker.Fid = selected.fid;
+                worker.Salary = selected.salary;
                 this.NavigationService.Navigate(new EditWorkerUI(worker));
             }
             else

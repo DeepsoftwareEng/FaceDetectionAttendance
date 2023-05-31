@@ -10,6 +10,7 @@ public partial class WorkerList
     public string Fullname { get; set; }
 
     public DateTime Birth { get; set; }
+    public int Salary { get;set; }
 
     public string Images { get; set; } = null!;
 

@@ -70,6 +70,7 @@ namespace FaceDetectionAttendance.MVVM.View
             FullNametxt.Text = worker.Fullname;
             Dobtxt.Text = worker.Birth.ToString();
             Facultycbb.SelectedItem = worker.Fid;
+            Salarytxt.Text = worker.Salary.ToString();
             string query = "Select images, id from WorkerList where fullname =@fullname";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
@@ -196,7 +197,7 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             DateTime DoB = DateTime.ParseExact($"{Dobtxt.Text}", "dd/MM/yyyy",
                                         CultureInfo.InvariantCulture); ;
-            string query = "Update WorkerList set fullname = @fullname, Birth = @dob, fid =@fid, images = @image where id = @id";
+            string query = "Update WorkerList set fullname = @fullname, Birth = @dob, fid =@fid, images = @image, salary = @salary where id = @id";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
             cmd = new SqlCommand(query, dtc.GetConnection());
@@ -205,6 +206,7 @@ namespace FaceDetectionAttendance.MVVM.View
             cmd.Parameters.AddWithValue("@fid", Facultycbb.SelectedItem.ToString());
             cmd.Parameters.AddWithValue("@image", FullNametxt.Text + id);
             cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@salary", Int32.Parse(Salarytxt.Text.ToString()));
             cmd.ExecuteNonQuery();
             //Image processing
             if (File.Exists($"D:\\{FullNametxt.Text}{id}.png") || FullNametxt.Text != fullname)
