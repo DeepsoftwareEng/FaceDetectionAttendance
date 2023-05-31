@@ -58,7 +58,8 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             if (string.IsNullOrEmpty(FullNametxt.Text) ||
                Dobtxt.Text.Length == 0 ||
-               Falcutybox.SelectedItem == null
+               Falcutybox.SelectedItem == null ||
+               Salarytxt.Text.Length ==0
                )
             {
                 MessageBox.Show("Hãy nhập đủ thông tin.");
@@ -79,7 +80,7 @@ namespace FaceDetectionAttendance.MVVM.View
             string resourceFolderPath = System.IO.Path.Combine(fix, "Resource");
             string avt = resourceFolderPath + @$"\Avatar\{FullNametxt}.png";
             //     File.Copy("C:\\FDA temp\\temp.png", avt);
-            string querry = "Insert into WorkerList Values(@fullname, @birth,@images, @fid)";
+            string querry = "Insert into WorkerList Values(@fullname, @birth,@salary ,@images, @fid)";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
 
@@ -92,6 +93,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 SQLcommand.Parameters.Add("@birth", SqlDbType.Date).Value = DoB.Date.ToString();
                 SQLcommand.Parameters.Add("@fid", SqlDbType.NVarChar).Value = faculty;
                 SQLcommand.Parameters.Add("@images", SqlDbType.NVarChar).Value = fullname+id_worker;
+                SQLcommand.Parameters.AddWithValue("@salary", Int32.Parse(Salarytxt.Text));
                 SQLcommand.ExecuteNonQuery();
                 MessageBox.Show("Worker added successfully.");
             }

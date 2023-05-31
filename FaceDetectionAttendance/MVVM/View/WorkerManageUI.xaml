@@ -26,7 +26,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Width="0.5*"   Header="ID" Binding="{Binding id}"/>
                 <DataGridTextColumn Width="4*"   Header="Fullname" Binding="{Binding fullname}"/>
-                <DataGridTextColumn Width="2*"   Header="DOB" Binding="{Binding dob}"/>
+                <DataGridTextColumn Width="1.5*"   Header="DOB" Binding="{Binding dob}"/>
+                <DataGridTextColumn Width="1.5*"   Header="Salary" Binding="{Binding salary}"/>
                 <DataGridTextColumn Width="2*" Header="Faculty"   Binding="{Binding fid}"/>
             </DataGrid.Columns>
         </DataGrid>
