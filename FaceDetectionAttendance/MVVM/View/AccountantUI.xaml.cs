@@ -157,7 +157,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
                 DataGridTextColumn column5 = new DataGridTextColumn();
                 column4.Header = "Salary";
-                column4.Binding = new Binding("Salary");
+                column4.Binding = new Binding("SalaryMonth");
                 WorkersDataGrid.Columns.Add(column5);
 
                 // Get Data In Database
