@@ -423,7 +423,7 @@ namespace FaceDetectionAttendance.MVVM.View
                         {
                             for (int col = 0; col < AbsenteeWorkers_DataGrid_2.Columns.Count; col++)
                             {
-                                TextBlock Value = AbsenteeWorkers_DataGrid_2.Columns[col].GetCellContent(item) as TextBlock; 
+                                TextBlock Value = AbsenteeWorkers_DataGrid_2.Columns[col].GetCellContent(item) as TextBlock;
                                 cell = sheet2.Cell(rowWrite, col + 1);
                                 cell.Value = Value.Text;
                                 cell.Style.Fill.BackgroundColor = XLColor.FromHtml("#F2F2F2");

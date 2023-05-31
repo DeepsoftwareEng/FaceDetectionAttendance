@@ -270,7 +270,7 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             ExportExcel export = new ExportExcel();
             export.ExportExcel_DataGrid(WorkersDataGrid);
-        }
+        }   
     }
 
     public class Worker
