@@ -228,7 +228,7 @@ namespace FaceDetectionAttendance.MVVM.View
             string querry1 = "SELECT MAX(id) AS MaxID FROM WorkerList";
             SQLcommand = new SqlCommand(querry1, dtc.GetConnection());
             SqlDataReader reader = SQLcommand.ExecuteReader();
-            int id_worker = 0;
+            int id_worker = -1;
             while (reader.Read())
             {
                 if (reader.IsDBNull(reader.GetOrdinal("MaxID"))) id_worker++;
