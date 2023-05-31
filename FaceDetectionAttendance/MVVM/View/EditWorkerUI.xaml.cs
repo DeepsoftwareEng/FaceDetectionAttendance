@@ -70,7 +70,7 @@ namespace FaceDetectionAttendance.MVVM.View
             FullNametxt.Text = worker.Fullname;
             Dobtxt.Text = worker.Birth.ToString();
             Facultycbb.SelectedItem = worker.Fid;
-            Salarytxt.Text = worker.Salary;
+            Salarytxt.Text = worker.Salary.ToString();
             string query = "Select images, id from WorkerList where fullname =@fullname";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
