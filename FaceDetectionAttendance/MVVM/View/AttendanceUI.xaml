@@ -25,6 +25,7 @@
         <Line X1="0" X2="1330" Y1="0" Y2="0" StrokeThickness="2" Stroke="DarkGray" Height="2" Margin="0,93,0,805" />
         <TextBlock x:Name="ShiftText" FontWeight="Bold" FontSize="18" Height="20" Width="70" Margin="66,152,1194,728" RenderTransformOrigin="0.509,0.714"/>
         <Button x:Name="Switchbtn" Click="Switchbtn_Click" Height="27" Width="78" Content="Switch" FontWeight="Bold" FontSize="18" Margin="141,150,1111,723"/>
+        <Border  Height="500" Width="500" Margin="60,214,770,186" BorderThickness="2" BorderBrush="Black"/>
         <Image x:Name="VideoDisplay" Height="500" Width="500" Margin="60,214,770,186"/>
         <DataGrid x:Name="Attendance" Height="263" Width="434" Margin="810,187,86,450">
             <DataGrid.Columns>
