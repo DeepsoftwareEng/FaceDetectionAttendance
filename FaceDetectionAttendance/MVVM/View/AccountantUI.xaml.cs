@@ -57,6 +57,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 if (item.ToString() == Faculty_Header.Text)
                 {
                     facultycbb.SelectedItem = item;
+                    facultycbb.IsEnabled = false;
                     break;
                 }
             }
@@ -155,6 +156,11 @@ namespace FaceDetectionAttendance.MVVM.View
                 column4.Binding = new Binding("SumLate");
                 WorkersDataGrid.Columns.Add(column4);
 
+                DataGridTextColumn column5 = new DataGridTextColumn();
+                column4.Header = "Salary";
+                column4.Binding = new Binding("SalaryMonth");
+                WorkersDataGrid.Columns.Add(column5);
+
                 // Get Data In Database
                 List<Worker> source = new List<Worker>();//items in datagrid
 
@@ -175,8 +181,9 @@ namespace FaceDetectionAttendance.MVVM.View
                         addWorker.Fullname = reader1.GetString(1);
                         DateTime date = reader1.GetDateTime(2);
                         addWorker.Birth = date.Date;
-                        addWorker.Images = reader1.GetString(3);
-                        addWorker.Fid = reader1.GetString(4);
+                        addWorker.Salary = reader1.GetInt32(3);
+                        addWorker.Images = reader1.GetString(4);
+                        addWorker.Fid = reader1.GetString(5);
                         listWorker.Add(addWorker);
                     }
                     reader1.Close();
@@ -248,7 +255,10 @@ namespace FaceDetectionAttendance.MVVM.View
                         SQLcmd.Parameters.AddWithValue("@id", listWorker[i].Id);
                         int sumLate = Convert.ToInt32(SQLcmd.ExecuteScalar());
 
-                        Worker worker = new Worker(listWorker[i].Id, listWorker[i].Fullname, shifts, sum + sumLate, sumLate);
+                        int salaryMonth = (sum + sumLate) * listWorker[i].Salary;
+                        salaryMonth = salaryMonth - (sumLate * 25000);
+
+                        Worker worker = new Worker(listWorker[i].Id, listWorker[i].Fullname, shifts, sum + sumLate, sumLate, salaryMonth);
                         source.Add(worker);
                     }
                     catch (Exception ex)
@@ -280,17 +290,19 @@ namespace FaceDetectionAttendance.MVVM.View
         public List<int> Shifts { get; set; }
         public int Sum { get; set; }
         public int SumLate { get; set; }
+        public int SalaryMonth { get; set; }
         public Worker()
         {
             Shifts = new List<int>();
         }
-        public Worker(int ID, String Name, List<int> shifts, int sum, int sumLate)
+        public Worker(int ID, String Name, List<int> shifts, int sum, int sumLate, int salaryMonth)
         {
             this.ID_Worker = ID;
             this.WorkerName = Name;
             Shifts = shifts;
             this.Sum = sum;
             this.SumLate = sumLate;
+            this.SalaryMonth = salaryMonth;
         }
     }
 

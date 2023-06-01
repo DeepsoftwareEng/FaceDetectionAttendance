@@ -109,8 +109,9 @@ namespace FaceDetectionAttendance.MVVM.View
                         item.Id = reader.GetInt32(0);
                         item.Fullname = reader.GetString(1);
                         item.Birth = reader.GetDateTime(2);
-                        item.Images= reader.GetString(3);
-                        item.Fid = reader.GetString(4);
+                        item.Salary = reader.GetInt32(3);//fix
+                        item.Images= reader.GetString(4);
+                        item.Fid = reader.GetString(5);
                         listWorker.Add(item);
                     }
                     reader.Close();
