@@ -21,7 +21,6 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             InitializeComponent();
             setStatusData();
-            setData();
         }
         private void setStatusData()
         {
@@ -52,6 +51,36 @@ namespace FaceDetectionAttendance.MVVM.View
                     request.usernamesent = reader.GetString(4);
                     Requestdtg.Items.Add(new {id = request.id ,id_attendance = request.id_attendance, detail = request.detail, status = request.states, usernamesent = request.usernamesent});
                 }
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void setCusomData(string states)
+        {
+            string query = "select * from Request where states = @states";
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+            {
+                dtc.GetConnection().Open();
+            }
+            try
+            {
+                cmd = new SqlCommand(query, dtc.GetConnection());
+                cmd.Parameters.AddWithValue("@states", states);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Request request = new Request();
+                    request.id = reader.GetInt32(0);
+                    request.id_attendance = reader.GetInt32(1);
+                    request.detail = reader.GetString(2);
+                    request.states = reader.GetString(3);
+                    request.usernamesent = reader.GetString(4);
+                    Requestdtg.Items.Add(new { id = request.id, id_attendance = request.id_attendance, detail = request.detail, status = request.states, usernamesent = request.usernamesent });
+                }
+                reader.Close();
             }
             catch (Exception ex)
             {
@@ -116,6 +145,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 cmd = new SqlCommand(query, dtc.GetConnection());
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
+                dtc.GetConnection().Close();
             }
             catch (Exception ex)
             {
@@ -126,20 +156,16 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Statuscbb_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Statuscbb.SelectedItem != null)
+            if (Statuscbb.SelectedItem != null && Statuscbb.SelectedItem != "All")
             {
-                var selectedItem = from request in requests where request.states == Statuscbb.SelectedItem.ToString() select request;
-                if (selectedItem != null)
-                {
-                    Requestdtg.Items.Clear();
-                    Requestdtg.ItemsSource = selectedItem;
-                    Requestdtg.Items.Refresh();
-                }
-            }else if(Statuscbb.SelectedItem == "All")
+                Requestdtg.Items.Clear();
+                setCusomData(Statuscbb.SelectedItem.ToString());
+                Requestdtg.Items.Refresh();  
+            }
+            else if (Statuscbb.SelectedItem != null && Statuscbb.SelectedItem == "All")
             {
                 Requestdtg.Items.Clear();
                 setData();
-                Requestdtg.Items.Refresh();
             }
         }
     }
