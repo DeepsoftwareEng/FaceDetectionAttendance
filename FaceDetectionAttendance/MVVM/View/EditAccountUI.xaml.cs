@@ -144,7 +144,6 @@ namespace FaceDetectionAttendance.MVVM.View
             string fix = projectFolderPath.Remove(projectFolderPath.Length - 9);
             string resourceFolderPath = System.IO.Path.Combine(fix, "Resource");
             string avt = resourceFolderPath + @$"\Avatar\{username}.png";
-            //string querry = "Insert into Account Values(@username,@passwords,@roles, @gmail,@images,@fid)";
             string querry = "update Account  set username = @username, passwords=@passwords, gmail=@gmail, images=@images, fid=@fid where username = @U ";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();

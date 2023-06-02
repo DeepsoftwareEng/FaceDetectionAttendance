@@ -28,6 +28,8 @@ namespace FaceDetectionAttendance.MVVM.View
             Statuscbb.Items.Add("Idle");
             Statuscbb.Items.Add("Accepted");
             Statuscbb.Items.Add("Denied");
+            Statuscbb.Items.Add("All");
+            Statuscbb.SelectedItem = "All";
         }
         private void setData()
         {
@@ -129,8 +131,15 @@ namespace FaceDetectionAttendance.MVVM.View
                 var selectedItem = from request in requests where request.states == Statuscbb.SelectedItem.ToString() select request;
                 if (selectedItem != null)
                 {
+                    Requestdtg.Items.Clear();
                     Requestdtg.ItemsSource = selectedItem;
+                    Requestdtg.Items.Refresh();
                 }
+            }else if(Statuscbb.SelectedItem == "All")
+            {
+                Requestdtg.Items.Clear();
+                setData();
+                Requestdtg.Items.Refresh();
             }
         }
     }
