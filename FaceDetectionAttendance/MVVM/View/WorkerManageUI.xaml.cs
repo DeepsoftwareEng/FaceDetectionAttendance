@@ -170,6 +170,22 @@ namespace FaceDetectionAttendance.MVVM.View
                     //delete picture
                     deleteWorkerImage(id);
 
+                    //delete attendance
+                    string querry1 = "Delete from Attndance where id =" + id;
+                    if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                    {
+                        dtc.GetConnection().Open();
+                    }
+                    try
+                    {
+                        cmd = new SqlCommand(querry1, dtc.GetConnection());
+                        cmd.ExecuteNonQuery();
+                        dtc.GetConnection().Close();
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                     //delete in database
                     string querry = "DELETE FROM WorkerList WHERE id = " + id;
                     if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)

@@ -68,7 +68,7 @@ namespace FaceDetectionAttendance.MVVM.View
         {
 
             FullNametxt.Text = worker.Fullname;
-            Dobtxt.Text = worker.Birth.ToString();
+            Dobtxt.Text = worker.Birth.ToString().Remove(worker.Birth.ToString().Length-12);
             Facultycbb.SelectedItem = worker.Fid;
             Salarytxt.Text = worker.Salary.ToString();
             string query = "Select images, id from WorkerList where fullname =@fullname";
@@ -195,7 +195,7 @@ namespace FaceDetectionAttendance.MVVM.View
 
         private void Save_click(object sender, RoutedEventArgs e)
         {
-            DateTime DoB = DateTime.ParseExact($"{Dobtxt.Text}", "dd/MM/yyyy",
+             DateTime DoB = DateTime.ParseExact($"{Dobtxt.Text}", "dd/MM/yyyy",
                                         CultureInfo.InvariantCulture); ;
             string query = "Update WorkerList set fullname = @fullname, Birth = @dob, fid =@fid, images = @image, salary = @salary where id = @id";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
@@ -209,7 +209,7 @@ namespace FaceDetectionAttendance.MVVM.View
             cmd.Parameters.AddWithValue("@salary", Int32.Parse(Salarytxt.Text.ToString()));
             cmd.ExecuteNonQuery();
             //Image processing
-            if (File.Exists($"D:\\{FullNametxt.Text}{id}.png") || FullNametxt.Text != fullname)
+            if (File.Exists($"D:\\{FullNametxt.Text}{id}.png") && FullNametxt.Text != fullname)
             {
                 //change everything -> delete old image and replace
                 //Delete old image
@@ -217,7 +217,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 File.Delete(oldpath);
                 //Copy new image to directed folder
                 string targetpath = $"{resourceFolderPath}\\WorkerImage\\{Facultycbb.SelectedItem.ToString()}\\{FullNametxt.Text}{id}.png";
-                File.Copy($"D:\\{FullNametxt.Text}.png", targetpath);
+                File.Copy($"D:\\{FullNametxt.Text}{id}.png", targetpath);
                 File.Delete($"D:\\{FullNametxt.Text}{id}.png");
             }
             else if (FullNametxt.Text == fullname && Facultycbb.SelectedItem.ToString() == _faculty)
