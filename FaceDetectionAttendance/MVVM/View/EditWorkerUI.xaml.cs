@@ -232,6 +232,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 File.Move(oldpath, targetpath);
             }
             MessageBox.Show("Successful change worker's information");
+            this.NavigationService.GoBack(); 
         }
     }
 }

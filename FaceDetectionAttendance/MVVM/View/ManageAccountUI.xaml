@@ -17,12 +17,12 @@
             <TextBlock Text="Admin" FontSize="18" FontWeight="Bold" Height="26" Width="auto" Canvas.Left="10" Canvas.Top="10"/>
             <TextBlock Text="ABC company" FontWeight="Bold" FontSize="18" Canvas.Left="10" Canvas.Top="52"/>
             <Components:Clock Margin="1198,26,88,858"/>
-            <TextBox x:Name="Usernametxb" Canvas.Left="69" TextWrapping="Wrap" Text="TextBox" Canvas.Top="164" Width="308" Height="31" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            <TextBox x:Name="Usernametxb" Canvas.Left="69" TextWrapping="Wrap"    Canvas.Top="164" Width="308" Height="31" FontSize="20" HorizontalAlignment="Left" VerticalAlignment="Center" TextChanged="Usernametxb_TextChanged"/>
             <Button Content="Search" Canvas.Left="382" Canvas.Top="164" Height="31" Width="87" HorizontalAlignment="Left" VerticalAlignment="Center" Name="Searchbtn" Click="Searchbtn_Click" FontSize="20"/>
             <Button Content="Add" Canvas.Left="894" Canvas.Top="261" HorizontalAlignment="Left" VerticalAlignment="Center" Width="54" Name="Addbtn" FontSize="20" Click="Addbtn_Click"/>
             <Button Content="Edit" Canvas.Left="990" Canvas.Top="261" HorizontalAlignment="Left" VerticalAlignment="Center" Width="46" Name="Editbtn" FontSize="20" Click="Editbtn_Click"/>
             <Button Content="Del" Canvas.Left="1075" Canvas.Top="261" HorizontalAlignment="Left" VerticalAlignment="Center" Width="48" Name="Delbtn" FontSize="20" Click="Delbtn_Click"/>
-            <DataGrid IsReadOnly="true" CanUserResizeColumns="False" Height="553" Width="1079" Name="Accountdtg" Canvas.Left="120" Canvas.Top="316" HorizontalAlignment="Left" VerticalAlignment="Center" SelectionChanged="Accountdtg_SelectionChanged">
+            <DataGrid IsReadOnly="true" CanUserResizeColumns="False" Height="553" Width="1079" Name="Accountdtg" Canvas.Left="120" Canvas.Top="316" HorizontalAlignment="Left" VerticalAlignment="Center">
                 <DataGrid.Columns>
                     <DataGridTextColumn Width="2*"   Header="Username" Binding="{Binding username}"/>
                     <DataGridTextColumn Width="3*"   Header="Password" Binding="{Binding password}"/>

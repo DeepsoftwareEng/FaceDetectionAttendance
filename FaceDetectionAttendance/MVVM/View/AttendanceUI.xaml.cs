@@ -249,6 +249,8 @@ namespace FaceDetectionAttendance.MVVM.View
             if (ShiftText.Text.Equals("Shift: 1")) shift = 2;
             else shift = 1;
             ShiftText.Text = "Shift: " + shift;
+            workerLabels.Clear();
+            WorkerList.Clear();    
             setData();
             Attendance.Items.Clear();
             Absentee.ItemsSource = null;

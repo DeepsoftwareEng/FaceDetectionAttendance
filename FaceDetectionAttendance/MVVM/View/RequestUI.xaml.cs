@@ -91,10 +91,12 @@ namespace FaceDetectionAttendance.MVVM.View
         {
             var temp = Requestdtg.SelectedItem;
             int id = 0;
+            int idA = 0;
             if (temp != null)
             {
                 dynamic selected = temp;
                 id = selected.id;
+                idA = selected.id_attendance;
             }
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
@@ -111,7 +113,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 try
                 {
                     cmd = new SqlCommand(query2, dtc.GetConnection());
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@id", idA);
                     cmd.ExecuteNonQuery();
                     dtc.GetConnection().Close();
                 }

@@ -172,6 +172,7 @@ namespace FaceDetectionAttendance.MVVM.View
                 command.Parameters.Add("@images", SqlDbType.NVarChar).Value = username;
                 command.Parameters.Add("@U", SqlDbType.NVarChar).Value = Currentusername;
                 command.ExecuteNonQuery();
+                this.NavigationService.GoBack();
             }
             catch (Exception ex)
             {

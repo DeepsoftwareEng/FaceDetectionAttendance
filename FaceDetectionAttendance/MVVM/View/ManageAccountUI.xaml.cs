@@ -40,27 +40,34 @@ namespace FaceDetectionAttendance.MVVM.View
             string querry = "Select username,passwords,fid, gmail,roles From Account";
             if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
                 dtc.GetConnection().Open();
-            command = new SqlCommand(querry, dtc.GetConnection());
-            SqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                int temp = reader.GetInt32(4);
-                string role;
-                if (temp == 1)
+                command = new SqlCommand(querry, dtc.GetConnection());
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    role = "Admin";
-                }
-                else
-                {
-                    role = "Staff";
-                }
+                    int temp = reader.GetInt32(4);
+                    string role;
+                    if (temp == 1)
+                    {
+                        role = "Admin";
+                    }
+                    else
+                    {
+                        role = "Staff";
+                    }
 
-                string Username = reader.GetString(0);
-                string Passwords = reader.GetString(1);
-                string Fid = reader.GetString(2);
-                string Gmail = reader.GetString(3);
-                string Roles = role;
-                Accountdtg.Items.Add(new { username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles });
+                    string Username = reader.GetString(0);
+                    string Passwords = reader.GetString(1);
+                    string Fid = reader.GetString(2);
+                    string Gmail = reader.GetString(3);
+                    string Roles = role;
+                    Accountdtg.Items.Add(new { username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
         private void Searchbtn_Click(object sender, RoutedEventArgs e)
@@ -159,11 +166,49 @@ namespace FaceDetectionAttendance.MVVM.View
             }
         }
 
-        private void Accountdtg_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Usernametxb_TextChanged(object sender, TextChangedEventArgs e)
         {
+            Accountdtg.Items.Clear();
+            string username = "%" + Usernametxb.Text + "%";
 
+            string query = "SELECT * FROM Account WHERE username LIKE @Username";
+            List<Account> accounts = new List<Account>();
+            if (dtc.GetConnection().State == System.Data.ConnectionState.Closed)
+                dtc.GetConnection().Open();
+            SqlCommand command = new SqlCommand(query, dtc.GetConnection());
+            command.Parameters.AddWithValue("@Username", username);
+            try
+            {
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    int temp = reader.GetInt32(2);
+                    string role;
+                    if (temp == 1)
+                    {
+                        role = "Admin";
+                    }
+                    else
+                    {
+                        role = "Staff";
+                    }
+
+                    string Username = reader.GetString(0);
+                    string Passwords = reader.GetString(1);
+                    string Fid = reader.GetString(5);
+                    string Gmail = reader.GetString(3);
+                    string Roles = role;
+                    Accountdtg.Items.Add(new { username = Username, password = Passwords, fid = Fid, gmail = Gmail, roles = Roles });
+                }
+
+                reader.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
         }
-
     }
 }
 
